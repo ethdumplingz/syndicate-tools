@@ -1,93 +1,72 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 const Index = () => {
   return (
-    <Box>
-      <Container
-        maxWidth={"lg"}
-        sx={{
-          height: "100vh"
-        }}
+    <Box
+      sx={{
+        display: "flex",
+        paddingTop: "50px"
+      }}
+    >
+      <Grid
+        container
+        direction={"column"}
+        alignItems={"stretch"}
       >
+        {/*main content*/}
         <Grid
+          item
           container
           direction={"column"}
           alignItems={"stretch"}
+          rowSpacing={5}
+          flexGrow={1}
         >
           <Grid
             item
-            container
-            justifyContent={"space-between"}
             sx={{
-              padding: "20px 0px",
-              marginBottom: "20px"
+              textAlign: "center"
             }}
           >
-            <Grid item>
-              <Typography
-                variant={"h1"}
-                sx={{
-                  fontSize: "1.2rem"
-                }}
-              >Syndicate893</Typography>
-            </Grid>
+            <img src={require("../images/circle_stroke_logo.svg")} alt={"The Syndicate"} height={250} width={264}/>
           </Grid>
-          {/*main content*/}
           <Grid
             item
-            container
-            direction={"column"}
-            alignItems={"stretch"}
-            rowSpacing={5}
             flexGrow={1}
+            sx={{
+              textAlign:"center"
+            }}
           >
-            <Grid
-              item
+            <Typography
+              variant={"h2"}
               sx={{
-                textAlign: "center"
+                fontWeight: 500,
+                fontSize: {
+                  xs: "1.8rem",
+                  md: "2.3rem"
+                },
+                textAlign: "center",
+                position: "relative",
+                paddingBottom: "200px",
+                maxWidth: "600px",
+                margin: "0px auto",
+                '&::after':{
+                  content: "''",
+                  position: "absolute",
+                  top: "-24px",
+                  bottom: "0px",
+                  right: "0px",
+                  left: "0px",
+                  zIndex: -1,
+                  backgroundImage: `url(${require("../images/light_grey_stroke.svg")})`,
+                  backgroundSize: "100% auto",
+                  backgroundRepeat: "no-repeat"
+                }
               }}
-            >
-              <img src={require("../images/circle_stroke_logo.svg")} alt={"The Syndicate"} height={250} width={264}/>
-            </Grid>
-            <Grid
-              item
-              flexGrow={1}
-              sx={{
-                textAlign:"center"
-              }}
-            >
-              <Typography
-                variant={"h2"}
-                sx={{
-                  fontWeight: 500,
-                  fontSize: {
-                    xs: "1.8rem",
-                    md: "2.3rem"
-                  },
-                  textAlign: "center",
-                  position: "relative",
-                  paddingBottom: "200px",
-                  maxWidth: "600px",
-                  margin: "0px auto",
-                  '&::after':{
-                    content: "''",
-                    position: "absolute",
-                    top: "-24px",
-                    bottom: "0px",
-                    right: "0px",
-                    left: "0px",
-                    zIndex: -1,
-                    backgroundImage: `url(${require("../images/light_grey_stroke.svg")})`,
-                    backgroundSize: "100% auto",
-                    backgroundRepeat: "no-repeat"
-                  }
-                }}
-              >Arsenal Incoming...</Typography>
-            </Grid>
-            
+            >Arsenal Incoming...</Typography>
           </Grid>
         </Grid>
-      </Container>
+      </Grid>
     </Box>
   )
 }
