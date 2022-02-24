@@ -59,7 +59,11 @@ const Index = () => {
               <Typography
                 variant={"h2"}
                 sx={{
-                  fontSize: "2.3rem",
+                  fontWeight: 500,
+                  fontSize: {
+                    xs: "1.8rem",
+                    md: "2.3rem"
+                  },
                   textAlign: "center",
                   position: "relative",
                   paddingBottom: "200px",
