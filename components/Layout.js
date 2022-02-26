@@ -1,8 +1,21 @@
 import DashboardSideNav from "./DashboardSideNav";
 import {Typography, Box} from "@mui/material";
+import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const Layout = (props) => {
+	
+	const router = useRouter();
 	const {children:content} = props;
+	const {isAgent} = useSyndicateAuthenticationContext();
+	
+	useEffect(()=>{
+		if(!isAgent){
+			router.push("/signin");
+		}
+	}, []);
+	
 	return (
 		<>
 			<DashboardSideNav/>

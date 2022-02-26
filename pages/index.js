@@ -1,6 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 
 const Index = () => {
+  
   return (
     <Box
       sx={{
