@@ -4,13 +4,14 @@ import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
 import {useSyndicateAuthenticationContext} from "../components/SyndicateAuthenticationProvider";
 import { useEffect } from "react";
+
 const SignIn = (props) => {
 	const router = useRouter();
 	const { isAgent } = useSyndicateAuthenticationContext();
 	
 	useEffect(()=>{
 		if(isAgent){
-			router.push("/");
+			router.back();
 		}
 	}, [isAgent]);
 	return (

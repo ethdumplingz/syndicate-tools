@@ -6,6 +6,9 @@ const nextConfig = {
 	images:{
 		disableStaticImages: true,
 	},
+	env: {
+		baseURI: process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://syndicate-api.onrender.com"
+	},
 	// experimental: process.env.NODE_ENV !== "development" ? {
 	// 		removeConsole: {
 	// 			exclude: ['error'],
@@ -28,4 +31,3 @@ module.exports = withPlugins([
 	// your other plugins here
 
 ], nextConfig);
-
