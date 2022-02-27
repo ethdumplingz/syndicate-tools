@@ -27,6 +27,7 @@ const AddView = (props) => {
 	const componentLoggingTag = `[AddView]`;
 	
 	const [title, setTitle] = useState("");
+	const [wlUrl, setWLUrl] = useState("");
 	const [website, setWebsite] = useState("");
 	const [twitter, setTwitter] = useState("");
 	const [discord, setDiscord] = useState({
@@ -47,6 +48,7 @@ const AddView = (props) => {
 		try{
 			const payload = {
 				title,
+				wl_register_url:wlUrl,
 				website_url: website,
 				twitter_url: twitter,
 				discord_url: discord.url,
@@ -100,6 +102,16 @@ const AddView = (props) => {
 						defaultValue={title}
 						label={"Title"}
 						onChange={(e)=>{setTitle(e.currentTarget.value)}}
+					/>
+				</Grid>
+				<Grid
+					item
+				>
+					<FormTextField
+						defaultValue={wlUrl}
+						label={"Whitelist URL"}
+						type={"url"}
+						onChange={(e)=>{setWLUrl(e.currentTarget.value)}}
 					/>
 				</Grid>
 				<Grid
