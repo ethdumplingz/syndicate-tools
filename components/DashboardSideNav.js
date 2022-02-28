@@ -1,16 +1,16 @@
 import * as React from 'react';
 import {useState} from "react";
-import Box from '@mui/material/Box';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+
+import {Box, SwipeableDrawer, Button, List, Divider, ListItem, ListItemIcon, ListItemText, Collapse } from '@mui/material';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import CalenderIcon from '@mui/icons-material/CalendarToday';
 import TableIcon from "@mui/icons-material/TableChart";
+import SearchIcon from "@mui/icons-material/Search"
+import AddIcon from "@mui/icons-material/Add";
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+
+import {useRouter} from "next/router";
 
 const items = [
 	{
@@ -26,13 +26,35 @@ const items = [
 	{
 		id: "database",
 		str: "Database",
-		icon: <TableIcon />
-	},
+		icon: <TableIcon />,
+		expandable: true,
+		onClick: () => {
+		
+		},
+		children : [
+			{
+				id: "database-add",
+				str: "Add",
+				icon: <AddIcon />,
+				path: "/database/add"
+			},
+			{
+				id: "database-view",
+				str: "View",
+				icon: <SearchIcon />,
+				path: "/database/view"
+			},
+		]
+	}
 ]
 
 const DashboardSideNav = (props) => {
 	
+	const router = useRouter();
 	const [isOpen, setOpen] = useState(true);
+	const [sectionExpanded, setSectionExpanded] = useState({
+		"database" : true
+	});
 	
 	const toggleDrawer = (open = false) => (event) => {
 		setOpen(open);
@@ -62,23 +84,62 @@ const DashboardSideNav = (props) => {
 			<Divider/>
 			<List>
 				{items.map((item, index) => (
-					<ListItem
-						button
-						key={index}
-						sx={{
-							padding: "14px 24px"
-						}}
-					>
-						<ListItemIcon
+					<>
+						<ListItem
+							button
+							key={index}
 							sx={{
-								color: "black",
-								minWidth: "50px"
+								padding: "14px 24px"
 							}}
+							onClick={item.expandable ? (e) => {
+								const prevItemExpanded = sectionExpanded[item.id],
+									newSectionExpandedState = {...sectionExpanded, [item.id]: !prevItemExpanded}
+								setSectionExpanded(newSectionExpandedState);
+							} : false}
 						>
-							{item.icon}
-						</ListItemIcon>
-						<ListItemText primary={item.str} />
-					</ListItem>
+							<ListItemIcon
+								sx={{
+									color: "black",
+									minWidth: "50px"
+								}}
+							>
+								{item.icon}
+							</ListItemIcon>
+							<ListItemText primary={item.str} />
+							{item.expandable && sectionExpanded[item.id] ? <ExpandLess /> : item.expandable ? <ExpandMore /> : ''}
+						</ListItem>
+						{typeof item.children === "object"  && item.children.length > 0 ? (
+							<Collapse in={sectionExpanded[item.id]}>
+								<List>
+									{
+										item.children.map((child, index) => (
+											<ListItem
+												button
+												sx={{
+													padding: "14px 24px",
+													pl: 6
+												}}
+												onClick={(e)=>{router.push(child.path)}}
+											>
+												<ListItemIcon
+													sx={{
+														color: "black",
+														minWidth: "50px"
+													}}
+												>
+													{child.icon}
+												</ListItemIcon>
+												<ListItemText primary={child.str}/>
+											</ListItem>
+										))
+									}
+								</List>
+							</Collapse>
+						) : (
+							<></>
+						)
+						}
+					</>
 				))}
 			</List>
 			{/*<Divider />*/}
