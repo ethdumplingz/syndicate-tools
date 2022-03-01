@@ -8,7 +8,7 @@ import { useEffect } from "react";
 const SignIn = (props) => {
 	const router = useRouter();
 	const { isAgent } = useSyndicateAuthenticationContext();
-	
+
 	useEffect(()=>{
 		if(isAgent){
 			router.back();
@@ -18,10 +18,34 @@ const SignIn = (props) => {
 		<Grid
 			container
 			direction={"column"}
-			alignItems={"stretch"}
+			alignItems={"center"}
+			justifyContent={"center"}
+			rowSpacing={5}
+			sx={{
+				pt: 5,
+				pl: 5,
+				textAlign: "center",
+				height: "100%"
+			}}
 		>
-			<Grid item>
-				<Typography>Sign in view</Typography>
+			<Grid
+				item
+			>
+				<Typography
+					sx={{
+						fontSize: "1.5rem",
+						mb: 2
+					}}
+				>
+					WARNING: This area is off limits to <b><i>outsiders</i></b>.
+				</Typography>
+				<Typography
+					sx={{
+						fontSize: "1.5rem"
+					}}
+				>
+					Click below to prove you are an <b>agent of the Syndicate893</b>.
+				</Typography>
 			</Grid>
 			<Grid item>
 				<SignInBtn/>

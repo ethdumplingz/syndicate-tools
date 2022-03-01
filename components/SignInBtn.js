@@ -26,6 +26,10 @@ const SignInBtn = (props) => {
 		<Button
 			variant={"contained"}
 			sx={{
+				fontSize: {
+					xs: "1.1rem",
+					md: "1.3rem"
+				},
 				backgroundColor: theme.palette.primary.main,
 				padding: "20px 30px"
 			}}
