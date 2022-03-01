@@ -114,6 +114,7 @@ const DashboardSideNav = (props) => {
 									{
 										item.children.map((child, index) => (
 											<ListItem
+												key={index}
 												button
 												sx={{
 													padding: "14px 24px",
