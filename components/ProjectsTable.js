@@ -46,7 +46,16 @@ const render = {
 		// console.info(`${loggingTag}`, params);
 		if(typeof params.value === "string" && params.value.length > 0){
 			return(
-				<a href={params.value} target={"_blank"}>{params.value}</a>
+				<Typography
+					sx={{
+						overflow: "hidden",
+						textOverflow: "ellipsis",
+						textAlign: "left",
+						fontSize: "0.8rem"
+					}}
+				>
+					<a href={params.value} target={"_blank"}>{params.value}</a>
+				</Typography>
 			)
 		} else {
 			return("N/A")
@@ -71,7 +80,7 @@ const render = {
 	actions: (params) => {
 		const {value} = params;
 		const router = useRouter();
-		console.info(`[render][actions] id:`, value);
+		// console.info(`[render][actions] id:`, value);
 		return(
 			<Button
 				variant={"contained"}
