@@ -28,21 +28,18 @@ const items = [
 		str: "Database",
 		icon: <TableIcon />,
 		expandable: true,
-		onClick: () => {
-		
-		},
 		children : [
 			{
-				id: "database-add",
+				id: "projects-add",
 				str: "Add",
 				icon: <AddIcon />,
-				path: "/database/add"
+				path: "/projects/add"
 			},
 			{
-				id: "database-view",
+				id: "projects-view",
 				str: "View",
 				icon: <SearchIcon />,
-				path: "/database/view"
+				path: "/projects/view"
 			},
 		]
 	}
