@@ -74,7 +74,10 @@ const ProjectForm = (props) => {
 	});
 	const [price, setPrice] = useState(0);
 	const [unit, setUnit] = useState("ETH");
+	const [supply, setSupply] = useState(0);
 	const [presale, setPresale] = useState({
+		per_transaction: 0,
+		per_wallet: 0,
 		start: 0,
 		end: 0
 	});
@@ -128,7 +131,10 @@ const ProjectForm = (props) => {
 				ts_presale_start: presale.start,
 				ts_presale_end: presale.end,
 				address: contractAddress,
-				description
+				description,
+				max_supply: supply,
+				max_per_transaction: presale.per_transaction,
+				max_per_wallet: presale.per_wallet,
 			}
 			console.info(`${loggingTag} Payload to be saved to server:`, payload);
 			
@@ -139,6 +145,7 @@ const ProjectForm = (props) => {
 				// await delay();//5 seconds
 				if(result.data.ok){
 					setReqOutcome({...reqOutcome, display: true, pending:false, severity: "success", message: `Success! Saved "${title}"`});
+					await router.push(`/projects/${projectID}`);
 				} else {
 					setReqOutcome({...reqOutcome, display: true, pending:false, severity: "error", message: `Looks like there was a problem saving "${title}".  Please check your internet and try again.`});
 					console.error(`${loggingTag} An error occurred while saving project: "${title}" to the db.  Errors:`, result.data.errors);
@@ -146,7 +153,7 @@ const ProjectForm = (props) => {
 				
 			} catch(e){
 				setReqOutcome({...reqOutcome, display: true, pending:false, severity: "error", message: `There was a problem saving this project.   Please check your internet connection and try again.`});
-				console.error(`${loggingTag} Unable to make request to add project`);
+				console.error(`${loggingTag} Unable to make request to add project`, e);
 			} finally {
 				await delay();//5 seconds
 				setReqOutcome({...reqOutcome, display: false});
@@ -173,7 +180,10 @@ const ProjectForm = (props) => {
 				ts_presale_start: presale.start,
 				ts_presale_end: presale.end,
 				address: contractAddress,
-				description
+				description,
+				max_supply: supply,
+				max_per_transaction: presale.per_transaction,
+				max_per_wallet: presale.per_wallet,
 			}
 			console.info(`${loggingTag} Payload to be sent to server:`, payload);
 			
@@ -184,6 +194,7 @@ const ProjectForm = (props) => {
 				// await delay();//5 seconds
 				if(result.data.ok){
 					setReqOutcome({...reqOutcome, display: true, pending:false, severity: "success", message: `Success! Edits made for "${title}"`});
+					router.push(`/projects/${id}`);
 				} else {
 					setReqOutcome({...reqOutcome, display: true, pending:false, severity: "error", message: `Looks like there was a problem saving "${title}".  Please check your internet and try again.`});
 					console.error(`${loggingTag} An error occurred while saving project: "${title}" to the db.  Errors:`, result.data.errors);
@@ -191,7 +202,7 @@ const ProjectForm = (props) => {
 				
 			} catch(e){
 				setReqOutcome({...reqOutcome, display: true, pending:false, severity: "error", message: `There was a problem editing this project.   Please check your internet connection and try again.`});
-				console.error(`${loggingTag} Unable to make request to edit project`);
+				console.error(`${loggingTag} Unable to make request to edit project`, e);
 			} finally {
 				await delay();//5 seconds
 				setReqOutcome({...reqOutcome, display: false});
@@ -271,7 +282,7 @@ const ProjectForm = (props) => {
 		if(typeof data !== "undefined"){
 			const resp = data,
 				project = resp.data.project[0];
-			const {title, description, website_url, twitter_url, discord_url, presale_price, ts_presale_start, ts_presale_end, wl_register_url} = project;
+			const {title, description, website_url, twitter_url, discord_url, presale_price, ts_presale_start, ts_presale_end, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = project;
 			
 			useEffect(() => {
 				setTitle(title);
@@ -282,10 +293,13 @@ const ProjectForm = (props) => {
 				setPrice(presale_price);
 				console.info(`${componentLoggingTag} presale start: ${ts_presale_start} end: ${ts_presale_end}`);
 				const formattedTimes = {
+					per_transaction: max_per_transaction,
+					per_wallet: max_per_wallet,
 					start: formatDatetimeForForm(ts_presale_start),
 					end: formatDatetimeForForm(ts_presale_end),
 				}
 				console.info(`${componentLoggingTag} formatted time`, formattedTimes);
+				setSupply(max_supply);
 				setPresale(formattedTimes);
 				// console.info(`${componentLoggingTag} presale state:`, presale);
 				setWLUrl(wl_register_url);
@@ -397,9 +411,23 @@ const ProjectForm = (props) => {
 						</Grid>
 						<Grid item>
 							<FormTextField
-								label={"Unit"}
-								value={unit}
-								onChange={(e) => {setUnit(e.currentTarget.value)}}
+								label={"Max Supply"}
+								value={supply}
+								onChange={(e) => {setSupply(e.currentTarget.value)}}
+							/>
+						</Grid>
+						<Grid item>
+							<FormTextField
+								label={"Max Per Transaction"}
+								value={presale.per_transaction}
+								onChange={(e) => {setPresale({...presale, per_transaction:e.currentTarget.value})}}
+							/>
+						</Grid>
+						<Grid item>
+							<FormTextField
+								label={"Max Per Wallet"}
+								value={presale.per_wallet}
+								onChange={(e) => {setPresale({...presale, per_wallet:e.currentTarget.value})}}
 							/>
 						</Grid>
 					</Grid>

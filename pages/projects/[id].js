@@ -73,7 +73,7 @@ const ProjectView = (props) => {
 		)
 	} else if (resp){
 		const info = resp.data.project[0];
-		const {title, description, website_url, discord_url, twitter_url, ts_presale_start, ts_presale_end, presale_price, wl_register_url} = info;
+		const {title, description, website_url, discord_url, twitter_url, ts_presale_start, ts_presale_end, presale_price, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = info;
 		console.info(`${componentLoggingTag} project info:`, info);
 		return(
 			<ProjectViewContainer>
@@ -107,11 +107,23 @@ const ProjectView = (props) => {
 					/>
 					<ProjectInfoRow
 						label={"WL Raffle Entry"}
-						value={<a href={wl_register_url} target={"_blank"}>{wl_register_url}</a>}
+						value={wl_register_url.length === 0 ? <span>N/A</span> : <a href={wl_register_url} target={"_blank"}>{wl_register_url}</a>}
 					/>
 					<ProjectInfoRow
 						label={"Presale Price"}
 						value={`${presale_price}E`}
+					/>
+					<ProjectInfoRow
+						label={"Max Supply"}
+						value={max_supply > 0 ? max_supply : 0}
+					/>
+					<ProjectInfoRow
+						label={"Max Per Transaction"}
+						value={max_per_transaction > 0 ? max_per_transaction : 0}
+					/>
+					<ProjectInfoRow
+						label={"Max Per Wallet"}
+						value={max_per_wallet > 0 ? max_per_wallet : 0}
 					/>
 					<ProjectInfoRow
 						label={"Presale Start"}
