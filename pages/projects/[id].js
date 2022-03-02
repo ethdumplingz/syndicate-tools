@@ -3,6 +3,7 @@ import useSWR from "swr";
 import axios from "axios";
 import {Typography, Grid, Button} from "@mui/material";
 import fetchProjectInfo from "../../utils/project";
+import dayjs from "dayjs";
 
 const ProjectViewContainer = (props) => {
 	const {children} = props;
@@ -72,7 +73,7 @@ const ProjectView = (props) => {
 		)
 	} else if (resp){
 		const info = resp.data.project[0];
-		const {title, description, website_url, discord_url, twitter_url, presale_start, presale_end, presale_price, wl_register_url} = info;
+		const {title, description, website_url, discord_url, twitter_url, ts_presale_start, ts_presale_end, presale_price, wl_register_url} = info;
 		console.info(`${componentLoggingTag} project info:`, info);
 		return(
 			<ProjectViewContainer>
@@ -107,6 +108,18 @@ const ProjectView = (props) => {
 					<ProjectInfoRow
 						label={"WL Raffle Entry"}
 						value={<a href={wl_register_url} target={"_blank"}>{wl_register_url}</a>}
+					/>
+					<ProjectInfoRow
+						label={"Presale Price"}
+						value={`${presale_price}E`}
+					/>
+					<ProjectInfoRow
+						label={"Presale Start"}
+						value={dayjs(ts_presale_start).format("MMMM D, YYYY h:mm A")}
+					/>
+					<ProjectInfoRow
+						label={"Presale End"}
+						value={dayjs(ts_presale_end).format("MMMM D, YYYY h:mm A")}
 					/>
 					<Grid
 						item
