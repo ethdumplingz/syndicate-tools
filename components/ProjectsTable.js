@@ -155,7 +155,7 @@ const ProjectsTable = (props) => {
 				type: "number",
 				minWidth: 120,
 				cellClassName: 'center',
-				valueFormatter: render.mintPrice
+				valueFormatter: render.mintPrice,
 			},
 			// {
 			// 	field: "public_price",
@@ -197,14 +197,6 @@ const ProjectsTable = (props) => {
 				item
 			>
 				<DataGrid
-					initialState={{
-						sorting:{
-							sortingModel:[{
-								field: "ts_presale_start",
-								sort: "asc"
-							}]
-						}
-					}}
 					columns={columns}
 					rows={projects}
 					autoHeight={true}

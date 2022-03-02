@@ -30,16 +30,16 @@ const items = [
 		expandable: true,
 		children : [
 			{
-				id: "projects-add",
-				str: "Add",
-				icon: <AddIcon />,
-				path: "/projects/add"
-			},
-			{
 				id: "projects-view",
 				str: "View",
 				icon: <SearchIcon />,
 				path: "/projects/view"
+			},
+			{
+				id: "projects-add",
+				str: "Add",
+				icon: <AddIcon />,
+				path: "/projects/add"
 			},
 		]
 	}
@@ -122,7 +122,7 @@ const DashboardSideNav = (props) => {
 												<ListItemIcon
 													sx={{
 														color: "black",
-														minWidth: "50px"
+														minWidth: "46px"
 													}}
 												>
 													{child.icon}
