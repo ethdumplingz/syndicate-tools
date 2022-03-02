@@ -46,7 +46,7 @@ const render = {
 		// console.info(`${loggingTag}`, params);
 		if(typeof params.value === "string" && params.value.length > 0){
 			return(
-				<a href={params.value} target={"_blank"}>Open</a>
+				<a href={params.value} target={"_blank"}>{params.value}</a>
 			)
 		} else {
 			return("N/A")
@@ -61,7 +61,7 @@ const render = {
 		}
 	},
 	mintPrice: (params) => {
-		const {value} = params;
+		let {value} = params;
 		if(value === null){
 			value = 0;
 		}

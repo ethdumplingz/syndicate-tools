@@ -1,7 +1,10 @@
 import {Alert, Button, FormControlLabel, FormGroup, Grid, Snackbar, Switch, TextField, Typography} from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import fetchProjectInfo from "../utils/project";
+import useSWR from "swr";
+import {useRouter} from "next/router";
+import dayjs from "dayjs";
 
 const delay = (time = 5000) => {
 	return new Promise((resolve, reject) => {
@@ -11,12 +14,28 @@ const delay = (time = 5000) => {
 	})
 }
 
+const FormActionBtn = (props) => {
+	const componentLoggingTag = `[FormActionBtn]`;
+	const {text, onClick, variant, disabled = false} = props;
+	return (
+		<Button
+			variant={variant}
+			disabled={disabled}
+			onClick={onClick}
+		>
+			{text}
+		</Button>
+	)
+}
+
 const FormTextField = (props) => {
 	const componentLoggingTag = `[FormTextField]`;
-	const {defaultValue, maxRows = 1, onChange = ()=>{}, children, label="", type="text", step = 1, helperText=""} = props;
+	const {value="",defaultValue, maxRows = 1, onChange = ()=>{}, children, label="", type="text", step = 1, helperText=""} = props;
+	// console.info(`${componentLoggingTag} props`, props);
 	return(
 		<TextField
 			variant={"outlined"}
+			value={value}
 			defaultValue={defaultValue}
 			onChange={onChange}
 			fullWidth={true}
@@ -35,7 +54,8 @@ const FormTextField = (props) => {
 const ProjectForm = (props) => {
 	const componentLoggingTag = `[ProjectForm]`;
 	
-	const {mode = "add"} = props;
+	const router = useRouter();
+	const {id = ""} = props;
 	
 	const [title, setTitle] = useState("");
 	const [wlUrl, setWLUrl] = useState("");
@@ -70,8 +90,15 @@ const ProjectForm = (props) => {
 		}
 	}
 	
-	if(mode === "edit"){
-	
+	const formatDatetimeForForm = (dbDatetime) => {
+		const loggingTag = `[formatDateTimeForForm]`;
+		let datetime = "";
+		try{
+			datetime = dayjs(dbDatetime).format("YYYY-MM-DDTHH:mm:ss");
+		} catch(e){
+			console.error(`${loggingTag} Error:`, e);
+		}
+		return datetime;
 	}
 	
 	const addProjectToServer = async () => {
@@ -123,196 +150,343 @@ const ProjectForm = (props) => {
 		}
 	}
 	
-	return (
-		<>
-			<Grid
-				container
-				direction={"column"}
-				alignItems={"stretch"}
-				flexGrow={1}
-				rowSpacing={3}
-				sx={{
-					pt:3
-				}}
-			>
-				<Grid
-					item
-				>
-					<Typography
-						variant={"h4"}
-					>{mode === "edit" ? "Edit" : "Add"} Project</Typography>
-				</Grid>
-				<Grid
-					item
-				>
-					<FormTextField
-						defaultValue={title}
-						label={"Title"}
-						onChange={(e)=>{setTitle(e.currentTarget.value)}}
-					/>
-				</Grid>
-				<Grid
-					item
-				>
-					<FormTextField
-						defaultValue={wlUrl}
-						label={"Whitelist URL"}
-						type={"url"}
-						onChange={(e)=>{setWLUrl(e.currentTarget.value)}}
-					/>
-				</Grid>
-				<Grid
-					item
-				>
-					<FormTextField
-						defaultValue={website}
-						label={"Website URL"}
-						type={"url"}
-						onChange={(e)=>{setWebsite(e.currentTarget.value)}}
-					/>
-				</Grid>
-				<Grid
-					item
-				>
-					<FormTextField
-						defaultValue={twitter}
-						label={"Twitter URL"}
-						type={"url"}
-						onChange={(e)=>{setTwitter(e.currentTarget.value)}}
-					/>
-				</Grid>
-				<Grid
-					item
-					container
-					columnSpacing={3}
-					alignItems={"center"}
-				>
-					<Grid
-						item
-						flexGrow={1}
-					>
-						<FormTextField
-							defaultValue={description}
-							label={"Discord URL"}
-							type={"url"}
-							onChange={(e)=>{setDiscord({...discord, url:e.currentTarget.value})}}
-						/>
-					</Grid>
-					<Grid
-						item
-					>
-						<FormGroup>
-							<FormControlLabel control={<Switch defaultChecked onChange={(e)=>{console.info(e.target.checked); setDiscord({...discord, isOpen: e.target.checked})}}/>} label="Public" />
-						</FormGroup>
-					</Grid>
-				</Grid>
-				<Grid
-					item
-					container
-					alignItems={"center"}
-					columnSpacing={3}
-				>
-					<Grid item>
-						<FormTextField
-							label={"Price"}
-							defaultValue={price}
-							type={"number"}
-							step={0.05}
-							onChange={(e) => {setPrice(e.currentTarget.value)}}
-						/>
-					</Grid>
-					<Grid item>
-						<FormTextField
-							label={"Unit"}
-							defaultValue={unit}
-							onChange={(e) => {setUnit(e.currentTarget.value)}}
-						/>
-					</Grid>
-				</Grid>
-				{/*presale section*/}
-				<Grid
-					item
-					container
-					alignItems={"center"}
-					columnSpacing={3}
-				>
-					<Grid item>
-						<FormTextField
-							helperText={"Presale Start"}
-							defaultValue={presale.start}
-							type={"datetime-local"}
-							onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, start:e.currentTarget.value})}}
-						/>
-					</Grid>
-					<Grid item>
-						<FormTextField
-							helperText={"Presale End"}
-							defaultValue={presale.end}
-							type={"datetime-local"}
-							onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, end:e.currentTarget.value})}}
-						/>
-					</Grid>
-				</Grid>
-				<Grid
-					item
-				>
-					<FormTextField
-						defaultValue={contractAddress}
-						label={"Contract Address"}
-						maxRows={5}
-						onChange={(e)=>{setContractAddress(e.currentTarget.value)}}
-					/>
-				</Grid>
-				<Grid
-					item
-				>
-					<FormTextField
-						defaultValue={description}
-						label={"Description"}
-						maxRows={5}
-						onChange={(e)=>{setDescription(e.currentTarget.value)}}
-					/>
-				</Grid>
-				<Grid
-					item
-					container
-					alignItems={"center"}
-					justifyContent={"flex-end"}
-					columnSpacing={3}
-				>
-					<Grid item>
-						<Button
-							variant={"outlined"}
-						>
-							Reset
-						</Button>
-					</Grid>
-					<Grid item>
-						<Button
-							variant={"contained"}
-							disabled={reqOutcome.pending}
-							onClick={addProjectToServer}
-						>
-							Save
-						</Button>
-					</Grid>
+	const updateProjectOnServer = async () => {
+		const loggingTag = `${componentLoggingTag}[updateProjectOnServer]`;
+		try{
+			const payload = {
+				id: id,
+				title,
+				wl_register_url:wlUrl,
+				website_url: website,
+				twitter_url: twitter,
+				discord_url: discord.url,
+				is_discord_open: discord.isOpen,
+				presale_price: price,
+				sale_unit: unit,
+				ts_presale_start: presale.start,
+				ts_presale_end: presale.end,
+				address: contractAddress,
+				description
+			}
+			console.info(`${loggingTag} Payload to be sent to server:`, payload);
+			
+			try{
+				setReqOutcome({...reqOutcome, display: true, pending:true, severity: "info", message: `Saving project info...`});
+				const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/projects/edit`, payload);
+				console.info(`${loggingTag} result:`, result);
+				// await delay();//5 seconds
+				if(result.data.ok){
+					setReqOutcome({...reqOutcome, display: true, pending:false, severity: "success", message: `Success! Edits made for "${title}"`});
+				} else {
+					setReqOutcome({...reqOutcome, display: true, pending:false, severity: "error", message: `Looks like there was a problem saving "${title}".  Please check your internet and try again.`});
+					console.error(`${loggingTag} An error occurred while saving project: "${title}" to the db.  Errors:`, result.data.errors);
+				}
+				
+			} catch(e){
+				setReqOutcome({...reqOutcome, display: true, pending:false, severity: "error", message: `There was a problem editing this project.   Please check your internet connection and try again.`});
+				console.error(`${loggingTag} Unable to make request to edit project`);
+			} finally {
+				await delay();//5 seconds
+				setReqOutcome({...reqOutcome, display: false});
+			}
+		} catch(e){
+			console.error(`${loggingTag} Error:`, e);
+		}
+	}
+	
+	const deleteProjectOnServer = async () => {
+		const loggingTag = `${componentLoggingTag}[deleteProjectOnServer]`;
+		try{
+			const payload = {
+				id
+			}
+			console.info(`${loggingTag} Payload to be sent to server:`, payload);
+			
+			try{
+				setReqOutcome({...reqOutcome, display: true, pending:true, severity: "info", message: `Saving project info...`});
+				const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/projects/delete`, payload);
+				console.info(`${loggingTag} result:`, result);
+				// await delay();//5 seconds
+				if(result.data.ok){
+					setReqOutcome({...reqOutcome, display: true, pending:false, severity: "success", message: `Success! Project "${title}" deleted.`});
+					await delay(500);
+					router.push(`/projects/view`);
+				} else {
+					setReqOutcome({...reqOutcome, display: true, pending:false, severity: "error", message: `Looks like there was a problem deleting "${title}".  Please check your internet and try again.`});
+					console.error(`${loggingTag} An error occurred while saving project: "${title}" to the db.  Errors:`, result.data.errors);
+				}
+				
+			} catch(e){
+				setReqOutcome({...reqOutcome, display: true, pending:false, severity: "error", message: `There was a problem deleting this project.   Please check your internet connection and try again.`});
+				console.error(`${loggingTag} Unable to make request to delete project`);
+			} finally {
+				await delay();//5 seconds
+				setReqOutcome({...reqOutcome, display: false});
+			}
+		} catch(e){
+			console.error(`${loggingTag} Error:`, e);
+		}
+	}
+	
+	const resetProjectForm = async () => {
+		const loggingTag = `${componentLoggingTag}[resetProjectForm]`;
+		try{
+			setTitle("");
+			setDescription("");
+			setWebsite("");
+			setTwitter("");
+			setDiscord({...discord, url: ""});
+			setPrice(0);
+			setPresale({
+				start:0,
+				end: 0
+			});
+			setWLUrl("");
+		} catch(e){
+			console.error(`${loggingTag} Error:`, e);
+		}
+	}
+	
+	const shouldFetchProjectInfo = id.length > 0;
+	
+	const {data, error} = useSWR(shouldFetchProjectInfo ? `/projects/get/${id}` : null, fetchProjectInfo,{revalidateIfStale: false});
+	
+	if(error){
+		return (
+			<Grid item container>
+				<Grid item>
+					<Typography> Error: Unable to load this project.  Click <a onClick={(e)=>{router.reload()}}>here</a> to try again.</Typography>
 				</Grid>
 			</Grid>
-			<Snackbar
-				anchorOrigin={{ vertical:"top", horizontal:"right" }}
-				open={reqOutcome.display}
-				autoHideDuration={6000}
-				onClose={handleAlertClose}
-			>
-				<Alert
-					onClose={handleAlertClose}
-					severity={reqOutcome.severity}
+		)
+	} else if (data || !shouldFetchProjectInfo){
+		// console.info(`${componentLoggingTag} data:`, data);
+		if(typeof data !== "undefined"){
+			const resp = data,
+				project = resp.data.project[0];
+			const {title, description, website_url, twitter_url, discord_url, presale_price, ts_presale_start, ts_presale_end, wl_register_url} = project;
+			
+			useEffect(() => {
+				setTitle(title);
+				setDescription(description);
+				setWebsite(website_url);
+				setTwitter(twitter_url);
+				setDiscord({...discord, url: discord_url});
+				setPrice(presale_price);
+				console.info(`${componentLoggingTag} presale start: ${ts_presale_start} end: ${ts_presale_end}`);
+				const formattedTimes = {
+					start: formatDatetimeForForm(ts_presale_start),
+					end: formatDatetimeForForm(ts_presale_end),
+				}
+				console.info(`${componentLoggingTag} formatted time`, formattedTimes);
+				setPresale(formattedTimes);
+				// console.info(`${componentLoggingTag} presale state:`, presale);
+				setWLUrl(wl_register_url);
+			}, []);
+			
+		}
+		
+		return (
+			<>
+				<Grid
+					container
+					direction={"column"}
+					alignItems={"stretch"}
+					flexGrow={1}
+					rowSpacing={3}
+					sx={{
+						pt:3
+					}}
 				>
-					{reqOutcome.message}
-				</Alert>
-			</Snackbar>
-		</>
-	)
+					<Grid
+						item
+					>
+						<Typography
+							variant={"h4"}
+						>{shouldFetchProjectInfo ? "Edit" : "Add"} Project</Typography>
+					</Grid>
+					<Grid
+						item
+					>
+						<FormTextField
+							value={title}
+							label={"Title"}
+							onChange={(e)=>{console.info(`${componentLoggingTag} title on change triggered!`); setTitle(e.currentTarget.value)}}
+						/>
+					</Grid>
+					<Grid
+						item
+					>
+						<FormTextField
+							value={wlUrl}
+							label={"Whitelist URL"}
+							type={"url"}
+							onChange={(e)=>{setWLUrl(e.currentTarget.value)}}
+						/>
+					</Grid>
+					<Grid
+						item
+					>
+						<FormTextField
+							value={website}
+							label={"Website URL"}
+							type={"url"}
+							onChange={(e)=>{setWebsite(e.currentTarget.value)}}
+						/>
+					</Grid>
+					<Grid
+						item
+					>
+						<FormTextField
+							value={twitter}
+							label={"Twitter URL"}
+							type={"url"}
+							onChange={(e)=>{setTwitter(e.currentTarget.value)}}
+						/>
+					</Grid>
+					<Grid
+						item
+						container
+						columnSpacing={3}
+						alignItems={"center"}
+					>
+						<Grid
+							item
+							flexGrow={1}
+						>
+							<FormTextField
+								value={discord.url}
+								label={"Discord URL"}
+								type={"url"}
+								onChange={(e)=>{setDiscord({...discord, url:e.currentTarget.value})}}
+							/>
+						</Grid>
+						<Grid
+							item
+							sx={{
+								display: "none"
+							}}
+						>
+							<FormGroup>
+								<FormControlLabel control={<Switch defaultChecked onChange={(e)=>{console.info(e.target.checked); setDiscord({...discord, isOpen: e.target.checked})}}/>} label="Public" />
+							</FormGroup>
+						</Grid>
+					</Grid>
+					<Grid
+						item
+						container
+						alignItems={"center"}
+						columnSpacing={3}
+					>
+						<Grid item>
+							<FormTextField
+								label={"Price"}
+								value={price}
+								type={"number"}
+								step={0.05}
+								onChange={(e) => {setPrice(e.currentTarget.value)}}
+							/>
+						</Grid>
+						<Grid item>
+							<FormTextField
+								label={"Unit"}
+								value={unit}
+								onChange={(e) => {setUnit(e.currentTarget.value)}}
+							/>
+						</Grid>
+					</Grid>
+					{/*presale section*/}
+					<Grid
+						item
+						container
+						alignItems={"center"}
+						columnSpacing={3}
+					>
+						<Grid item>
+							<FormTextField
+								helperText={"Presale Start"}
+								value={presale.start}
+								type={"datetime-local"}
+								onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, start:e.currentTarget.value})}}
+							/>
+						</Grid>
+						<Grid item>
+							<FormTextField
+								helperText={"Presale End"}
+								value={presale.end}
+								type={"datetime-local"}
+								onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, end:e.currentTarget.value})}}
+							/>
+						</Grid>
+					</Grid>
+					<Grid
+						item
+					>
+						<FormTextField
+							value={contractAddress}
+							label={"Contract Address"}
+							maxRows={5}
+							onChange={(e)=>{setContractAddress(e.currentTarget.value)}}
+						/>
+					</Grid>
+					<Grid
+						item
+					>
+						<FormTextField
+							value={description}
+							label={"Description"}
+							maxRows={5}
+							onChange={(e)=>{setDescription(e.currentTarget.value)}}
+						/>
+					</Grid>
+					<Grid
+						item
+						container
+						alignItems={"center"}
+						justifyContent={"flex-end"}
+						columnSpacing={3}
+					>
+						<Grid item>
+							<FormActionBtn
+								variant={"outlined"}
+								text={shouldFetchProjectInfo ? "Delete" : "Reset"}
+								onClick={shouldFetchProjectInfo ? deleteProjectOnServer : resetProjectForm}
+							/>
+						</Grid>
+						<Grid item>
+							<FormActionBtn
+								variant={"contained"}
+								disabled={reqOutcome.pending}
+								onClick={shouldFetchProjectInfo ? updateProjectOnServer : addProjectToServer}
+								text={"Save"}
+							/>
+						</Grid>
+					</Grid>
+				</Grid>
+				<Snackbar
+					anchorOrigin={{ vertical:"top", horizontal:"right" }}
+					open={reqOutcome.display}
+					autoHideDuration={6000}
+					onClose={handleAlertClose}
+				>
+					<Alert
+						onClose={handleAlertClose}
+						severity={reqOutcome.severity}
+					>
+						{reqOutcome.message}
+					</Alert>
+				</Snackbar>
+			</>
+		)
+	} else {
+		return(
+			<Grid item container>
+				<Grid item>
+					<Typography> Loading...</Typography>
+				</Grid>
+			</Grid>
+		)
+	}
 }
 
 export default ProjectForm;
