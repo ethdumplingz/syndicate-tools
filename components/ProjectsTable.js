@@ -63,7 +63,7 @@ const render = {
 	},
 	datetime: (params) => {
 		if(typeof params.value === "string"){
-			const formattedDateTime = dayjs(params.value).format("MMMM D, YYYY h:mm A");
+			const formattedDateTime = dayjs(params.value).format("MM/DD/YY h:mm A");
 			return(formattedDateTime)
 		} else {
 			return("N/A");
@@ -124,21 +124,24 @@ const ProjectsTable = (props) => {
 				headerName: "Website",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				renderCell: render.url
+				renderCell: render.url,
+				sortable: false
 			},
 			{
 				field: "twitter_url",
 				headerName: "Twitter",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				renderCell: render.url
+				renderCell: render.url,
+				sortable: false
 			},
 			{
 				field: "discord_url",
 				headerName: "Discord",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				renderCell: render.url
+				renderCell: render.url,
+				sortable: false
 			},
 			// {
 			// 	field: "is_discord_open",
@@ -154,17 +157,18 @@ const ProjectsTable = (props) => {
 				cellClassName: 'center',
 				valueFormatter: render.mintPrice
 			},
-			{
-				field: "public_price",
-				headerName: "Public Price",
-				minWidth: 120,
-				cellClassName: 'center',
-				valueFormatter: render.mintPrice
-			},
+			// {
+			// 	field: "public_price",
+			// 	headerName: "Public Price",
+			// 	minWidth: 120,
+			// 	cellClassName: 'center',
+			// 	valueFormatter: render.mintPrice
+			// },
 			{
 				field: "wl_register_url",
 				headerName: "Raffle Registration URL",
 				renderCell: render.url,
+				sortable: false,
 				flex: 2
 			},
 			{
@@ -193,6 +197,14 @@ const ProjectsTable = (props) => {
 				item
 			>
 				<DataGrid
+					initialState={{
+						sorting:{
+							sortingModel:[{
+								field: "ts_presale_start",
+								sort: "asc"
+							}]
+						}
+					}}
 					columns={columns}
 					rows={projects}
 					autoHeight={true}
