@@ -163,6 +163,7 @@ const ProjectView = (props) => {
 										fontSize: "1.0rem",
 										p: "8px 18px"
 									}}
+									onClick={(e)=>{router.push(`/projects/${id}/edit`)}}
 								>Edit</Button>
 							</Grid>
 						</Grid>
