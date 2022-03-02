@@ -5,6 +5,7 @@ import fetchProjectInfo from "../utils/project";
 import useSWR from "swr";
 import {useRouter} from "next/router";
 import dayjs from "dayjs";
+import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 
 const delay = (time = 5000) => {
 	return new Promise((resolve, reject) => {
@@ -53,6 +54,8 @@ const FormTextField = (props) => {
 
 const ProjectForm = (props) => {
 	const componentLoggingTag = `[ProjectForm]`;
+	
+	const { isAdmin }= useSyndicateAuthenticationContext();
 	
 	const router = useRouter();
 	const {id = ""} = props;
@@ -286,6 +289,7 @@ const ProjectForm = (props) => {
 			
 		}
 		
+		console.info(`${componentLoggingTag} is admin? `, isAdmin);
 		return (
 			<>
 				<Grid
@@ -446,7 +450,12 @@ const ProjectForm = (props) => {
 						justifyContent={"flex-end"}
 						columnSpacing={3}
 					>
-						<Grid item>
+						<Grid
+							item
+							sx={{
+								display: isAdmin ? "block" : "none"
+							}}
+						>
 							<FormActionBtn
 								variant={"outlined"}
 								text={shouldFetchProjectInfo ? "Delete" : "Reset"}
