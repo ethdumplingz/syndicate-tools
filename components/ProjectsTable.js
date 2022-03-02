@@ -1,8 +1,9 @@
-import {Grid, Typography, Box} from "@mui/material";
+import {Grid, Typography, Button} from "@mui/material";
 import axios from "axios";
 import useSWR from "swr";
 import {DataGrid} from "@mui/x-data-grid";
 import dayjs from "dayjs";
+import {useRouter} from "next/router";
 
 const TableWrapper = (props) => {
 	const {children} = props;
@@ -66,6 +67,21 @@ const render = {
 		}
 		const ethPrice = Number(value).toFixed(2);
 		return `${ethPrice}E`;
+	},
+	actions: (params) => {
+		const {value} = params;
+		const router = useRouter();
+		console.info(`[render][actions] id:`, value);
+		return(
+			<Button
+				variant={"contained"}
+				onClick={(e)=>{
+					router.push(`/projects/${value}`);
+				}}
+			>
+				View
+			</Button>
+		)
 	}
 }
 
@@ -156,7 +172,12 @@ const ProjectsTable = (props) => {
 				renderCell: render.datetime,
 				flex: 4
 			},
-			
+			{
+				field: "id",
+				headerName: "Actions",
+				type: "actions",
+				renderCell: render.actions
+			}
 		]
 		return (
 			<Grid

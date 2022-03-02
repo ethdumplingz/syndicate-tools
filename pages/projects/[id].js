@@ -2,17 +2,8 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import axios from "axios";
 import {Typography, Grid, Button} from "@mui/material";
+import fetchProjectInfo from "../../utils/project";
 
-const fetchProjectInfo = async (url) => {
-	const loggingTag = `[fetchTableData]`;
-	try{
-		console.info(`${loggingTag} url: ${url}`);
-		return await axios.get(`${process.env.NEXT_PUBLIC_BASE_URI}${url}`);
-	} catch(e){
-		console.error(`${loggingTag} Error:`, e);
-		throw e;
-	}
-}
 const ProjectViewContainer = (props) => {
 	const {children} = props;
 	return (
