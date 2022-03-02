@@ -59,6 +59,14 @@ const render = {
 			return("N/A");
 		}
 	},
+	mintPrice: (params) => {
+		const {value} = params;
+		if(value === null){
+			value = 0;
+		}
+		const ethPrice = Number(value).toFixed(2);
+		return `${ethPrice}E`;
+	}
 }
 
 const ProjectsTable = (props) => {
@@ -107,31 +115,31 @@ const ProjectsTable = (props) => {
 				cellClassName: 'center',
 				renderCell: render.url
 			},
-			{
-				field: "is_discord_open",
-				headerName: "Public Discord?",
-				type: "boolean",
-				width: 140
-			},
+			// {
+			// 	field: "is_discord_open",
+			// 	headerName: "Public Discord?",
+			// 	type: "boolean",
+			// 	width: 140
+			// },
 			{
 				field: "presale_price",
 				headerName: "Presale Price",
 				type: "number",
 				minWidth: 120,
 				cellClassName: 'center',
-				valueFormatter: (params) => {
-					const ethPrice = Number(params.value).toFixed(2);
-					return `${ethPrice}E`;
-				}
+				valueFormatter: render.mintPrice
 			},
 			{
 				field: "public_price",
 				headerName: "Public Price",
-				minWidth: 120
+				minWidth: 120,
+				cellClassName: 'center',
+				valueFormatter: render.mintPrice
 			},
 			{
 				field: "wl_register_url",
 				headerName: "Raffle Registration URL",
+				renderCell: render.url,
 				flex: 2
 			},
 			{
@@ -139,14 +147,14 @@ const ProjectsTable = (props) => {
 				headerName: "Presale Start",
 				type: "datetime",
 				renderCell: render.datetime,
-				flex: 2
+				flex: 4
 			},
 			{
 				field: "ts_presale_end",
 				headerName: "Presale End",
 				type: "datetime",
 				renderCell: render.datetime,
-				flex: 2
+				flex: 4
 			},
 			
 		]

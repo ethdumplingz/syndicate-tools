@@ -70,7 +70,12 @@ const AddView = (props) => {
 	const addProjectToServer = async () => {
 		const loggingTag = `${componentLoggingTag}[addProjectToServer]`;
 		try{
+			const url = URL.createObjectURL(new Blob()),
+				projectID = url.substring(url.lastIndexOf('/') + 1);//generating random value for the server
+			console.info(`${loggingTag} random value:`, projectID);
+			
 			const payload = {
+				id: projectID,
 				title,
 				wl_register_url:wlUrl,
 				website_url: website,
@@ -88,10 +93,16 @@ const AddView = (props) => {
 			
 			try{
 				setReqOutcome({...reqOutcome, display: true, pending:true, severity: "info", message: `Saving project info...`});
-				// const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/projects/add`, payload);
-				// console.info(`${loggingTag} result:`, result);
-				await delay();//5 seconds
-				setReqOutcome({...reqOutcome, display: true, pending:false, severity: "success", message: `Success! Saved "${title}"`});
+				const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/projects/add`, payload);
+				console.info(`${loggingTag} result:`, result);
+				// await delay();//5 seconds
+				if(result.data.ok){
+					setReqOutcome({...reqOutcome, display: true, pending:false, severity: "success", message: `Success! Saved "${title}"`});
+				} else {
+					setReqOutcome({...reqOutcome, display: true, pending:false, severity: "error", message: `Looks like there was a problem saving "${title}".  Please check your internet and try again.`});
+					console.error(`${loggingTag} An error occurred while saving project: "${title}" to the db.  Errors:`, result.data.errors);
+				}
+				
 			} catch(e){
 				setReqOutcome({...reqOutcome, display: true, pending:false, severity: "error", message: `There was a problem saving this project.   Please check your internet connection and try again.`});
 				console.error(`${loggingTag} Unable to make request to add project`);
