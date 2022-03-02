@@ -23,6 +23,10 @@ const FormActionBtn = (props) => {
 			variant={variant}
 			disabled={disabled}
 			onClick={onClick}
+			sx={{
+				padding: "8px 18px",
+				fontSize: "1rem"
+			}}
 		>
 			{text}
 		</Button>
@@ -297,9 +301,9 @@ const ProjectForm = (props) => {
 					direction={"column"}
 					alignItems={"stretch"}
 					flexGrow={1}
-					rowSpacing={3}
+					rowSpacing={4}
 					sx={{
-						pt:3
+						pt:4
 					}}
 				>
 					<Grid
