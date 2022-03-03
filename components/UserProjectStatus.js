@@ -16,7 +16,7 @@ const fetcher = async (url) => {
 }
 
 
-const statuses = [
+const stages = [
 	{
 		id: "applied",
 		display_str: "Applied"
@@ -51,7 +51,7 @@ const UserProjectStatus = (props) => {
 	const componentLoggingTag = `[UserProjectStatus]`;
 	const {id} = props;
 	const {address} = useSyndicateAuthenticationContext();
-	const [stage, setStage] = useState(statuses[0].id);
+	const [stage, setStage] = useState(stages[0].id);
 	
 	const handleChange = async (e) => {
 		const loggingTag = `${componentLoggingTag}[handleChange]`;
@@ -77,8 +77,9 @@ const UserProjectStatus = (props) => {
 	useEffect(()=>{
 		if(typeof resp === "object" && resp.data.ok){
 			const latestStage = resp.data.stage;
-			console.info(`${componentLoggingTag} latest stage: ${latestStage}`);
-			setStage(latestStage);
+			console.info(`${componentLoggingTag} latest stage from server: ${latestStage}`);
+			
+			setStage(latestStage !== "unknown" ? latestStage : stages[0].id);
 		}
 	}, [resp]);
 	
@@ -93,7 +94,7 @@ const UserProjectStatus = (props) => {
 				onChange={handleChange}
 			>
 				{
-					statuses.map(status => (
+					stages.map(status => (
 						<MenuItem value={status.id} key={status.id}>{status.display_str}</MenuItem>
 					))
 				}
