@@ -70,14 +70,18 @@ const UserProjectStatus = (props) => {
 		
 	}
 	
-	const {data:resp} = useSWR(`/users/:${address}/projects/${id}/stages/latest`);
+	const {data:resp} = useSWR(`/users/${address}/projects/${id}/stages/latest`, fetcher, {
+		revalidateIfStale: true
+	});
+	
 	useEffect(()=>{
 		if(typeof resp === "object" && resp.data.ok){
 			const latestStage = resp.data.stage;
+			console.info(`${componentLoggingTag} latest stage: ${latestStage}`);
 			setStage(latestStage);
 		}
-		
-	}, []);
+	}, [resp]);
+	
 	return (
 		<FormControl fullWidth>
 			<InputLabel id="demo-simple-select-label">Status</InputLabel>
