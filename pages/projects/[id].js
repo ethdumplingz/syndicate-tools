@@ -4,14 +4,21 @@ import axios from "axios";
 import {Typography, Grid, Button} from "@mui/material";
 import fetchProjectInfo from "../../utils/project";
 import dayjs from "dayjs";
+import ProjectActions from "../../components/ProjectActions";
 
 const ProjectViewContainer = (props) => {
 	const {children} = props;
 	return (
 		<Grid
 			container
+			rowSpacing={5}
 			sx={{
 				p: 5,
+				minHeight: "500px",
+				maxWidth:{
+					xs: "100vw",
+					md: "800px"
+				},
 				backgroundImage:`url(${require("../../images/roadmap-bg.svg")})`,
 				backgroundRepeat: "no-repeat",
 				backgroundPosition: "center center",
@@ -80,14 +87,14 @@ const ProjectView = (props) => {
 				<Grid
 					item
 					container
+				>
+					<ProjectActions id={id}/>
+				</Grid>
+				<Grid
+					item
+					container
 					direction={"column"}
 					rowSpacing={3}
-					sx={{
-						maxWidth:{
-							xs: "100vw",
-							md: "800px"
-						}
-					}}
 				>
 					<ProjectInfoRow
 						label={"Title"}

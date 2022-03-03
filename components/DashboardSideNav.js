@@ -81,7 +81,7 @@ const DashboardSideNav = (props) => {
 			<Divider/>
 			<List>
 				{items.map((item, index) => (
-					<>
+					<React.Fragment key={index}>
 						<ListItem
 							button
 							key={index}
@@ -92,7 +92,7 @@ const DashboardSideNav = (props) => {
 								const prevItemExpanded = sectionExpanded[item.id],
 									newSectionExpandedState = {...sectionExpanded, [item.id]: !prevItemExpanded}
 								setSectionExpanded(newSectionExpandedState);
-							} : false}
+							} : ()=>{}}
 						>
 							<ListItemIcon
 								sx={{
@@ -105,52 +105,42 @@ const DashboardSideNav = (props) => {
 							<ListItemText primary={item.str} />
 							{item.expandable && sectionExpanded[item.id] ? <ExpandLess /> : item.expandable ? <ExpandMore /> : ''}
 						</ListItem>
-						{typeof item.children === "object"  && item.children.length > 0 ? (
-							<Collapse in={sectionExpanded[item.id]}>
-								<List>
-									{
-										item.children.map((child, index) => (
-											<ListItem
-												key={index}
-												button
-												sx={{
-													padding: "14px 24px",
-													pl: 6
-												}}
-												onClick={(e)=>{router.push(child.path)}}
-											>
-												<ListItemIcon
+						{
+							typeof item.children === "object"  && item.children.length > 0 ? (
+								<Collapse in={sectionExpanded[item.id]}>
+									<List>
+										{
+											item.children.map((child, index) => (
+												<ListItem
+													key={index}
+													button
 													sx={{
-														color: "black",
-														minWidth: "46px"
+														padding: "14px 24px",
+														pl: 6
 													}}
+													onClick={(e)=>{router.push(child.path)}}
 												>
-													{child.icon}
-												</ListItemIcon>
-												<ListItemText primary={child.str}/>
-											</ListItem>
-										))
-									}
-								</List>
-							</Collapse>
-						) : (
-							<></>
-						)
+													<ListItemIcon
+														sx={{
+															color: "black",
+															minWidth: "46px"
+														}}
+													>
+														{child.icon}
+													</ListItemIcon>
+													<ListItemText primary={child.str}/>
+												</ListItem>
+											))
+										}
+									</List>
+								</Collapse>
+							) : (
+								<></>
+							)
 						}
-					</>
+					</React.Fragment>
 				))}
 			</List>
-			{/*<Divider />*/}
-			{/*<List>*/}
-			{/*	{['All mail', 'Trash', 'Spam'].map((text, index) => (*/}
-			{/*		<ListItem button key={text}>*/}
-			{/*			<ListItemIcon>*/}
-			{/*				{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
-			{/*			</ListItemIcon>*/}
-			{/*			<ListItemText primary={text} />*/}
-			{/*		</ListItem>*/}
-			{/*	))}*/}
-			{/*</List>*/}
 		</Box>
 	);
 	

@@ -6,7 +6,7 @@ const SignInBtn = (props) => {
 	const componentLoggingTag = `[SignInBtn]`;
 	
 	const theme = useTheme();
-	const { authenticate } = useMoralis();
+	const { authenticate , isAuthenticating} = useMoralis();
 	
 	const signUserIn = (e) => {
 		const loggingTag = `${componentLoggingTag}[signUserIn]`;
@@ -25,6 +25,7 @@ const SignInBtn = (props) => {
 	return (
 		<Button
 			variant={"contained"}
+			disabled={isAuthenticating}
 			sx={{
 				fontSize: {
 					xs: "1.1rem",

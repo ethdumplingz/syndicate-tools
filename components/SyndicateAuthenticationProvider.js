@@ -50,6 +50,8 @@ export const SyndicateAuthenticationProvider = (props) => {
 			
 			if(balances.total > 0){
 				setAgent(true);
+				console.info(`${loggingTag} account: ${user.attributes.ethAddress} user`, user);
+				setAddress(user.attributes.ethAddress);
 				//checking is user is admin
 				const userWalletAddress = balances.result[0].owner_of;
 				console.info(`${loggingTag} wallet address:`, userWalletAddress);
@@ -64,6 +66,7 @@ export const SyndicateAuthenticationProvider = (props) => {
 	
 	const authContext = {
 		isAgent,
+		address,
 		isAdmin
 	};
 	return(
