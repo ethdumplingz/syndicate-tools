@@ -62,7 +62,7 @@ const FollowProjectBtn = (props) => {
 	}
 	
 	return(
-		<Tooltip title={isWatching ? "Unfollow" : "Follow"}>
+		<Tooltip title={isWatching ? "Stop Tracking" : "Track this Project"}>
 			<IconButton
 				onClick={updateProjectFollowStatus}
 			>
