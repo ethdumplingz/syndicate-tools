@@ -26,12 +26,12 @@ const FollowProjectBtn = (props) => {
 	
 	const {data:resp, error} = useSWR(`/users/${address}/projects/${projectID}/following`, fetcher, {revalidateIfStale: false});
 	
-	console.info(`${componentLoggingTag} watching:`, isWatching);
+	// console.info(`${componentLoggingTag} watching:`, isWatching);
 	
 	useEffect(()=>{
 		console.info(`${componentLoggingTag}`, resp)
 		if(typeof resp === "object" && resp.data.ok){
-			console.info(`${componentLoggingTag} is following?`, resp.data.is_following);
+			// console.info(`${componentLoggingTag} is following?`, resp.data.is_following);
 			setWatching(resp.data.is_following);
 			if(typeof onClick === "function"){
 				onClick(resp.data.is_following);

@@ -111,7 +111,7 @@ const ActiveProjectsTable = (props) => {
 				headerName: "Website",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				renderCell: render.url,
+				renderCell: render.website,
 				sortable: false
 			},
 			{

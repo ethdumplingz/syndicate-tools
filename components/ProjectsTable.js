@@ -96,14 +96,16 @@ const ProjectsTable = (props) => {
 				headerName: "Website",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				renderCell: render.url,
+				renderCell: render.website,
+				width: 80,
 				sortable: false
 			},
 			{
 				field: "wl_register_url",
-				headerName: "Raffle Registration URL",
-				renderCell: render.url,
+				headerName: "Raffle",
+				renderCell: render.raffle,
 				cellClassName: 'center',
+				width: 80,
 				sortable: false,
 			},
 			{
@@ -111,7 +113,8 @@ const ProjectsTable = (props) => {
 				headerName: "Twitter",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				renderCell: render.url,
+				renderCell: render.twitter,
+				width: 80,
 				sortable: false
 			},
 			{
@@ -119,7 +122,8 @@ const ProjectsTable = (props) => {
 				headerName: "Discord",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				renderCell: render.url,
+				renderCell: render.discord,
+				width: 80,
 				sortable: false
 			},
 			{

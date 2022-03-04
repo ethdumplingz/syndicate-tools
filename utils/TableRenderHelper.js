@@ -1,9 +1,15 @@
-import {Box, IconButton, Typography, Link, Grid} from "@mui/material";
+import {Box, IconButton, Typography, Link, Grid, Tooltip} from "@mui/material";
 import dayjs from "dayjs";
 import {useRouter} from "next/router";
 import {project} from "./strings";
+import WebsiteIcon from "@mui/icons-material/Public";
+import RaffleIcon from "@mui/icons-material/ConfirmationNumber";
+import NotAvailableIcon from "@mui/icons-material/NotInterested";
 import LaunchIcon from "@mui/icons-material/Launch";
 import FollowProjectBtn from "../components/FollowProjectBtn";
+import {Twitter} from "@mui/icons-material";
+import TwitterIconBtn from "../components/TwitterIconBtn";
+import DiscordIconBtn from "../components/DiscordIconBtn";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -20,6 +26,14 @@ const TableTextCell = (props) => {
 		>
 			{children}
 		</Typography>
+	)
+}
+
+const NotAvailableIndicator = (props) => {
+	return(
+		<Tooltip title={"Not Available"}>
+			<NotAvailableIcon/>
+		</Tooltip>
 	)
 }
 
@@ -51,6 +65,66 @@ const render = {
 			)
 		}
 	},
+	website: (params) => {
+		const loggingTag = `${baseLoggingTag}[website]`;
+		// console.info(`${loggingTag}`, params);
+		if(typeof params.value === "string" && params.value.length > 0){
+			return(
+				<a href={params.value} target={"_blank"}>
+					<IconButton>
+						<WebsiteIcon/>
+					</IconButton>
+				</a>
+				
+			)
+		} else {
+			return(<NotAvailableIcon/>)
+		}
+	},
+	raffle: (params) => {
+		const loggingTag = `${baseLoggingTag}[raffle]`;
+		// console.info(`${loggingTag}`, params);
+		if(typeof params.value === "string" && params.value.length > 0){
+			return(
+				<a href={params.value} target={"_blank"}>
+					<IconButton>
+						<RaffleIcon/>
+					</IconButton>
+				</a>
+			
+			)
+		} else {
+			return(<NotAvailableIndicator/>)
+		}
+	},
+	twitter: (params) => {
+		const loggingTag = `${baseLoggingTag}[twitter]`;
+		// console.info(`${loggingTag}`, params);
+		if(typeof params.value === "string" && params.value.length > 0){
+			return(
+				<a href={params.value} target={"_blank"}>
+					<TwitterIconBtn/>
+				</a>
+			
+			)
+		} else {
+			return(<NotAvailableIndicator/>)
+		}
+	},
+	discord: (params) => {
+		const loggingTag = `${baseLoggingTag}[twitter]`;
+		// console.info(`${loggingTag}`, params);
+		if(typeof params.value === "string" && params.value.length > 0){
+			return(
+				<a href={params.value} target={"_blank"}>
+					<DiscordIconBtn/>
+				</a>
+			
+			)
+		} else {
+			return(<NotAvailableIndicator/>)
+		}
+	},
 	url: (params) => {
 		const loggingTag = `[renderURLCell]`;
 		// console.info(`${loggingTag}`, params);
@@ -61,7 +135,7 @@ const render = {
 				</TableTextCell>
 			)
 		} else {
-			return("N/A")
+			return(<NotAvailableIndicator/>)
 		}
 	},
 	datetime: (params) => {
@@ -95,13 +169,15 @@ const render = {
 					columnSpacing={1}
 				>
 					<Grid item>
-						<IconButton
-							onClick={(e)=>{
-								router.push(`/projects/${value}`);
-							}}
-						>
-							<LaunchIcon/>
-						</IconButton>
+						<Tooltip title={"View Project"}>
+							<IconButton
+								onClick={(e)=>{
+									router.push(`/projects/${value}`);
+								}}
+							>
+								<LaunchIcon/>
+							</IconButton>
+						</Tooltip>
 					</Grid>
 					<Grid item>
 						<FollowProjectBtn

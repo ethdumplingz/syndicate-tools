@@ -125,7 +125,7 @@ const DashboardSideNav = (props) => {
 													button
 													sx={{
 														padding: "14px 24px",
-														pl: 6
+														
 													}}
 													onClick={(e)=>{router.push(child.path)}}
 												>
@@ -155,7 +155,7 @@ const DashboardSideNav = (props) => {
 	
 	return (
 		<SwipeableDrawer
-			variant={"persistent"}
+			variant={"permanent"}
 			open={isOpen}
 			elevation={2}
 			hideBackdrop={true}
