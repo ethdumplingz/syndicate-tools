@@ -9,7 +9,7 @@ import SearchIcon from "@mui/icons-material/Search"
 import AddIcon from "@mui/icons-material/Add";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-
+import ActiveIcon from "@mui/icons-material/DirectionsRun";
 import {useRouter} from "next/router";
 
 const items = [
@@ -24,16 +24,22 @@ const items = [
 		icon: <CalenderIcon />
 	},
 	{
-		id: "database",
-		str: "Database",
+		id: "projects",
+		str: "Projects",
 		icon: <TableIcon />,
 		expandable: true,
 		children : [
 			{
-				id: "projects-view",
-				str: "View",
+				id: "all-projects",
+				str: "View All",
 				icon: <SearchIcon />,
 				path: "/projects/view"
+			},
+			{
+				id: "active-projects",
+				str: "Active",
+				icon: <ActiveIcon />,
+				path: "/projects/active"
 			},
 			{
 				id: "projects-add",
@@ -50,7 +56,7 @@ const DashboardSideNav = (props) => {
 	const router = useRouter();
 	const [isOpen, setOpen] = useState(true);
 	const [sectionExpanded, setSectionExpanded] = useState({
-		"database" : true
+		"projects" : true
 	});
 	
 	const toggleDrawer = (open = false) => (event) => {
