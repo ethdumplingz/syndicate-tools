@@ -103,7 +103,7 @@ const ActiveProjectsTable = (props) => {
 				field: "ts_presale_end",
 				headerName: "Presale End",
 				type: "datetime",
-				minWidth: 140,
+				minWidth: 160,
 				renderCell: render.datetime,
 			},
 			{
@@ -111,6 +111,7 @@ const ActiveProjectsTable = (props) => {
 				headerName: "Website",
 				headerClassName: 'center',
 				cellClassName: 'center',
+				width: 80,
 				renderCell: render.website,
 				sortable: false
 			},
@@ -119,7 +120,8 @@ const ActiveProjectsTable = (props) => {
 				headerName: "Twitter",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				renderCell: render.url,
+				width: 80,
+				renderCell: render.twitter,
 				sortable: false
 			},
 			{
@@ -127,7 +129,8 @@ const ActiveProjectsTable = (props) => {
 				headerName: "Discord",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				renderCell: render.url,
+				width: 80,
+				renderCell: render.discord,
 				sortable: false
 			},
 			// {
@@ -145,8 +148,10 @@ const ActiveProjectsTable = (props) => {
 			// },
 			{
 				field: "wl_register_url",
-				headerName: "Raffle Registration URL",
-				renderCell: render.url,
+				headerName: "Raffle",
+				renderCell: render.raffle,
+				width: 80,
+				cellClassName: "center",
 				sortable: false,
 			},
 			{
