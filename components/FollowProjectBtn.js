@@ -1,5 +1,6 @@
 import {IconButton, Tooltip} from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import TrackIcon from "@mui/icons-material/TrackChanges";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
@@ -65,7 +66,7 @@ const FollowProjectBtn = (props) => {
 			<IconButton
 				onClick={updateProjectFollowStatus}
 			>
-				<VisibilityIcon
+				<TrackIcon
 					sx={{
 						color: isWatching ? "black" : "inherit"
 					}}
