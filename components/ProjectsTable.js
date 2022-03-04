@@ -4,6 +4,8 @@ import useSWR from "swr";
 import {DataGrid} from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import {useRouter} from "next/router";
+import {render} from "../utils/TableRenderHelper";
+
 
 const TableWrapper = (props) => {
 	const {children} = props;
@@ -25,72 +27,6 @@ const fetchTableData = async (url) => {
 	} catch(e){
 		console.error(`${loggingTag} Error:`, e);
 		throw e;
-	}
-}
-
-const renderURLCell = (params) => {
-	const loggingTag = `[renderURLCell]`;
-	// console.info(`${loggingTag}`, params);
-	if(typeof params.value === "string" && params.value.length > 0){
-		return(
-			<a href={params.value} target={"_blank"}>Open</a>
-		)
-	} else {
-		return("N/A")
-	}
-}
-
-const render = {
-	url: (params) => {
-		const loggingTag = `[renderURLCell]`;
-		// console.info(`${loggingTag}`, params);
-		if(typeof params.value === "string" && params.value.length > 0){
-			return(
-				<Typography
-					sx={{
-						overflow: "hidden",
-						textOverflow: "ellipsis",
-						textAlign: "left",
-						fontSize: "0.8rem"
-					}}
-				>
-					<a href={params.value} target={"_blank"}>{params.value}</a>
-				</Typography>
-			)
-		} else {
-			return("N/A")
-		}
-	},
-	datetime: (params) => {
-		if(typeof params.value === "string"){
-			const formattedDateTime = dayjs(params.value).format("MM/DD/YY h:mm A");
-			return(formattedDateTime)
-		} else {
-			return("N/A");
-		}
-	},
-	mintPrice: (params) => {
-		let {value} = params;
-		if(value === null){
-			value = 0;
-		}
-		const ethPrice = Number(value).toFixed(2);
-		return `${ethPrice}E`;
-	},
-	actions: (params) => {
-		const {value} = params;
-		const router = useRouter();
-		// console.info(`[render][actions] id:`, value);
-		return(
-			<Button
-				variant={"contained"}
-				onClick={(e)=>{
-					router.push(`/projects/${value}`);
-				}}
-			>
-				View
-			</Button>
-		)
 	}
 }
 
@@ -117,31 +53,8 @@ const ProjectsTable = (props) => {
 			{
 				field: "title",
 				headerName: "Title",
-				flex: 0
-			},
-			{
-				field: "website_url",
-				headerName: "Website",
-				headerClassName: 'center',
-				cellClassName: 'center',
-				renderCell: render.url,
-				sortable: false
-			},
-			{
-				field: "twitter_url",
-				headerName: "Twitter",
-				headerClassName: 'center',
-				cellClassName: 'center',
-				renderCell: render.url,
-				sortable: false
-			},
-			{
-				field: "discord_url",
-				headerName: "Discord",
-				headerClassName: 'center',
-				cellClassName: 'center',
-				renderCell: render.url,
-				sortable: false
+				renderCell: render.title,
+				minWidth: 150
 			},
 			// {
 			// 	field: "is_discord_open",
@@ -165,25 +78,49 @@ const ProjectsTable = (props) => {
 			// 	valueFormatter: render.mintPrice
 			// },
 			{
-				field: "wl_register_url",
-				headerName: "Raffle Registration URL",
-				renderCell: render.url,
-				sortable: false,
-				flex: 2
-			},
-			{
 				field: "ts_presale_start",
 				headerName: "Presale Start",
 				type: "datetime",
 				renderCell: render.datetime,
-				flex: 4
+				minWidth: 160,
 			},
 			{
 				field: "ts_presale_end",
 				headerName: "Presale End",
 				type: "datetime",
 				renderCell: render.datetime,
-				flex: 4
+				minWidth: 160,
+			},
+			{
+				field: "website_url",
+				headerName: "Website",
+				headerClassName: 'center',
+				cellClassName: 'center',
+				renderCell: render.url,
+				sortable: false
+			},
+			{
+				field: "wl_register_url",
+				headerName: "Raffle Registration URL",
+				renderCell: render.url,
+				cellClassName: 'center',
+				sortable: false,
+			},
+			{
+				field: "twitter_url",
+				headerName: "Twitter",
+				headerClassName: 'center',
+				cellClassName: 'center',
+				renderCell: render.url,
+				sortable: false
+			},
+			{
+				field: "discord_url",
+				headerName: "Discord",
+				headerClassName: 'center',
+				cellClassName: 'center',
+				renderCell: render.url,
+				sortable: false
 			},
 			{
 				field: "id",
@@ -199,6 +136,7 @@ const ProjectsTable = (props) => {
 				<DataGrid
 					columns={columns}
 					rows={projects}
+					density={"comfortable"}
 					autoHeight={true}
 					sx={{
 						'& .center':{

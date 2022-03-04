@@ -14,16 +14,6 @@ import {useRouter} from "next/router";
 
 const items = [
 	{
-		id: "profit-loss",
-		str: "Profit/Loss",
-		icon: <CalculateIcon />
-	},
-	{
-		id: "calendar",
-		str: "Calendar",
-		icon: <CalenderIcon />
-	},
-	{
 		id: "projects",
 		str: "Projects",
 		icon: <TableIcon />,
@@ -48,7 +38,19 @@ const items = [
 				path: "/projects/add"
 			},
 		]
-	}
+	},
+	{
+		id: "profit-loss",
+		str: "Profit/Loss",
+		disabled:true,
+		icon: <CalculateIcon />
+	},
+	{
+		id: "calendar",
+		str: "Calendar",
+		disabled:true,
+		icon: <CalenderIcon />
+	},
 ]
 
 const DashboardSideNav = (props) => {
@@ -91,6 +93,7 @@ const DashboardSideNav = (props) => {
 						<ListItem
 							button
 							key={index}
+							disabled={item.disabled}
 							sx={{
 								padding: "14px 24px"
 							}}

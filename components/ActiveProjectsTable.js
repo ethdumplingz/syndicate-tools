@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import {useRouter} from "next/router";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 import {project} from "../utils/strings";
+import {render} from "../utils/TableRenderHelper";
 
 const TableWrapper = (props) => {
 	const {children} = props;
@@ -19,21 +20,6 @@ const TableWrapper = (props) => {
 	)
 }
 
-const TableTextCell = (props) => {
-	const {children} = props;
-	return(
-		<Typography
-			sx={{
-				overflow: "hidden",
-				textOverflow: "ellipsis",
-				textAlign: "left",
-				fontSize: "0.8rem"
-			}}
-		>
-			{children}
-		</Typography>
-	)
-}
 
 const fetchTableData = async (url) => {
 	const loggingTag = `[fetchTableData]`;
@@ -46,96 +32,14 @@ const fetchTableData = async (url) => {
 	}
 }
 
-const renderURLCell = (params) => {
-	const loggingTag = `[renderURLCell]`;
-	// console.info(`${loggingTag}`, params);
-	if(typeof params.value === "string" && params.value.length > 0){
-		return(
-			<a href={params.value} target={"_blank"}>Open</a>
-		)
-	} else {
-		return("N/A")
-	}
-}
-
-const render = {
-	stage: (params) => {
-		const loggingTag = `[renderStage]`;
-		if(typeof params.value === "string" && params.value.length > 0){
-			const stageDisplayStr = (id) => {
-				const item = stages.find(stage => stage.id === params.value);
-				console.info(`${loggingTag} ${params.value} item:`, item);
-				return item.display_str;
-			}
-			
-			return (
-				<TableTextCell>
-					{stageDisplayStr(params.value)}
-				</TableTextCell>
-			)
-		}
-	},
-	url: (params) => {
-		const loggingTag = `[renderURLCell]`;
-		// console.info(`${loggingTag}`, params);
-		if(typeof params.value === "string" && params.value.length > 0){
-			return(
-				<TableTextCell>
-					<a href={params.value} target={"_blank"}>{params.value}</a>
-				</TableTextCell>
-			)
-		} else {
-			return("N/A")
-		}
-	},
-	datetime: (params) => {
-		if(typeof params.value === "string"){
-			const formattedDateTime = dayjs(params.value).format("MM/DD/YY h:mm A");
-			return(formattedDateTime)
-		} else {
-			return("N/A");
-		}
-	},
-	mintPrice: (params) => {
-		let {value} = params;
-		if(value === null){
-			value = 0;
-		}
-		const ethPrice = Number(value).toFixed(2);
-		return `${ethPrice}E`;
-	},
-	actions: (params) => {
-		const {value} = params;
-		const router = useRouter();
-		// console.info(`[render][actions] id:`, value);
-		return(
-			<Button
-				variant={"contained"}
-				onClick={(e)=>{
-					router.push(`/projects/${value}`);
-				}}
-			>
-				View
-			</Button>
-		)
-	},
-	general: (params) => {
-		const content = typeof params.value === "number" ? params.value : 0;
-		
-		return (
-			<span>{content}</span>
-		)
-	}
-}
-
-const { stages } = project;
-
 const ActiveProjectsTable = (props) => {
 	const componentLoggingTag = `[ActiveProjectsTable]`;
 	
 	const {address} = useSyndicateAuthenticationContext();
 	
 	const {data:resp, error, isValidating} = useSWR(`/users/${address}/projects/active`, fetchTableData);
+	
+	console.info(`${componentLoggingTag} projects`, render);
 	
 	if(error){
 		console.error(`${componentLoggingTag} error:`, error);
@@ -161,7 +65,8 @@ const ActiveProjectsTable = (props) => {
 			{
 				field: "title",
 				headerName: "Project",
-				flex: 0
+				flex: 0,
+				renderCell: render.title
 			},
 			{
 				field: "presale_price",
@@ -258,6 +163,7 @@ const ActiveProjectsTable = (props) => {
 				<DataGrid
 					columns={columns}
 					rows={projects}
+					density={"comfortable"}
 					autoHeight={true}
 					sx={{
 						'& .center':{
