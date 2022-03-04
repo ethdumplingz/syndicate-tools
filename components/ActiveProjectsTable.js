@@ -153,6 +153,7 @@ const ActiveProjectsTable = (props) => {
 				field: "id",
 				headerName: "Actions",
 				type: "actions",
+				minWidth: 120,
 				renderCell: render.actions
 			}
 		]

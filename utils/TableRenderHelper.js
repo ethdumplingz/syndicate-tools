@@ -1,7 +1,9 @@
-import {Button, Typography, Link} from "@mui/material";
+import {Box, IconButton, Typography, Link, Grid} from "@mui/material";
 import dayjs from "dayjs";
 import {useRouter} from "next/router";
 import {project} from "./strings";
+import LaunchIcon from "@mui/icons-material/Launch";
+import FollowProjectBtn from "../components/FollowProjectBtn";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -24,7 +26,7 @@ const TableTextCell = (props) => {
 const render = {
 	title: (params) => {
 		const loggingTag = `${baseLoggingTag}[title]`;
-		console.info(`${loggingTag} params`, params);
+		// console.info(`${loggingTag} params`, params);
 		return(
 			<TableTextCell>
 				<Link href={`/projects/${params.row.id}`}>
@@ -83,14 +85,32 @@ const render = {
 		const router = useRouter();
 		// console.info(`[render][actions] id:`, value);
 		return(
-			<Button
-				variant={"contained"}
-				onClick={(e)=>{
-					router.push(`/projects/${value}`);
+			<Box
+				sx={{
+					display: "flex"
 				}}
 			>
-				View
-			</Button>
+				<Grid
+					container
+					columnSpacing={1}
+				>
+					<Grid item>
+						<IconButton
+							onClick={(e)=>{
+								router.push(`/projects/${value}`);
+							}}
+						>
+							<LaunchIcon/>
+						</IconButton>
+					</Grid>
+					<Grid item>
+						<FollowProjectBtn
+							id={value}
+						/>
+					</Grid>
+				</Grid>
+			</Box>
+			
 		)
 	},
 	general: (params) => {
