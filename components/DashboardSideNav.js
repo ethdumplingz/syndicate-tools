@@ -116,7 +116,12 @@ const DashboardSideNav = (props) => {
 						</ListItem>
 						{
 							typeof item.children === "object"  && item.children.length > 0 ? (
-								<Collapse in={sectionExpanded[item.id]}>
+								<Collapse
+									in={sectionExpanded[item.id]}
+									sx={{
+										backgroundColor: `rgba(0,0,0,0.04)`
+									}}
+								>
 									<List>
 										{
 											item.children.map((child, index) => (
