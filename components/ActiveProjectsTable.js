@@ -65,7 +65,7 @@ const ActiveProjectsTable = (props) => {
 			{
 				field: "title",
 				headerName: "Project",
-				flex: 0,
+				minWidth: 170,
 				renderCell: render.title
 			},
 			{
@@ -82,6 +82,7 @@ const ActiveProjectsTable = (props) => {
 				type: "number",
 				minWidth: 60,
 				renderCell: render.general,
+				headerAlign: "center",
 				cellClassName: 'center',
 			},
 			{
@@ -90,20 +91,29 @@ const ActiveProjectsTable = (props) => {
 				type: "number",
 				minWidth: 60,
 				renderCell: render.general,
+				headerAlign: "center",
 				cellClassName: 'center',
 			},
+			// {
+			// 	field: "ts_presale_start",
+			// 	headerName: "Presale Start",
+			// 	type: "datetime",
+			// 	minWidth: 300,
+			// 	renderCell: render.datetime,
+			// },
 			{
 				field: "ts_presale_start",
-				headerName: "Presale Start",
+				headerName: "Presale Starts In...",
 				type: "datetime",
-				minWidth: 140,
-				renderCell: render.datetime,
+				minWidth: 180,
+				renderCell: render.countdown,
 			},
 			{
 				field: "max_supply",
 				headerName: "Supply",
 				type: "number",
 				renderCell: render.general,
+				headerAlign: "center",
 				cellClassName: "center",
 				minWidth: 80,
 			},

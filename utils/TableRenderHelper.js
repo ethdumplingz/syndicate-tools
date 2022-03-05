@@ -12,6 +12,7 @@ import WebsiteIconBtn from "../components/WebsiteIconBtn";
 import TwitterIconBtn from "../components/TwitterIconBtn";
 import DiscordIconBtn from "../components/DiscordIconBtn";
 import RaffleIconBtn from "../components/RaffleIconBtn";
+import CountdownTimer from "../components/CountdownTimer";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -185,6 +186,11 @@ const render = {
 			return(formattedDateTime)
 		} else {
 			return("N/A");
+		}
+	},
+	countdown: (params) => {
+		if(typeof params.value === "string"){
+			return(<CountdownTimer end={dayjs(params.value)}/>)
 		}
 	},
 	mintPrice: (params) => {
