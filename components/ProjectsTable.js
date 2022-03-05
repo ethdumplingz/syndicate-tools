@@ -101,7 +101,7 @@ const ProjectsTable = (props) => {
 			// },
 			{
 				field: "website_url",
-				headerName: "URLs",
+				headerName: "Links",
 				headerClassName: 'center',
 				cellClassName: 'center',
 				renderCell: render.urls,
