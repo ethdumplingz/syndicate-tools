@@ -1,5 +1,9 @@
 const projectStages = [
 	{
+		id: "following",
+		display_str: "Following"
+	},
+	{
 		id: "applied",
 		display_str: "Applied"
 	},

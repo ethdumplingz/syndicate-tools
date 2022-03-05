@@ -105,6 +105,7 @@ const ActiveProjectsTable = (props) => {
 				field: "ts_presale_start",
 				headerName: "Presale Starts In...",
 				type: "datetime",
+				cellClassName: "center",
 				minWidth: 180,
 				renderCell: render.countdown,
 			},

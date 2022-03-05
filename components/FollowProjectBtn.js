@@ -24,7 +24,10 @@ const FollowProjectBtn = (props) => {
 	const {onClick, id:projectID} = props;
 	const [isWatching, setWatching] = useState(false);
 	
-	const {data:resp, error} = useSWR(`/users/${address}/projects/${projectID}/following`, fetcher, {revalidateIfStale: false});
+	const {data:resp, error} = useSWR(`/users/${address}/projects/${projectID}/following`, fetcher, {
+		revalidateIfStale: false,
+		revalidateOnMount: false
+	});
 	
 	// console.info(`${componentLoggingTag} watching:`, isWatching);
 	
@@ -68,6 +71,7 @@ const FollowProjectBtn = (props) => {
 		try{
 			// await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/add`, reqBody);
 			await Promise.all([updateStage(), updateStatus()]);
+			console.info(`${loggingTag} new favorite status:`, isWatching);
 		} catch(e){
 			setWatching(!isWatching);//reverting back
 			if(typeof onClick === "function"){
