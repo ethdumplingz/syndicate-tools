@@ -38,7 +38,6 @@ const UserProjectStatus = (props) => {
 		} catch(e){
 			console.error(`${loggingTag} error:`, e);
 		}
-		
 	}
 	
 	const {data:resp} = useSWR(`/users/${address}/projects/${id}/stages/latest`, fetcher, {

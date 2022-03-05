@@ -39,6 +39,8 @@ const FollowProjectBtn = (props) => {
 		}
 	}, [resp]);
 	
+	
+	
 	const updateProjectFollowStatus = async (e) => {
 		const loggingTag = `${componentLoggingTag}[updateProjectFollowStatus]`;
 		setWatching(!isWatching);
@@ -50,8 +52,22 @@ const FollowProjectBtn = (props) => {
 			project_id: projectID,
 			action: isWatching ? "unfollow" : "follow"
 		}
+		
+		const updateStatus = () => {
+			return axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/add`, reqBody);
+		}
+		
+		const updateStage = () => {
+			const body = {
+				user: address,
+				project_id: projectID,
+				stage: "following"
+			}
+			return axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/stages/add`, body);
+		}
 		try{
-			await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/add`, reqBody);
+			// await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/add`, reqBody);
+			await Promise.all([updateStage(), updateStatus()]);
 		} catch(e){
 			setWatching(!isWatching);//reverting back
 			if(typeof onClick === "function"){

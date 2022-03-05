@@ -41,7 +41,11 @@ const UnitWrapper = ({children}) => {
 		</Grid>
 	)
 }
-
+const timeFromNow = (end) => {
+	const start = dayjs(),
+		diff = end.diff(start);
+	return diff;
+}
 const CountdownTimer = (props) => {
 	const componentLoggingTag = `[CountdownTimer]`;
 	const {end} = props;
@@ -57,8 +61,7 @@ const CountdownTimer = (props) => {
 	
 	useEffect(() => {
 		const interval = setInterval(() => {
-			const start = dayjs(),
-				diff = tsMint.diff(start),
+			const diff = timeFromNow(tsMint),
 				duration = dayjs.duration(diff);
 			// console.info(`[duration][seconds] return value ${duration.seconds()}`);
 			setTimeTil({
@@ -72,7 +75,7 @@ const CountdownTimer = (props) => {
 		return () => clearInterval(interval);
 	}, []);
 	
-	if(timeTil.seconds > -1){
+	if(timeFromNow(tsMint) > 0){
 		return (
 			<Grid
 				container
