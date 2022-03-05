@@ -130,7 +130,6 @@ const DashboardSideNav = (props) => {
 													button
 													sx={{
 														padding: "14px 24px",
-														
 													}}
 													onClick={(e)=>{router.push(child.path)}}
 												>

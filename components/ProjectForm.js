@@ -398,7 +398,7 @@ const ProjectForm = (props) => {
 						item
 						container
 						alignItems={"center"}
-						columnSpacing={3}
+						spacing={3}
 					>
 						<Grid item>
 							<FormTextField

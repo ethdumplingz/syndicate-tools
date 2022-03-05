@@ -100,59 +100,21 @@ const ActiveProjectsTable = (props) => {
 				renderCell: render.datetime,
 			},
 			{
-				field: "ts_presale_end",
-				headerName: "Presale End",
-				type: "datetime",
-				minWidth: 160,
-				renderCell: render.datetime,
+				field: "max_supply",
+				headerName: "Supply",
+				type: "number",
+				renderCell: render.general,
+				cellClassName: "center",
+				minWidth: 80,
 			},
 			{
 				field: "website_url",
-				headerName: "Website",
+				headerName: "URLs",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				width: 80,
-				renderCell: render.website,
+				renderCell: render.urls,
+				width: 240,
 				sortable: false
-			},
-			{
-				field: "twitter_url",
-				headerName: "Twitter",
-				headerClassName: 'center',
-				cellClassName: 'center',
-				width: 80,
-				renderCell: render.twitter,
-				sortable: false
-			},
-			{
-				field: "discord_url",
-				headerName: "Discord",
-				headerClassName: 'center',
-				cellClassName: 'center',
-				width: 80,
-				renderCell: render.discord,
-				sortable: false
-			},
-			// {
-			// 	field: "is_discord_open",
-			// 	headerName: "Public Discord?",
-			// 	type: "boolean",
-			// 	width: 140
-			// },
-			// {
-			// 	field: "public_price",
-			// 	headerName: "Public Price",
-			// 	minWidth: 120,
-			// 	cellClassName: 'center',
-			// 	valueFormatter: render.mintPrice
-			// },
-			{
-				field: "wl_register_url",
-				headerName: "Raffle",
-				renderCell: render.raffle,
-				width: 80,
-				cellClassName: "center",
-				sortable: false,
 			},
 			{
 				field: "id",

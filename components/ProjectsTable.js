@@ -85,45 +85,27 @@ const ProjectsTable = (props) => {
 				minWidth: 160,
 			},
 			{
-				field: "ts_presale_end",
-				headerName: "Presale End",
-				type: "datetime",
-				renderCell: render.datetime,
-				minWidth: 160,
+				field: "max_supply",
+				headerName: "Supply",
+				type: "number",
+				renderCell: render.general,
+				cellClassName: "center",
+				minWidth: 80,
 			},
+			// {
+			// 	field: "ts_presale_end",
+			// 	headerName: "Presale End",
+			// 	type: "datetime",
+			// 	renderCell: render.datetime,
+			// 	minWidth: 160,
+			// },
 			{
 				field: "website_url",
-				headerName: "Website",
+				headerName: "URLs",
 				headerClassName: 'center',
 				cellClassName: 'center',
-				renderCell: render.website,
-				width: 80,
-				sortable: false
-			},
-			{
-				field: "wl_register_url",
-				headerName: "Raffle",
-				renderCell: render.raffle,
-				cellClassName: 'center',
-				width: 80,
-				sortable: false,
-			},
-			{
-				field: "twitter_url",
-				headerName: "Twitter",
-				headerClassName: 'center',
-				cellClassName: 'center',
-				renderCell: render.twitter,
-				width: 80,
-				sortable: false
-			},
-			{
-				field: "discord_url",
-				headerName: "Discord",
-				headerClassName: 'center',
-				cellClassName: 'center',
-				renderCell: render.discord,
-				width: 80,
+				renderCell: render.urls,
+				width: 240,
 				sortable: false
 			},
 			{
@@ -139,6 +121,7 @@ const ProjectsTable = (props) => {
 				item
 			>
 				<DataGrid
+					rowsPerPageOptions={[]}
 					columns={columns}
 					rows={projects}
 					density={"comfortable"}

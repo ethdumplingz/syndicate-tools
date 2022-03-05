@@ -8,8 +8,10 @@ import NotAvailableIcon from "@mui/icons-material/NotInterested";
 import LaunchIcon from "@mui/icons-material/Launch";
 import FollowProjectBtn from "../components/FollowProjectBtn";
 import {Twitter} from "@mui/icons-material";
+import WebsiteIconBtn from "../components/WebsiteIconBtn";
 import TwitterIconBtn from "../components/TwitterIconBtn";
 import DiscordIconBtn from "../components/DiscordIconBtn";
+import RaffleIconBtn from "../components/RaffleIconBtn";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -138,6 +140,45 @@ const render = {
 			return(<NotAvailableIndicator/>)
 		}
 	},
+	urls: (params) => {
+		const loggingTag = `[renderURLCell]`;
+		// console.info(`${loggingTag}`, params);
+		let actions = [];
+		const {row} = params,
+			propsToLookFor = ["website_url", "twitter_url", "discord_url", "wl_register_url"];
+		
+		Object.keys(row).map(key => {
+			if(propsToLookFor.indexOf(key) > -1){
+				actions.push({
+					id: key,
+					value: row[key],
+					icon: key === "website_url" ? <WebsiteIconBtn/> :
+								key === "twitter_url" ? <TwitterIconBtn/> :
+								key === "wl_register_url" ? <RaffleIconBtn/> :
+						<DiscordIconBtn/>
+				});
+			}
+		});
+		
+		if(actions.length > 0){
+			return(
+				<Grid
+					container
+					columnSpacing={2}
+				>
+					{actions.map((action, index) => (
+						<Grid item>
+							<a key={action.id} href={action.value}>
+								{action.icon}
+							</a>
+						</Grid>
+					))}
+				</Grid>
+			)
+		} else {
+			return(<NotAvailableIndicator/>)
+		}
+	},
 	datetime: (params) => {
 		if(typeof params.value === "string"){
 			const formattedDateTime = dayjs(params.value).format("ddd MM/DD/YY h:mm A");
@@ -168,17 +209,17 @@ const render = {
 					container
 					columnSpacing={1}
 				>
-					<Grid item>
-						<Tooltip title={"View Project"}>
-							<IconButton
-								onClick={(e)=>{
-									router.push(`/projects/${value}`);
-								}}
-							>
-								<LaunchIcon/>
-							</IconButton>
-						</Tooltip>
-					</Grid>
+					{/*<Grid item>*/}
+					{/*	<Tooltip title={"View Project"}>*/}
+					{/*		<IconButton*/}
+					{/*			onClick={(e)=>{*/}
+					{/*				router.push(`/projects/${value}`);*/}
+					{/*			}}*/}
+					{/*		>*/}
+					{/*			<LaunchIcon/>*/}
+					{/*		</IconButton>*/}
+					{/*	</Tooltip>*/}
+					{/*</Grid>*/}
 					<Grid item>
 						<FollowProjectBtn
 							id={value}

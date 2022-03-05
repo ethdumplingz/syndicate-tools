@@ -25,7 +25,8 @@ const Layout = (props) => {
 					top: "0px",
 					right: "0px",
 					bottom: "0px",
-					left: "250px"
+					left: "250px",
+					overflowY: "auto"
 				}}
 			>
 				{content}
