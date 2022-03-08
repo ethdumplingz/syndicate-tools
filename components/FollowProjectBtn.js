@@ -57,21 +57,9 @@ const FollowProjectBtn = (props) => {
 		
 		setWatching(!isWatching);
 		
-		const updateStatus = () => {
-			return axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/add`, reqBody);
-		}
-		
-		const updateStage = () => {
-			const body = {
-				user: address,
-				project_id: projectID,
-				stage: "following"
-			}
-			return axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/stages/add`, body);
-		}
 		try{
-			// await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/add`, reqBody);
-			await Promise.all([updateStage(), updateStatus()]);
+			await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/add`, reqBody);
+			
 			console.info(`${loggingTag} new favorite status:`, isWatching);
 		} catch(e){
 			setWatching(!isWatching);//reverting back

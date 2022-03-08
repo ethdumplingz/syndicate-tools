@@ -32,15 +32,15 @@ const UserProjectStatus = (props) => {
 			const body = {
 				user: address,
 				project_id: id,
-				stage: e.target.value
+				action: e.target.value
 			}
-			await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/stages/add`, body);
+			await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/add`, body);
 		} catch(e){
 			console.error(`${loggingTag} error:`, e);
 		}
 	}
 	
-	const {data:resp} = useSWR(`/users/${address}/projects/${id}/stages/latest`, fetcher, {
+	const {data:resp} = useSWR(`/users/${address}/projects/${id}/actions/latest`, fetcher, {
 		revalidateIfStale: true
 	});
 	

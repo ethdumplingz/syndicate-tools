@@ -1,6 +1,6 @@
 const projectStages = [
 	{
-		id: "following",
+		id: "follow",
 		display_str: "Following"
 	},
 	{
