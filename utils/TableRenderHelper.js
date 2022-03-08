@@ -202,8 +202,8 @@ const render = {
 		return `${ethPrice}E`;
 	},
 	actions: (params) => {
-		const {value} = params;
-		const router = useRouter();
+		const {value, row} = params;
+		// const router = useRouter();
 		// console.info(`[render][actions] id:`, value);
 		return(
 			<Box
@@ -229,6 +229,7 @@ const render = {
 					<Grid item>
 						<FollowProjectBtn
 							id={value}
+							title={row.title}
 						/>
 					</Grid>
 				</Grid>

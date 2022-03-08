@@ -18,15 +18,14 @@ const fetcher = async (url) => {
 }
 
 const FollowProjectBtn = (props) => {
-	const componentLoggingTag = `[FollowProjectBtn]`;
-	
 	const {address} = useSyndicateAuthenticationContext();
-	const {onClick, id:projectID} = props;
+	const {onClick, id:projectID, title=""} = props;
+	const componentLoggingTag = `[FollowProjectBtn][proj: ${projectID}][proj name: ${title}]`;
+	
 	const [isWatching, setWatching] = useState(false);
 	
 	const {data:resp, error} = useSWR(`/users/${address}/projects/${projectID}/following`, fetcher, {
-		revalidateIfStale: false,
-		revalidateOnMount: false
+		revalidateIfStale: false
 	});
 	
 	// console.info(`${componentLoggingTag} watching:`, isWatching);
@@ -46,8 +45,8 @@ const FollowProjectBtn = (props) => {
 	
 	const updateProjectFollowStatus = async (e) => {
 		const loggingTag = `${componentLoggingTag}[updateProjectFollowStatus]`;
-		setWatching(!isWatching);
 		if(typeof onClick === "function"){
+			console.info(`${loggingTag} triggering onclick...`);
 			onClick(!isWatching);
 		}
 		const reqBody = {
@@ -55,6 +54,8 @@ const FollowProjectBtn = (props) => {
 			project_id: projectID,
 			action: isWatching ? "unfollow" : "follow"
 		}
+		
+		setWatching(!isWatching);
 		
 		const updateStatus = () => {
 			return axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/add`, reqBody);

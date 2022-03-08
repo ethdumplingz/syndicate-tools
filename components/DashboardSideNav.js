@@ -27,7 +27,7 @@ const items = [
 			},
 			{
 				id: "active-projects",
-				str: "Active",
+				str: "My Projects",
 				icon: <ActiveIcon />,
 				path: "/projects/active"
 			},
@@ -42,13 +42,13 @@ const items = [
 	{
 		id: "profit-loss",
 		str: "Profit/Loss",
-		disabled:true,
+		disabled: true,
 		icon: <CalculateIcon />
 	},
 	{
 		id: "calendar",
 		str: "Calendar",
-		disabled:true,
+		disabled: true,
 		icon: <CalenderIcon />
 	},
 ]
