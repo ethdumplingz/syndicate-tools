@@ -3,15 +3,16 @@ import {Typography, Box} from "@mui/material";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import IsLoadingView from "./IsLoadingView";
 
 const Layout = (props) => {
 	
 	const router = useRouter();
 	const {children:content} = props;
-	const {isAgent} = useSyndicateAuthenticationContext();
+	const {isAgent, isPending} = useSyndicateAuthenticationContext();
 	
 	useEffect(()=>{
-		if(!isAgent){
+		if(!isPending && !isAgent){
 			router.push("/signin");
 		}
 	}, []);
@@ -29,7 +30,7 @@ const Layout = (props) => {
 					overflowY: "auto"
 				}}
 			>
-				{content}
+				{!isPending ? content : <IsLoadingView/>}
 			</Box>
 		</>
 	)

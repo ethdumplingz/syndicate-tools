@@ -47,7 +47,7 @@ const render = {
 		return(
 			<TableTextCell>
 				<Link href={`/projects/${params.row.id}`}>
-					<a>{params.value}</a>
+					{params.value}
 				</Link>
 			</TableTextCell>
 		)
@@ -168,11 +168,11 @@ const render = {
 					columnSpacing={2}
 				>
 					{actions.map((action, index) => (
-						<Grid item>
-							<a key={action.id} href={action.value}>
+						<a key={action.id} href={action.value}>
+							<Grid item>
 								{action.icon}
-							</a>
-						</Grid>
+							</Grid>
+						</a>
 					))}
 				</Grid>
 			)

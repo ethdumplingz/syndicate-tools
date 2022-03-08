@@ -23,6 +23,8 @@ export const SyndicateAuthenticationProvider = (props) => {
 	const componentLoggingTag = `[SyndicateAuthenticationProvider]`;
 	
 	const { children } = props;
+	
+	const [isPending, setLoading] = useState(false);
 	const [isAgent, setAgent] = useState(false);
 	const [isAdmin, setAdmin] = useState(false);
 	const [address, setAddress] = useState("");
@@ -39,36 +41,43 @@ export const SyndicateAuthenticationProvider = (props) => {
 	useEffect(async () => {
 		const loggingTag = `${componentLoggingTag}[auth:${isAuthenticated}][isWeb3Enabled:${isWeb3Enabled}] `;
 		console.info(`${loggingTag} authentication state changed`);
-		if(isAuthenticated){
-			const balances = await getNFTBalances({
-				params:{
-					token_address: "0x0a8D803E3e29f07BD58e3061D9AeE7B57813DF2c"
+		setLoading(true);
+		try{
+			if(isAuthenticated){
+				const balances = await getNFTBalances({
+					params:{
+						token_address: "0x0a8D803E3e29f07BD58e3061D9AeE7B57813DF2c"
+					}
+				});
+				
+				console.info(`${loggingTag} agent pass balance:`, balances);
+				
+				if(balances.total > 0){
+					setAgent(true);
+					console.info(`${loggingTag} account: ${user.attributes.ethAddress} user`, user);
+					setAddress(user.attributes.ethAddress);
+					//checking is user is admin
+					const userWalletAddress = balances.result[0].owner_of;
+					console.info(`${loggingTag} wallet address:`, userWalletAddress);
+					const result = await checkIfUserIsTeamMember(`/users/${userWalletAddress}/team/check`),
+						check = result.data.ok;
+					console.info(`${loggingTag} result:`, result);
+					setAdmin(check);
 				}
-			});
-			
-			console.info(`${loggingTag} agent pass balance:`, balances);
-			
-			if(balances.total > 0){
-				setAgent(true);
-				console.info(`${loggingTag} account: ${user.attributes.ethAddress} user`, user);
-				setAddress(user.attributes.ethAddress);
-				//checking is user is admin
-				const userWalletAddress = balances.result[0].owner_of;
-				console.info(`${loggingTag} wallet address:`, userWalletAddress);
-				const result = await checkIfUserIsTeamMember(`/users/${userWalletAddress}/team/check`),
-					check = result.data.ok;
-				console.info(`${loggingTag} result:`, result);
-				setAdmin(check);
 			}
-			
+		} finally{
+			setLoading(false);
 		}
+		
 	}, [isAuthenticated, isWeb3Enabled]);
 	
 	const authContext = {
+		isPending,
 		isAgent,
 		address,
 		isAdmin
 	};
+	
 	return(
 		<SyndicateAuthenticationContext.Provider value={authContext}>
 			{children}
