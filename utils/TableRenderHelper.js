@@ -13,6 +13,7 @@ import TwitterIconBtn from "../components/TwitterIconBtn";
 import DiscordIconBtn from "../components/DiscordIconBtn";
 import RaffleIconBtn from "../components/RaffleIconBtn";
 import CountdownTimer from "../components/CountdownTimer";
+import AddToCalendarBtn from "../components/AddToCalendarBtn";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -203,8 +204,10 @@ const render = {
 	},
 	actions: (params) => {
 		const {value, row} = params;
+		const loggingTag = `${baseLoggingTag}[actions]`;
 		// const router = useRouter();
 		// console.info(`[render][actions] id:`, value);
+		console.info(`${loggingTag} row`, row)
 		return(
 			<Box
 				sx={{
@@ -230,6 +233,17 @@ const render = {
 						<FollowProjectBtn
 							id={value}
 							title={row.title}
+						/>
+					</Grid>
+					<Grid item>
+						<AddToCalendarBtn
+							id={value}
+							event={{
+								name: row.title,
+								details: row.description,
+								start: row.ts_presale_start,
+								end: row.ts_presale_end
+							}}
 						/>
 					</Grid>
 				</Grid>

@@ -31,6 +31,12 @@ const items = [
 				icon: <ActiveIcon />,
 				path: "/projects/active"
 			},
+			// {//?view for after a user has sold a WL asset?
+			// 	id: "my-holdings",
+			// 	str: "My Holdings",
+			// 	icon: <ActiveIcon />,
+			// 	path: "/projects/active"
+			// },
 			{
 				id: "projects-add",
 				str: "Add",

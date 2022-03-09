@@ -101,7 +101,7 @@ const CountdownTimer = (props) => {
 			</Grid>
 		)
 	} else {//already started!
-		return(<Typography sx={{fontWeight: 600}}>It's Begun!</Typography>)
+		return(<Typography sx={{fontWeight: 600}}>Happening Now!</Typography>)
 	}
 	
 }
