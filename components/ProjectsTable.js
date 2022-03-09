@@ -117,7 +117,7 @@ const ProjectsTable = (props) => {
 				type: "actions",
 				minWidth: 120,
 				renderCell: (params) => {
-					render.actions({params})
+					return render.actions({params})
 				}
 			}
 		]
