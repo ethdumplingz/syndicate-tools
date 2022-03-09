@@ -202,7 +202,7 @@ const render = {
 		const ethPrice = Number(value).toFixed(2);
 		return `${ethPrice}E`;
 	},
-	actions: (params) => {
+	actions: ({params, set_id:setID = "default"} = {}) => {
 		const {value, row} = params;
 		const loggingTag = `${baseLoggingTag}[actions]`;
 		// const router = useRouter();
@@ -235,17 +235,23 @@ const render = {
 							title={row.title}
 						/>
 					</Grid>
-					<Grid item>
-						<AddToCalendarBtn
-							id={value}
-							event={{
-								name: row.title,
-								details: row.description,
-								start: row.ts_presale_start,
-								end: row.ts_presale_end
-							}}
-						/>
-					</Grid>
+					{
+						setID === "active-projects" ? (
+							<Grid item>
+								<AddToCalendarBtn
+									id={value}
+									event={{
+										name: row.title,
+										details: row.description,
+										start: row.ts_presale_start,
+										end: row.ts_presale_end
+									}}
+								/>
+							</Grid>
+						) : (
+							<></>
+						)
+					}
 				</Grid>
 			</Box>
 			

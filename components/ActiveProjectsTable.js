@@ -132,7 +132,9 @@ const ActiveProjectsTable = (props) => {
 				headerName: "Actions",
 				type: "actions",
 				minWidth: 120,
-				renderCell: render.actions
+				renderCell: (params) => {
+					return render.actions({params, set_id: "active-projects"})
+				}
 			}
 		]
 		return (

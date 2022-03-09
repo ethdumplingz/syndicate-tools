@@ -116,7 +116,9 @@ const ProjectsTable = (props) => {
 				headerName: "Actions",
 				type: "actions",
 				minWidth: 120,
-				renderCell: render.actions
+				renderCell: (params) => {
+					render.actions({params})
+				}
 			}
 		]
 		return (
