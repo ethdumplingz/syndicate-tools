@@ -4,8 +4,11 @@ import axios from "axios";
 import fetchProjectInfo from "../utils/project";
 import useSWR from "swr";
 import {useRouter} from "next/router";
-import dayjs from "dayjs";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 const delay = (time = 5000) => {
 	return new Promise((resolve, reject) => {
@@ -104,7 +107,7 @@ const ProjectForm = (props) => {
 		const loggingTag = `[formatDateTimeForForm]`;
 		let datetime = "";
 		try{
-			datetime = dayjs(dbDatetime).format("YYYY-MM-DDTHH:mm:ss");
+			datetime = dayjs(dbDatetime).utc().format("YYYY-MM-DDTHH:mm:ss");
 		} catch(e){
 			console.error(`${loggingTag} Error:`, e);
 		}
