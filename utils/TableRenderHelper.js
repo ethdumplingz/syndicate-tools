@@ -190,8 +190,17 @@ const render = {
 		}
 	},
 	countdown: (params) => {
+		const loggingTag = `[render][countdown]`;
 		if(typeof params.value === "string"){
-			return(<CountdownTimer end={dayjs(params.value)}/>)
+			console.info(`${loggingTag} row:`, params.row);
+			return(
+				<CountdownTimer
+					presale={{
+						start: dayjs(params.value),
+						end: dayjs(params.row.ts_presale_end)
+					}}
+				/>
+			)
 		}
 	},
 	mintPrice: (params) => {

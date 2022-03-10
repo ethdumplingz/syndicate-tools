@@ -29,7 +29,7 @@ const projectStages = [
 	},
 	{
 		id: "sold",
-		display_str: "sold"
+		display_str: "Sold"
 	},
 ]
 module.exports = {

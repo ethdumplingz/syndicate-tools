@@ -1,11 +1,13 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
 
-import {Typography, Grid} from "@mui/material";
+import {Typography, Grid, Tooltip} from "@mui/material";
 
 import dayjs from "dayjs";
 import Duration from "dayjs/plugin/duration";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
 dayjs.extend(Duration);
+dayjs.extend(LocalizedFormat)
 
 const CountdownDivider = (props) => {
 	return(
@@ -48,8 +50,8 @@ const timeFromNow = (end) => {
 }
 const CountdownTimer = (props) => {
 	const componentLoggingTag = `[CountdownTimer]`;
-	const {end} = props;
-	const tsMint = end;
+	const {presale} = props;
+	const tsPresaleStart = presale.start;
 	// console.info(`${componentLoggingTag} ts mint:`, tsMint);
 	
 	const [timeTil, setTimeTil] = useState({
@@ -61,7 +63,7 @@ const CountdownTimer = (props) => {
 	
 	useEffect(() => {
 		const interval = setInterval(() => {
-			const diff = timeFromNow(tsMint),
+			const diff = timeFromNow(tsPresaleStart),
 				duration = dayjs.duration(diff);
 			// console.info(`[duration][seconds] return value ${duration.seconds()}`);
 			setTimeTil({
@@ -75,7 +77,7 @@ const CountdownTimer = (props) => {
 		return () => clearInterval(interval);
 	}, []);
 	
-	if(timeFromNow(tsMint) > 0){
+	if(timeFromNow(tsPresaleStart) > 0){
 		return (
 			<Grid
 				container
@@ -100,8 +102,19 @@ const CountdownTimer = (props) => {
 				}
 			</Grid>
 		)
+	} else if (timeFromNow(presale.end) < 0){
+		console.info(`${componentLoggingTag} time from now (presale end): ${timeFromNow(presale.end)} full presale end string: ${presale.end}`);
+		return(
+			<Tooltip title={`Ended on: ${dayjs(presale.end).format('llll')}`}>
+				<Typography sx={{fontWeight: 600}}>It's over!</Typography>
+			</Tooltip>
+		)
 	} else {//already started!
-		return(<Typography sx={{fontWeight: 600}}>Happening Now!</Typography>)
+		return(
+			<Tooltip title={`Started on: ${dayjs(tsPresaleStart).format('llll')}`}>
+				<Typography sx={{fontWeight: 600}}>Happening Now!</Typography>
+			</Tooltip>
+		)
 	}
 	
 }
