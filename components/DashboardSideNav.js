@@ -9,7 +9,7 @@ import SearchIcon from "@mui/icons-material/Search"
 import AddIcon from "@mui/icons-material/Add";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import ActiveIcon from "@mui/icons-material/DirectionsRun";
+import WLGameIcon from "@mui/icons-material/VisibilityOutlined";
 import {useRouter} from "next/router";
 
 const items = [
@@ -27,16 +27,10 @@ const items = [
 			},
 			{
 				id: "active-projects",
-				str: "My Projects",
-				icon: <ActiveIcon />,
+				str: "Whitelist Game",
+				icon: <WLGameIcon />,
 				path: "/projects/active"
 			},
-			// {//?view for after a user has sold a WL asset?
-			// 	id: "my-holdings",
-			// 	str: "My Holdings",
-			// 	icon: <ActiveIcon />,
-			// 	path: "/projects/active"
-			// },
 			{
 				id: "projects-add",
 				str: "Add",
