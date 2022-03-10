@@ -7,6 +7,7 @@ import {useRouter} from "next/router";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 import {project} from "../utils/strings";
 import {render} from "../utils/TableRenderHelper";
+import ProjectTableActions from "./ProjectTableActions";
 
 const TableWrapper = (props) => {
 	const {children} = props;
@@ -138,21 +139,24 @@ const ActiveProjectsTable = (props) => {
 			}
 		]
 		return (
-			<Grid
-				item
-			>
-				<DataGrid
-					columns={columns}
-					rows={projects}
-					density={"comfortable"}
-					autoHeight={true}
-					sx={{
-						'& .center':{
-							justifyContent: "center"
-						}
-					}}
-				/>
-			</Grid>
+			<>
+				<ProjectTableActions/>
+				<Grid
+					item
+				>
+					<DataGrid
+						columns={columns}
+						rows={projects}
+						density={"comfortable"}
+						autoHeight={true}
+						sx={{
+							'& .center':{
+								justifyContent: "center"
+							}
+						}}
+					/>
+				</Grid>
+			</>
 		)
 	} else if (isValidating){
 		return(

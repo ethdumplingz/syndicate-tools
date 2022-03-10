@@ -31,12 +31,12 @@ const items = [
 				icon: <WLGameIcon />,
 				path: "/projects/active"
 			},
-			{
-				id: "projects-add",
-				str: "Add",
-				icon: <AddIcon />,
-				path: "/projects/add"
-			},
+			// {
+			// 	id: "projects-add",
+			// 	str: "Add",
+			// 	icon: <AddIcon />,
+			// 	path: "/projects/add"
+			// },
 		]
 	},
 	{

@@ -5,6 +5,7 @@ import {DataGrid} from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import {useRouter} from "next/router";
 import {render} from "../utils/TableRenderHelper";
+import ProjectTableActions from "./ProjectTableActions";
 
 
 const TableWrapper = (props) => {
@@ -120,24 +121,28 @@ const ProjectsTable = (props) => {
 					return render.actions({params})
 				}
 			}
-		]
+		];
+		
 		return (
-			<Grid
-				item
-			>
-				<DataGrid
-					rowsPerPageOptions={[]}
-					columns={columns}
-					rows={projects}
-					density={"comfortable"}
-					autoHeight={true}
-					sx={{
-						'& .center':{
-							justifyContent: "center"
-						}
-					}}
-				/>
-			</Grid>
+			<>
+				<ProjectTableActions/>
+				<Grid
+					item
+				>
+					<DataGrid
+						rowsPerPageOptions={[]}
+						columns={columns}
+						rows={projects}
+						density={"comfortable"}
+						autoHeight={true}
+						sx={{
+							'& .center':{
+								justifyContent: "center"
+							}
+						}}
+					/>
+				</Grid>
+			</>
 		)
 	} else if (isValidating){
 		return(
