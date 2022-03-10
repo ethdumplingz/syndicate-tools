@@ -84,8 +84,8 @@ const ProjectForm = (props) => {
 	const [presale, setPresale] = useState({
 		per_transaction: 0,
 		per_wallet: 0,
-		start: 0,
-		end: 0
+		start: dayjs().format("YYYY-MM-DDTHH:mm"),//prepopulating the date value to NOW
+		end: dayjs().format("YYYY-MM-DDTHH:mm")//prepopulating the date value to NOW
 	});
 	const [contractAddress, setContractAddress] = useState("");
 	const [description, setDescription] = useState("");
@@ -132,7 +132,8 @@ const ProjectForm = (props) => {
 				twitter_url: twitter,
 				discord_url: discord.url,
 				is_discord_open: discord.isOpen,
-				presale_price: price,
+				presale_price: price.presale,
+				public_price: price.public,
 				sale_unit: unit,
 				ts_presale_start: presale.start,
 				ts_presale_end: presale.end,
