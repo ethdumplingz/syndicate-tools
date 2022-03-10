@@ -21,7 +21,7 @@ const items = [
 		children : [
 			{
 				id: "all-projects",
-				str: "View All",
+				str: "Upcoming Mints",
 				icon: <ViewAllIcon />,
 				path: "/projects/view"
 			},
