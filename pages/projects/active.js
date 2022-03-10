@@ -22,7 +22,7 @@ const ActiveProjectsView = (props) => {
 						fontSize:"1.6rem"
 					}}
 				>
-					Active Projects
+					Whitelist Game
 				</Typography>
 			</Grid>
 			<ActiveProjectsTable/>

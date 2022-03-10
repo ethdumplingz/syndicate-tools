@@ -22,7 +22,7 @@ const DatabaseView = (props) => {
 						fontSize:"1.6rem"
 					}}
 				>
-				View Upcoming Mints
+				Upcoming Mints
 				</Typography>
 			</Grid>
 			<ProjectsTable/>
