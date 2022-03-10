@@ -5,7 +5,7 @@ import {Box, SwipeableDrawer, Button, List, Divider, ListItem, ListItemIcon, Lis
 import CalculateIcon from '@mui/icons-material/Calculate';
 import CalenderIcon from '@mui/icons-material/CalendarToday';
 import TableIcon from "@mui/icons-material/TableChart";
-import SearchIcon from "@mui/icons-material/Search"
+import ViewAllIcon from "@mui/icons-material/TableView"
 import AddIcon from "@mui/icons-material/Add";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -22,7 +22,7 @@ const items = [
 			{
 				id: "all-projects",
 				str: "View All",
-				icon: <SearchIcon />,
+				icon: <ViewAllIcon />,
 				path: "/projects/view"
 			},
 			{
