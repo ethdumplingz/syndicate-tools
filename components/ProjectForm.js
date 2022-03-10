@@ -75,7 +75,10 @@ const ProjectForm = (props) => {
 		isOpen: true,
 		url:""
 	});
-	const [price, setPrice] = useState(0);
+	const [price, setPrice] = useState({
+		presale: 0,
+		public: 0
+	});
 	const [unit, setUnit] = useState("ETH");
 	const [supply, setSupply] = useState(0);
 	const [presale, setPresale] = useState({
@@ -178,7 +181,8 @@ const ProjectForm = (props) => {
 				twitter_url: twitter,
 				discord_url: discord.url,
 				is_discord_open: discord.isOpen,
-				presale_price: price,
+				presale_price: price.presale,
+				public_price: price.public,
 				sale_unit: unit,
 				ts_presale_start: presale.start,
 				ts_presale_end: presale.end,
@@ -257,7 +261,10 @@ const ProjectForm = (props) => {
 			setWebsite("");
 			setTwitter("");
 			setDiscord({...discord, url: ""});
-			setPrice(0);
+			setPrice({
+				presale:0,
+				public: 0
+			});
 			setPresale({
 				start:0,
 				end: 0
@@ -285,7 +292,7 @@ const ProjectForm = (props) => {
 		if(typeof data !== "undefined"){
 			const resp = data,
 				project = resp.data.project[0];
-			const {title, description, website_url, twitter_url, discord_url, presale_price, ts_presale_start, ts_presale_end, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = project;
+			const {title, description, website_url, twitter_url, discord_url, presale_price, public_price, ts_presale_start, ts_presale_end, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = project;
 			
 			useEffect(() => {
 				setTitle(title);
@@ -293,7 +300,10 @@ const ProjectForm = (props) => {
 				setWebsite(website_url);
 				setTwitter(twitter_url);
 				setDiscord({...discord, url: discord_url});
-				setPrice(presale_price);
+				setPrice({
+					presale: presale_price,
+					public: public_price
+				});
 				console.info(`${componentLoggingTag} presale start: ${ts_presale_start} end: ${ts_presale_end}`);
 				const formattedTimes = {
 					per_transaction: max_per_transaction,
@@ -401,15 +411,26 @@ const ProjectForm = (props) => {
 						item
 						container
 						alignItems={"center"}
+						wrap={"nowrap"}
 						spacing={3}
 					>
 						<Grid item>
 							<FormTextField
-								label={"Price"}
-								value={price}
+								label={"(Presale) Price"}
+								value={price.presale}
 								type={"number"}
 								step={0.05}
-								onChange={(e) => {setPrice(e.currentTarget.value)}}
+								onChange={(e) => {setPrice({...price, presale: e.currentTarget.value})}}
+							/>
+						</Grid>
+						<Grid item>
+							<FormTextField
+								label={"(Public) Price"}
+								defaultValue={price.presale}
+								value={price.public}
+								type={"number"}
+								step={0.05}
+								onChange={(e) => {setPrice({...price, public: e.currentTarget.value})}}
 							/>
 						</Grid>
 						<Grid item>
