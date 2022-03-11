@@ -14,6 +14,7 @@ import DiscordIconBtn from "../components/DiscordIconBtn";
 import RaffleIconBtn from "../components/RaffleIconBtn";
 import CountdownTimer from "../components/CountdownTimer";
 import AddToCalendarBtn from "../components/AddToCalendarBtn";
+import ProjectScore from "../components/ProjectScore";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -238,6 +239,9 @@ const render = {
 					{/*		</IconButton>*/}
 					{/*	</Tooltip>*/}
 					{/*</Grid>*/}
+					<Grid item>
+						<ProjectScore id={value} title={row.title} />
+					</Grid>
 					<Grid item>
 						<FollowProjectBtn
 							id={value}

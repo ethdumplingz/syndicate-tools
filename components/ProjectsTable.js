@@ -116,13 +116,13 @@ const ProjectsTable = (props) => {
 				field: "id",
 				headerName: "Actions",
 				type: "actions",
-				minWidth: 120,
+				minWidth: 200,
 				renderCell: (params) => {
 					return render.actions({params})
 				}
 			}
 		];
-		
+
 		return (
 			<>
 				<ProjectTableActions/>
