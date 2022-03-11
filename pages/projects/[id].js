@@ -3,8 +3,12 @@ import useSWR from "swr";
 import axios from "axios";
 import {Typography, Grid, Button} from "@mui/material";
 import fetchProjectInfo from "../../utils/project";
-import dayjs from "dayjs";
 import ProjectActions from "../../components/ProjectActions";
+
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
+
 
 const ProjectViewContainer = (props) => {
 	const {children} = props;
@@ -63,6 +67,20 @@ const ProjectInfoRow = (props) => {
 	)
 }
 
+const formatTimeForDisplay = (datetime) => {
+	const loggingTag = `[formatTimeForDisplay]`;
+	let displayStr = 'N/A';
+	try{
+		const isValidDate = dayjs(datetime).unix() !== 0;//submitting epoch for projects if a date isn't provided
+		if(isValidDate){
+			displayStr = dayjs.utc(datetime).local().format("MMMM D, YYYY h:mm A")
+		}
+	} catch(e){
+		console.error(`${loggingTag} Error:`, e);
+	}
+	return displayStr;
+}
+
 const ProjectView = (props) => {
 	const componentLoggingTag = `[ProjectView]`;
 	const router = useRouter();
@@ -79,9 +97,15 @@ const ProjectView = (props) => {
 			</ProjectViewContainer>
 		)
 	} else if (resp){
+		const loggingTag = `${componentLoggingTag}[resp rcvd]`;
 		const info = resp.data.project[0];
 		const {title, description, website_url, discord_url, twitter_url, ts_presale_start, ts_presale_end, presale_price, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = info;
 		console.info(`${componentLoggingTag} project info:`, info);
+		
+		console.info(`${loggingTag} pre dayjs`, ts_presale_start);
+		
+		console.info(`${loggingTag} post dayjs`, dayjs(ts_presale_start).utc());
+		console.info(`${loggingTag} post dayjs unix`, dayjs(ts_presale_start).unix());
 		return(
 			<ProjectViewContainer>
 				<Grid
@@ -134,11 +158,11 @@ const ProjectView = (props) => {
 					/>
 					<ProjectInfoRow
 						label={"Presale Start"}
-						value={dayjs(ts_presale_start).format("MMMM D, YYYY h:mm A")}
+						value={formatTimeForDisplay(ts_presale_start)}
 					/>
 					<ProjectInfoRow
 						label={"Presale End"}
-						value={dayjs(ts_presale_end).format("MMMM D, YYYY h:mm A")}
+						value={formatTimeForDisplay(ts_presale_end)}
 					/>
 					<Grid
 						item

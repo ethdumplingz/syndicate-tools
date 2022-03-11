@@ -7,7 +7,6 @@ import {useRouter} from "next/router";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-
 dayjs.extend(utc);
 
 const delay = (time = 5000) => {
@@ -59,6 +58,29 @@ const FormTextField = (props) => {
 	)
 }
 
+const formatDatetimeForForm = (dbDatetime) => {
+	const loggingTag = `[formatDateTimeForForm]`;
+	let datetime = "";
+	try{
+		datetime = dayjs(dbDatetime).format("YYYY-MM-DDTHH:mm:ss");
+	} catch(e){
+		console.error(`${loggingTag} Error:`, e);
+	}
+	return datetime;
+}
+
+const formatDatetimeForServer = (clientDateTime) => {
+	const loggingTag = `[formatDatetimeForServer]`;
+	let datetime = "";
+	try{
+		//need to convert timestamps to be UTC before sending to server
+		datetime = dayjs(clientDateTime.length > 0 ? clientDateTime : 0).utc().format("YYYY-MM-DDTHH:mm:ss");
+	} catch(e){
+		console.error(`${loggingTag} Error:`, e);
+	}
+	return datetime;
+}
+
 const ProjectForm = (props) => {
 	const componentLoggingTag = `[ProjectForm]`;
 	
@@ -106,24 +128,13 @@ const ProjectForm = (props) => {
 		}
 	}
 	
-	const formatDatetimeForForm = (dbDatetime) => {
-		const loggingTag = `[formatDateTimeForForm]`;
-		let datetime = "";
-		try{
-			datetime = dayjs(dbDatetime).utc().format("YYYY-MM-DDTHH:mm:ss");
-		} catch(e){
-			console.error(`${loggingTag} Error:`, e);
-		}
-		return datetime;
-	}
-	
 	const addProjectToServer = async () => {
 		const loggingTag = `${componentLoggingTag}[addProjectToServer]`;
 		try{
 			const url = URL.createObjectURL(new Blob()),
 				projectID = url.substring(url.lastIndexOf('/') + 1);//generating random value for the server
 			console.info(`${loggingTag} random value:`, projectID);
-			
+			console.info(`${loggingTag} presale: ${presale.start} typeof ${typeof presale.start}`, );
 			const payload = {
 				id: projectID,
 				title,
@@ -135,8 +146,10 @@ const ProjectForm = (props) => {
 				presale_price: price.presale,
 				public_price: price.public,
 				sale_unit: unit,
-				ts_presale_start: presale.start,
-				ts_presale_end: presale.end,
+				// ts_presale_start: presale.start,
+				// ts_presale_end: presale.end,
+				ts_presale_start: formatDatetimeForServer(presale.start),
+				ts_presale_end: formatDatetimeForServer(presale.end),
 				address: contractAddress,
 				description,
 				max_supply: supply,
@@ -185,8 +198,8 @@ const ProjectForm = (props) => {
 				presale_price: price.presale,
 				public_price: price.public,
 				sale_unit: unit,
-				ts_presale_start: presale.start,
-				ts_presale_end: presale.end,
+				ts_presale_start: dayjs(presale.start).utc().format("YYYY-MM-DDTHH:mm:ss"),
+				ts_presale_end: dayjs(presale.end).utc().format("YYYY-MM-DDTHH:mm:ss"),
 				address: contractAddress,
 				description,
 				max_supply: supply,
@@ -305,14 +318,14 @@ const ProjectForm = (props) => {
 					presale: presale_price,
 					public: public_price
 				});
-				console.info(`${componentLoggingTag} presale start: ${ts_presale_start} end: ${ts_presale_end}`);
+				console.info(`${componentLoggingTag}[localization] presale start: ${ts_presale_start} end: ${ts_presale_end}`);
 				const formattedTimes = {
 					per_transaction: max_per_transaction,
 					per_wallet: max_per_wallet,
 					start: formatDatetimeForForm(ts_presale_start),
 					end: formatDatetimeForForm(ts_presale_end),
 				}
-				console.info(`${componentLoggingTag} formatted time`, formattedTimes);
+				console.info(`${componentLoggingTag}[localization] formatted time`, formattedTimes);
 				setSupply(max_supply);
 				setPresale(formattedTimes);
 				// console.info(`${componentLoggingTag} presale state:`, presale);
