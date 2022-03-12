@@ -14,6 +14,7 @@ import DiscordIconBtn from "../components/DiscordIconBtn";
 import RaffleIconBtn from "../components/RaffleIconBtn";
 import CountdownTimer from "../components/CountdownTimer";
 import AddToCalendarBtn from "../components/AddToCalendarBtn";
+import ProjectActionCheckbox from "../components/ProjectActionCheckbox";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -31,6 +32,13 @@ const TableTextCell = (props) => {
 			{children}
 		</Typography>
 	)
+}
+
+const stageDisplayStr = (id) => {
+	const loggingTag = `[stageDisplayStr]`;
+	const item = stages.find(stage => stage.id === id);
+	console.info(`${loggingTag} ${id} item:`, item);
+	return item.display_str;
 }
 
 const NotAvailableIndicator = (props) => {
@@ -56,12 +64,7 @@ const render = {
 	stage: (params) => {
 		const loggingTag = `[renderStage]`;
 		if(typeof params.value === "string" && params.value.length > 0){
-			const stageDisplayStr = (id) => {
-				const item = stages.find(stage => stage.id === params.value);
-				console.info(`${loggingTag} ${params.value} item:`, item);
-				return item.display_str;
-			}
-
+			
 			return (
 				<TableTextCell>
 					{stageDisplayStr(params.value)}
@@ -264,6 +267,20 @@ const render = {
 				</Grid>
 			</Box>
 			
+		)
+	},
+	checkbox: (params) => {
+		const loggingTag = `${baseLoggingTag}[checkbox]`;
+		console.info(`${loggingTag} row`, params);
+		// console.info(`${loggingTag} label`, stages);
+		return (
+			// <div>{params.value}</div>
+			<ProjectActionCheckbox
+				field={params.field}
+				project_id={params.row.id}
+				label={stageDisplayStr(params.field)}
+				value={params.value}
+			/>
 		)
 	},
 	general: (params) => {

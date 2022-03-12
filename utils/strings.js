@@ -8,7 +8,7 @@ const projectStages = [
 		display_str: "Applied"
 	},
 	{
-		id: "won_raffle",
+		id: "raffle_won",
 		display_str: "Won Raffle"
 	},
 	{

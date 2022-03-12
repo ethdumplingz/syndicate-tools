@@ -51,14 +51,13 @@ const FollowProjectBtn = (props) => {
 		}
 		const reqBody = {
 			user: address,
-			project_id: projectID,
-			action: isWatching ? "unfollow" : "follow"
+			project_id: projectID
 		}
 		
 		setWatching(!isWatching);
 		
 		try{
-			await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/add`, reqBody);
+			await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/${isWatching ? "unfollow" : "follow"}`, reqBody);
 			
 			console.info(`${loggingTag} new favorite status:`, isWatching);
 		} catch(e){
