@@ -57,17 +57,45 @@ const ActiveProjectsTable = (props) => {
 		console.info(`${componentLoggingTag} projects received`, projects);
 		
 		const columns = [
-			{
-				field: "stage",
-				headerName: "Progress",
-				minWidth: 150,
-				renderCell: render.stage
-			},
+			// {
+			// 	field: "stage",
+			// 	headerName: "Progress",
+			// 	minWidth: 150,
+			// 	renderCell: render.stage
+			// },
 			{
 				field: "title",
 				headerName: "Project",
 				minWidth: 170,
 				renderCell: render.title
+			},
+			{
+				field: "raffle_won",
+				headerName: "WL Won",
+				headerClassName: 'center',
+				cellClassName: 'center',
+				renderCell: render.checkbox
+			},
+			{
+				field: "role_assigned",
+				headerName: "Role Assigned",
+				headerClassName: 'center',
+				cellClassName: 'center',
+				renderCell: render.checkbox
+			},
+			{
+				field: "wallet_added",
+				headerName: "Wallet Added",
+				headerClassName: 'center',
+				cellClassName: 'center',
+				renderCell: render.checkbox
+			},
+			{
+				field: "minted",
+				headerName: "Minted",
+				headerClassName: 'center',
+				cellClassName: 'center',
+				renderCell: render.checkbox
 			},
 			{
 				field: "presale_price",
