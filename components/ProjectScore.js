@@ -90,8 +90,7 @@ const ProjectScore = (props) => {
     return (
         <Grid container alignItems="center">
             <Grid item xs={5}>
-                <Chip label={score} variant="outlined"
-                      color={score === 0 ? "primary" : (score > 0 ? "success" : "error")}/>
+                <Chip label={score} variant="outlined" sx={{ color: "black", fontWeight: "bold"}}/>
             </Grid>
             <Grid item xs={7}>
                 <Grid container>
