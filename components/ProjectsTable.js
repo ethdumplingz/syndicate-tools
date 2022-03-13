@@ -109,7 +109,7 @@ const ProjectsTable = (props) => {
 				headerClassName: 'center',
 				cellClassName: 'center',
 				renderCell: render.urls,
-				width: 240,
+				width: 200,
 				sortable: false
 			},
 			{

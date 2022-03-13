@@ -227,10 +227,7 @@ const render = {
 					display: "flex"
 				}}
 			>
-				<Grid
-					container
-					columnSpacing={1}
-				>
+				<Grid container>
 					{/*<Grid item>*/}
 					{/*	<Tooltip title={"View Project"}>*/}
 					{/*		<IconButton*/}
@@ -246,10 +243,7 @@ const render = {
 						<ProjectScore id={value} title={row.title} />
 					</Grid>
 					<Grid item>
-						<FollowProjectBtn
-							id={value}
-							title={row.title}
-						/>
+						<FollowProjectBtn id={value} title={row.title} />
 					</Grid>
 					{
 						setID === "active-projects" ? (

@@ -1,4 +1,4 @@
-import {Badge, Chip, IconButton, Tooltip} from "@mui/material";
+import {Chip, Grid, IconButton} from "@mui/material";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
@@ -22,11 +22,11 @@ const ProjectScore = (props) => {
     const componentLoggingTag = `[ProjectScore][proj: ${projectID}][proj name: ${title}]`;
 
     const [score, setScore] = useState(0);
-    const [vote, setVote] = useState(null);
+    const [vote, setVote] = useState(0);
     const [upvotes, setUpvotes] = useState(0);
     const [downvotes, setDownvotes] = useState(0);
 
-    const {data: scoreResp} = useSWR(`/projects/get/${projectID}/score`, fetcher, {revalidateIfStale: true});
+    const {data: scoreResp} = useSWR(`/projects/get/${projectID}/score`, fetcher, {revalidateIfStale: false});
     useEffect(() => {
         console.info(`${componentLoggingTag}`, scoreResp)
         if (typeof scoreResp === "object" && scoreResp.data.ok) {
@@ -39,7 +39,7 @@ const ProjectScore = (props) => {
         }
     }, [scoreResp]);
 
-    const {data: voteResp} = useSWR(`/users/${address}/projects/${projectID}/vote/latest`, fetcher, {revalidateIfStale: true});
+    const {data: voteResp} = useSWR(`/users/${address}/projects/${projectID}/vote`, fetcher, {revalidateIfStale: false});
     useEffect(() => {
         console.info(`${componentLoggingTag}`, voteResp)
         if (typeof voteResp === "object" && voteResp.data.ok) {
@@ -50,28 +50,28 @@ const ProjectScore = (props) => {
         }
     }, [voteResp]);
 
-    const projectVote = (action) => async (e) => {
-        const loggingTag = `${componentLoggingTag}[${action}]`;
+    const projectVote = (userVote) => async (e) => {
+        const loggingTag = `${componentLoggingTag}[${userVote === 1 ? "Upvote" : "Downvote"}]`;
         if (typeof onClick === "function") {
             console.info(`${loggingTag} triggering onclick...`);
-            onClick(action);
+            onClick(userVote);
         }
 
-        let newVote = action;
-        if (action === "upvote") {
-            newVote = vote === "upvote" ? "unvote" : "upvote";
-        } else if (action === "downvote") {
-            newVote = vote === "downvote" ? "unvote" : "downvote";
+        let newVote = userVote;
+        if (userVote === 1) {
+            newVote = vote === 1 ? 0 : 1;
+        } else if (userVote === -1) {
+            newVote = vote === -1 ? 0 : -1;
         }
 
         const reqBody = {
             user: address,
             project_id: projectID,
-            action: newVote
+            vote: newVote
         }
 
         try {
-            const voteResult = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/vote`, reqBody);
+            const voteResult = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/vote`, reqBody);
             if (typeof scoreResp === "object" && voteResult.data.ok) {
                 setVote(newVote);
                 setScore(voteResult.data.score.score);
@@ -88,31 +88,38 @@ const ProjectScore = (props) => {
     }
 
     return (
-        <span>
-            <Tooltip title="Downvote project">
-                <IconButton onClick={projectVote("downvote")}>
-                    <Badge badgeContent={downvotes} color="error" anchorOrigin={{vertical: 'top', horizontal: 'left'}}>
-                        <ThumbDown
-                            sx={{
-                                color: vote === "downvote" ? "black" : "gray"
-                            }}
-                        />
-                    </Badge>
-                </IconButton>
-            </Tooltip>
-            <Chip label={score} variant="outlined" color="primary"/>
-            <Tooltip title="Upvote project">
-                <IconButton onClick={projectVote("upvote")}>
-                    <Badge badgeContent={upvotes} color="success">
-                        <ThumbUp
-                            sx={{
-                                color: vote === "upvote" ? "black" : "gray"
-                            }}
-                        />
-                    </Badge>
-                </IconButton>
-            </Tooltip>
-        </span>
+        <Grid container alignItems="center">
+            <Grid item xs={5}>
+                <Chip label={score} variant="outlined"
+                      color={score === 0 ? "primary" : (score > 0 ? "success" : "error")}/>
+            </Grid>
+            <Grid item xs={7}>
+                <Grid container>
+                    <Grid item>
+                        <IconButton onClick={projectVote(1)} size="small" sx={{height: "15px"}}>
+                            <ThumbUp
+                                sx={{
+                                    color: vote === 1 ? "black" : "gray",
+                                    fontSize: 15
+                                }}
+                            />
+                        </IconButton>
+                        <span>{upvotes}</span>
+                    </Grid>
+                    <Grid item>
+                        <IconButton onClick={projectVote(-1)} size="small" sx={{height: "15px"}}>
+                            <ThumbDown
+                                sx={{
+                                    color: vote === -1 ? "black" : "gray",
+                                    fontSize: 15
+                                }}
+                            />
+                        </IconButton>
+                        <span>{downvotes}</span>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
     )
 }
 
