@@ -131,6 +131,13 @@ const ActiveProjectsTable = (props) => {
 			// 	renderCell: render.datetime,
 			// },
 			{
+				field: "wl_source",
+				headerName: "Source",
+				type: "text",
+				cellClassName: "center",
+				renderCell: render.text,
+			},
+			{
 				field: "ts_presale_start",
 				headerName: "Presale Starts In...",
 				type: "datetime",

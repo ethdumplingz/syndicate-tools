@@ -99,7 +99,7 @@ const ProjectView = (props) => {
 	} else if (resp){
 		const loggingTag = `${componentLoggingTag}[resp rcvd]`;
 		const info = resp.data.project[0];
-		const {title, description, website_url, discord_url, twitter_url, ts_presale_start, ts_presale_end, presale_price, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = info;
+		const {title, description, website_url, discord_url, wl_announcements_channel_url, twitter_url, ts_presale_start, ts_presale_end, presale_price, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = info;
 		console.info(`${componentLoggingTag} project info:`, info);
 		
 		console.info(`${loggingTag} pre dayjs`, ts_presale_start);
@@ -135,6 +135,10 @@ const ProjectView = (props) => {
 					<ProjectInfoRow
 						label={"Discord"}
 						value={<a href={discord_url} target={"_blank"}>{discord_url}</a>}
+					/>
+					<ProjectInfoRow
+						label={"Discord WL Announcements URL"}
+						value={<a href={wl_announcements_channel_url} target={"_blank"}>{wl_announcements_channel_url}</a>}
 					/>
 					<ProjectInfoRow
 						label={"WL Raffle Entry"}

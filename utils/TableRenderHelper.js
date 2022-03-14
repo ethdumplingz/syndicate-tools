@@ -283,6 +283,13 @@ const render = {
 			/>
 		)
 	},
+	text: (params) => {
+		const loggingTag = `${baseLoggingTag}[text]`;
+		let displayStr = (typeof params.value !== "undefined")  ? params.value : "N/A";
+		return(
+			<TableTextCell>{displayStr}</TableTextCell>
+		)
+	},
 	general: (params) => {
 		const content = typeof params.value === "number" ? params.value : 0;
 
