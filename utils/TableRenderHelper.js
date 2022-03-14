@@ -15,6 +15,7 @@ import RaffleIconBtn from "../components/RaffleIconBtn";
 import CountdownTimer from "../components/CountdownTimer";
 import AddToCalendarBtn from "../components/AddToCalendarBtn";
 import ProjectActionCheckbox from "../components/ProjectActionCheckbox";
+import ProjectScore from "../components/ProjectScore";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -64,7 +65,7 @@ const render = {
 	stage: (params) => {
 		const loggingTag = `[renderStage]`;
 		if(typeof params.value === "string" && params.value.length > 0){
-			
+
 			return (
 				<TableTextCell>
 					{stageDisplayStr(params.value)}
@@ -226,10 +227,7 @@ const render = {
 					display: "flex"
 				}}
 			>
-				<Grid
-					container
-					columnSpacing={1}
-				>
+				<Grid container>
 					{/*<Grid item>*/}
 					{/*	<Tooltip title={"View Project"}>*/}
 					{/*		<IconButton*/}
@@ -242,10 +240,10 @@ const render = {
 					{/*	</Tooltip>*/}
 					{/*</Grid>*/}
 					<Grid item>
-						<FollowProjectBtn
-							id={value}
-							title={row.title}
-						/>
+						<ProjectScore id={value} title={row.title} />
+					</Grid>
+					<Grid item>
+						<FollowProjectBtn id={value} title={row.title} />
 					</Grid>
 					{
 						setID === "active-projects" ? (

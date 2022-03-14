@@ -153,14 +153,14 @@ const ActiveProjectsTable = (props) => {
 				headerClassName: 'center',
 				cellClassName: 'center',
 				renderCell: render.urls,
-				width: 240,
+				width: 200,
 				sortable: false
 			},
 			{
 				field: "id",
 				headerName: "Actions",
 				type: "actions",
-				minWidth: 120,
+				minWidth: 220,
 				renderCell: (params) => {
 					return render.actions({params, set_id: "active-projects"})
 				}
