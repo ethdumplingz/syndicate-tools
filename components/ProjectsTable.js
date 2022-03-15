@@ -65,7 +65,7 @@ const ProjectsTable = (props) => {
 			// },
 			{
 				field: "presale_price",
-				headerName: "Presale Price",
+				headerName: "Presale Ξ",
 				type: "number",
 				minWidth: 120,
 				headerAlign: "center",
@@ -74,7 +74,7 @@ const ProjectsTable = (props) => {
 			},
 			{
 				field: "public_price",
-				headerName: "Public Price",
+				headerName: "Public Ξ",
 				minWidth: 120,
 				cellClassName: 'center',
 				valueFormatter: render.mintPrice

@@ -71,28 +71,28 @@ const ActiveProjectsTable = (props) => {
 			},
 			{
 				field: "raffle_won",
-				headerName: "WL Won",
+				headerName: "WL",
 				headerAlign: "center",
 				cellClassName: 'center',
 				renderCell: render.checkbox
 			},
 			{
 				field: "role_assigned",
-				headerName: "Role Assigned",
+				headerName: "Role",
 				headerAlign: "center",
 				cellClassName: 'center',
 				renderCell: render.checkbox
 			},
 			{
 				field: "wallet_added",
-				headerName: "Wallet Added",
-				headerClassName: 'center',
+				headerName: "Wallet",
+				headerAlign: 'center',
 				cellClassName: 'center',
 				renderCell: render.checkbox
 			},
 			{
 				field: "minted",
-				headerName: "Minted",
+				headerName: "Mint",
 				headerAlign: "center",
 				cellClassName: 'center',
 				renderCell: render.checkbox
@@ -113,9 +113,10 @@ const ActiveProjectsTable = (props) => {
 			},
 			{
 				field: "presale_price",
-				headerName: "Presale Price",
+				headerName: "Presale Ξ",
 				type: "number",
 				minWidth: 120,
+				headerAlign: 'center',
 				cellClassName: 'center',
 				valueFormatter: render.mintPrice,
 			},
