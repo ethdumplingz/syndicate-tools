@@ -217,7 +217,7 @@ const render = {
 			value = 0;
 		}
 		const ethPrice = Number(value).toFixed(2);
-		return `${ethPrice}E`;
+		return `${ethPrice} Ξ`;
 	},
 	actions: ({params, set_id:setID = "default"} = {}) => {
 		const {value, row} = params;
