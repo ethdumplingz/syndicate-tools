@@ -72,14 +72,14 @@ const ActiveProjectsTable = (props) => {
 			{
 				field: "raffle_won",
 				headerName: "WL Won",
-				headerClassName: 'center',
+				headerAlign: "center",
 				cellClassName: 'center',
 				renderCell: render.checkbox
 			},
 			{
 				field: "role_assigned",
 				headerName: "Role Assigned",
-				headerClassName: 'center',
+				headerAlign: "center",
 				cellClassName: 'center',
 				renderCell: render.checkbox
 			},
@@ -93,7 +93,7 @@ const ActiveProjectsTable = (props) => {
 			{
 				field: "minted",
 				headerName: "Minted",
-				headerClassName: 'center',
+				headerAlign: "center",
 				cellClassName: 'center',
 				renderCell: render.checkbox
 			},

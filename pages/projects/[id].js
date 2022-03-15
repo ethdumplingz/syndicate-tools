@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import axios from "axios";
-import {Typography, Grid, Button} from "@mui/material";
+import {Typography, Grid, Button, Tooltip} from "@mui/material";
 import fetchProjectInfo from "../../utils/project";
 import ProjectActions from "../../components/ProjectActions";
 
@@ -34,6 +34,29 @@ const ProjectViewContainer = (props) => {
 		>
 			{children}
 		</Grid>
+	)
+}
+
+const ProjectURLRow = (props) => {
+	const {url, label} = props;
+	
+	const displayStr = (typeof url  === "string" && url.length > 0) ? (
+		<a href={url} target={"_blank"}>{url}</a>
+	) : (
+		<Tooltip title={"To be confirmed"}>
+			<Typography
+				sx={{
+					fontSize: "1.25rem"
+				}}
+			>TBC</Typography>
+		</Tooltip>
+	);
+	
+	return (
+		<ProjectInfoRow
+			label={"Website"}
+			value={displayStr}
+		/>
 	)
 }
 
@@ -99,7 +122,7 @@ const ProjectView = (props) => {
 	} else if (resp){
 		const loggingTag = `${componentLoggingTag}[resp rcvd]`;
 		const info = resp.data.project[0];
-		const {title, description, website_url, discord_url, wl_announcements_channel_url, twitter_url, ts_presale_start, ts_presale_end, presale_price, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = info;
+		const {title, description, website_url, discord_url, role_acquisition, wallet_submission_url, twitter_url, ts_presale_start, ts_presale_end, presale_price, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = info;
 		console.info(`${componentLoggingTag} project info:`, info);
 		
 		console.info(`${loggingTag} pre dayjs`, ts_presale_start);
@@ -124,25 +147,29 @@ const ProjectView = (props) => {
 						label={"Title"}
 						value={title}
 					/>
-					<ProjectInfoRow
+					<ProjectURLRow
 						label={"Website"}
-						value={<a href={website_url} target={"_blank"}>{website_url}</a>}
+						url={website_url}
 					/>
-					<ProjectInfoRow
+					<ProjectURLRow
 						label={"Twitter"}
-						value={<a href={twitter_url} target={"_blank"}>{twitter_url}</a>}
+						url={twitter_url}
 					/>
-					<ProjectInfoRow
+					<ProjectURLRow
 						label={"Discord"}
-						value={<a href={discord_url} target={"_blank"}>{discord_url}</a>}
+						url={discord_url}
 					/>
-					<ProjectInfoRow
-						label={"Discord WL Announcements URL"}
-						value={<a href={wl_announcements_channel_url} target={"_blank"}>{wl_announcements_channel_url}</a>}
+					<ProjectURLRow
+						label={"Raffle Entry"}
+						url={wl_register_url}
 					/>
-					<ProjectInfoRow
-						label={"WL Raffle Entry"}
-						value={wl_register_url.length === 0 ? <span>N/A</span> : <a href={wl_register_url} target={"_blank"}>{wl_register_url}</a>}
+					<ProjectURLRow
+						label={"Role Acquisition"}
+						url={role_acquisition}
+					/>
+					<ProjectURLRow
+						label={"Wallet Submission"}
+						url={wallet_submission_url}
 					/>
 					<ProjectInfoRow
 						label={"Presale Price"}

@@ -15,6 +15,8 @@ import RaffleIconBtn from "../components/RaffleIconBtn";
 import CountdownTimer from "../components/CountdownTimer";
 import AddToCalendarBtn from "../components/AddToCalendarBtn";
 import ProjectActionCheckbox from "../components/ProjectActionCheckbox";
+import SubmitWalletBtn from "../components/SubmitWalletBtn";
+import GetRoleBtn from "../components/GetRoleBtn";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -271,17 +273,46 @@ const render = {
 	},
 	checkbox: (params) => {
 		const loggingTag = `${baseLoggingTag}[checkbox]`;
-		console.info(`${loggingTag} row`, params);
-		// console.info(`${loggingTag} label`, stages);
-		return (
-			// <div>{params.value}</div>
-			<ProjectActionCheckbox
-				field={params.field}
-				project_id={params.row.id}
-				label={stageDisplayStr(params.field)}
-				value={params.value}
-			/>
-		)
+		
+		const {field, row, value} = params;
+		const fieldsToReplaceWithActions = [
+			"role_assigned",
+			"wallet_added"
+		];
+		// console.info(`${loggingTag} field: ${field}`);
+		if(fieldsToReplaceWithActions.indexOf(field) > -1){
+			console.info(`${loggingTag} row`, params);
+		}
+		
+		if(
+			(!value) &&
+			(fieldsToReplaceWithActions.indexOf(field) > -1)
+		){
+			if(field === fieldsToReplaceWithActions[0]){//role_acquisition
+				return(
+					<GetRoleBtn
+						url={row.role_acquisition_url}
+					/>
+				)
+			} else {//wallet submission url
+				return(
+					<SubmitWalletBtn
+						url={row.wallet_submission_url}
+					/>
+				)
+			}
+		} else {
+			return (
+				// <div>{params.value}</div>
+				<ProjectActionCheckbox
+					field={field}
+					project_id={row.id}
+					label={stageDisplayStr(field)}
+					value={value}
+				/>
+			)
+		}
+
 	},
 	text: (params) => {
 		const loggingTag = `${baseLoggingTag}[text]`;

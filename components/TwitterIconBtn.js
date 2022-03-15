@@ -8,9 +8,7 @@ const TwitterIconBtn = (props) => {
 			<IconButton
 				onClick={typeof onClick === "function" ? onClick : ()=>{}}
 			>
-				<SvgIcon>
-					<TwitterIcon/>
-				</SvgIcon>
+				<TwitterIcon/>
 			</IconButton>
 		</Tooltip>
 	)

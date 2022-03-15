@@ -96,7 +96,8 @@ const ProjectForm = (props) => {
 	const [discord, setDiscord] = useState({
 		isOpen: true,
 		url: "",
-		wl_announcements_url: ""
+		role_acquisition_url: "",
+		wallet_submission_url: ""
 	});
 	const [price, setPrice] = useState({
 		presale: 0,
@@ -143,7 +144,8 @@ const ProjectForm = (props) => {
 				website_url: website,
 				twitter_url: twitter,
 				discord_url: discord.url,
-				wl_announcements_channel_url: discord.wl_announcements_url,
+				role_acquisition_url: discord.role_acquisition_url,
+				wallet_submission_url: discord.wallet_submission_url,
 				is_discord_open: discord.isOpen,
 				presale_price: price.presale,
 				public_price: price.public,
@@ -197,7 +199,8 @@ const ProjectForm = (props) => {
 				website_url: website,
 				twitter_url: twitter,
 				discord_url: discord.url,
-				wl_announcements_channel_url: discord.wl_announcements_url,
+				role_acquisition_url: discord.role_acquisition_url,
+				wallet_submission_url: discord.wallet_submission_url,
 				is_discord_open: discord.isOpen,
 				presale_price: price.presale,
 				public_price: price.public,
@@ -278,7 +281,7 @@ const ProjectForm = (props) => {
 			setDescription("");
 			setWebsite("");
 			setTwitter("");
-			setDiscord({...discord, url: "", wl_announcements_url: ""});
+			setDiscord({...discord, url: "", role_acquisition_url: ""});
 			setPrice({
 				presale:0,
 				public: 0
@@ -310,14 +313,14 @@ const ProjectForm = (props) => {
 		if(typeof data !== "undefined"){
 			const resp = data,
 				project = resp.data.project[0];
-			const {title, description, website_url, twitter_url, discord_url, wl_announcements_channel_url, presale_price, public_price, ts_presale_start, ts_presale_end, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = project;
+			const {title, description, website_url, twitter_url, discord_url, role_acquisition_url, wallet_submission_url, presale_price, public_price, ts_presale_start, ts_presale_end, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = project;
 			
 			useEffect(() => {
 				setTitle(title);
 				setDescription(description);
 				setWebsite(website_url);
 				setTwitter(twitter_url);
-				setDiscord({...discord, url: discord_url, wl_announcements_url: wl_announcements_channel_url});
+				setDiscord({...discord, url: discord_url, role_acquisition_url, wallet_submission_url});
 				setPrice({
 					presale: presale_price,
 					public: public_price
@@ -427,10 +430,18 @@ const ProjectForm = (props) => {
 					</Grid>
 					<Grid item>
 						<FormTextField
-							value={discord.wl_announcements_url}
-							label={"Discord WL Announcements URL"}
+							value={discord.role_acquisition_url}
+							label={"Role Acquisition URL"}
 							type={"url"}
-							onChange={(e)=>{setDiscord({...discord, wl_announcements_url: e.currentTarget.value})}}
+							onChange={(e)=>{setDiscord({...discord, role_acquisition_url: e.currentTarget.value})}}
+						/>
+					</Grid>
+					<Grid item>
+						<FormTextField
+							value={discord.wallet_submission_url}
+							label={"Wallet Submission URL"}
+							type={"url"}
+							onChange={(e)=>{setDiscord({...discord, wallet_submission_url: e.currentTarget.value})}}
 						/>
 					</Grid>
 					<Grid
