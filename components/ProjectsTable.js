@@ -65,7 +65,7 @@ const ProjectsTable = (props) => {
 			// },
 			{
 				field: "presale_price",
-				headerName: "Presale Ξ",
+				headerName: "Presale",
 				type: "number",
 				minWidth: 120,
 				headerAlign: "center",
@@ -74,15 +74,16 @@ const ProjectsTable = (props) => {
 			},
 			{
 				field: "public_price",
-				headerName: "Public Ξ",
+				headerName: "Public",
 				minWidth: 120,
 				cellClassName: 'center',
 				valueFormatter: render.mintPrice
 			},
 			{
 				field: "ts_presale_start",
-				headerName: "Presale Starts In...",
+				headerName: "Presale",
 				type: "datetime",
+				renderHeader: render.header.date,
 				renderCell: render.countdown,
 				cellClassName: "center",
 				minWidth: 180,

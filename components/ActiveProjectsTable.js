@@ -113,7 +113,7 @@ const ActiveProjectsTable = (props) => {
 			},
 			{
 				field: "presale_price",
-				headerName: "Presale Ξ",
+				headerName: "Presale",
 				type: "number",
 				minWidth: 120,
 				headerAlign: 'center',
@@ -154,10 +154,11 @@ const ActiveProjectsTable = (props) => {
 			},
 			{
 				field: "ts_presale_start",
-				headerName: "Presale Starts In...",
+				headerName: "Presale",
 				type: "datetime",
 				cellClassName: "center",
 				minWidth: 180,
+				renderHeader: render.header.date,
 				renderCell: render.countdown,
 			},
 			{

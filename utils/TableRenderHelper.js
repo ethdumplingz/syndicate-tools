@@ -5,6 +5,7 @@ import {project} from "./strings";
 import WebsiteIcon from "@mui/icons-material/Public";
 import RaffleIcon from "@mui/icons-material/ConfirmationNumber";
 import NotAvailableIcon from "@mui/icons-material/NotInterested";
+import DatetimeIcon from "@mui/icons-material/CalendarToday";
 import LaunchIcon from "@mui/icons-material/Launch";
 import FollowProjectBtn from "../components/FollowProjectBtn";
 import {Twitter} from "@mui/icons-material";
@@ -315,6 +316,22 @@ const render = {
 				url={value}
 			/>
 		)
+	},
+	header:{
+		date: (params) => {
+			const loggingTag = `${baseLoggingTag}[header][date]`;
+			const {colDef} = params;
+			console.info(`${loggingTag} params`, params);
+			
+			return(
+				<>
+					<DatetimeIcon
+						sx={{mr:1}}
+					/>
+					{colDef.headerName}
+				</>
+			)
+		}
 	}
 }
 
