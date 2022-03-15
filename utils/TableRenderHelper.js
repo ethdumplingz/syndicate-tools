@@ -17,6 +17,8 @@ import AddToCalendarBtn from "../components/AddToCalendarBtn";
 import ProjectActionCheckbox from "../components/ProjectActionCheckbox";
 import SubmitWalletBtn from "../components/SubmitWalletBtn";
 import GetRoleBtn from "../components/GetRoleBtn";
+import InfoAvailableBtn from "../components/InfoAvailableBtn";
+import EditProjectBtn from "../components/EditProjectBtn";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -249,6 +251,11 @@ const render = {
 							title={row.title}
 						/>
 					</Grid>
+					<Grid item>
+						<EditProjectBtn
+							id={row.id}
+						/>
+					</Grid>
 					{
 						setID === "active-projects" ? (
 							<Grid item>
@@ -275,44 +282,16 @@ const render = {
 		const loggingTag = `${baseLoggingTag}[checkbox]`;
 		
 		const {field, row, value} = params;
-		const fieldsToReplaceWithActions = [
-			"role_assigned",
-			"wallet_added"
-		];
-		// console.info(`${loggingTag} field: ${field}`);
-		if(fieldsToReplaceWithActions.indexOf(field) > -1){
-			console.info(`${loggingTag} row`, params);
-		}
 		
-		if(
-			(!value) &&
-			(fieldsToReplaceWithActions.indexOf(field) > -1)
-		){
-			if(field === fieldsToReplaceWithActions[0]){//role_acquisition
-				return(
-					<GetRoleBtn
-						url={row.role_acquisition_url}
-					/>
-				)
-			} else {//wallet submission url
-				return(
-					<SubmitWalletBtn
-						url={row.wallet_submission_url}
-					/>
-				)
-			}
-		} else {
-			return (
-				// <div>{params.value}</div>
-				<ProjectActionCheckbox
-					field={field}
-					project_id={row.id}
-					label={stageDisplayStr(field)}
-					value={value}
-				/>
-			)
-		}
-
+		return (
+			// <div>{params.value}</div>
+			<ProjectActionCheckbox
+				field={field}
+				project_id={row.id}
+				label={stageDisplayStr(field)}
+				value={value}
+			/>
+		)
 	},
 	text: (params) => {
 		const loggingTag = `${baseLoggingTag}[text]`;
@@ -326,6 +305,15 @@ const render = {
 
 		return (
 			<span>{content}</span>
+		)
+	},
+	information: (params) => {
+		const loggingTag = `${baseLoggingTag}[information]`;
+		const {value} = params;
+		return (
+			<InfoAvailableBtn
+				url={value}
+			/>
 		)
 	}
 }

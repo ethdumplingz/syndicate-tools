@@ -98,6 +98,20 @@ const ActiveProjectsTable = (props) => {
 				renderCell: render.checkbox
 			},
 			{
+				field: "role_acquisition_url",
+				headerName: "Role Info",
+				headerAlign: "center",
+				cellClassName: 'center',
+				renderCell: render.information
+			},
+			{
+				field: "wallet_submission_url",
+				headerName: "Wallet Info",
+				headerAlign: "center",
+				cellClassName: 'center',
+				renderCell: render.information
+			},
+			{
 				field: "presale_price",
 				headerName: "Presale Price",
 				type: "number",
@@ -167,7 +181,7 @@ const ActiveProjectsTable = (props) => {
 				field: "id",
 				headerName: "Actions",
 				type: "actions",
-				minWidth: 120,
+				minWidth: 180,
 				renderCell: (params) => {
 					return render.actions({params, set_id: "active-projects"})
 				}
