@@ -110,20 +110,20 @@ const ProjectsTable = (props) => {
 				headerClassName: 'center',
 				cellClassName: 'center',
 				renderCell: render.urls,
-				width: 240,
+				width: 200,
 				sortable: false
 			},
 			{
 				field: "id",
 				headerName: "Actions",
 				type: "actions",
-				minWidth: 120,
+				minWidth: 200,
 				renderCell: (params) => {
 					return render.actions({params})
 				}
 			}
 		];
-		
+
 		return (
 			<>
 				<ProjectTableActions/>

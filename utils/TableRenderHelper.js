@@ -20,6 +20,7 @@ import SubmitWalletBtn from "../components/SubmitWalletBtn";
 import GetRoleBtn from "../components/GetRoleBtn";
 import InfoAvailableBtn from "../components/InfoAvailableBtn";
 import EditProjectBtn from "../components/EditProjectBtn";
+import ProjectScore from "../components/ProjectScore";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -69,7 +70,7 @@ const render = {
 	stage: (params) => {
 		const loggingTag = `[renderStage]`;
 		if(typeof params.value === "string" && params.value.length > 0){
-			
+
 			return (
 				<TableTextCell>
 					{stageDisplayStr(params.value)}
@@ -247,10 +248,10 @@ const render = {
 					{/*	</Tooltip>*/}
 					{/*</Grid>*/}
 					<Grid item>
-						<FollowProjectBtn
-							id={value}
-							title={row.title}
-						/>
+						<ProjectScore id={value} title={row.title} />
+					</Grid>
+					<Grid item>
+						<FollowProjectBtn id={value} title={row.title} />
 					</Grid>
 					<Grid item>
 						<EditProjectBtn
