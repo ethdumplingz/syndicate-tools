@@ -182,8 +182,9 @@ const ActiveProjectsTable = (props) => {
 			{
 				field: "id",
 				headerName: "Actions",
+				headerAlign: "left",
 				type: "actions",
-				minWidth: 220,
+				minWidth: 280,
 				renderCell: (params) => {
 					return render.actions({params, set_id: "active-projects"})
 				}
