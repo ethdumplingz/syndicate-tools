@@ -1,4 +1,4 @@
-import {Chip, Grid, IconButton} from "@mui/material";
+import {Box, Grid, IconButton} from "@mui/material";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
@@ -25,10 +25,10 @@ const ProjectScore = (props) => {
     const [vote, setVote] = useState(0);
     const [upvotes, setUpvotes] = useState(0);
     const [downvotes, setDownvotes] = useState(0);
-
+    // console.info(`${componentLoggingTag} re render`);
     const {data: scoreResp} = useSWR(`/projects/get/${projectID}/score`, fetcher, {revalidateIfStale: false});
     useEffect(() => {
-        console.info(`${componentLoggingTag}`, scoreResp)
+        console.info(`${componentLoggingTag} score resp`, scoreResp)
         if (typeof scoreResp === "object" && scoreResp.data.ok) {
             setScore(scoreResp.data.score.score);
             setUpvotes(scoreResp.data.score.upvotes);
@@ -41,7 +41,7 @@ const ProjectScore = (props) => {
 
     const {data: voteResp} = useSWR(`/users/${address}/projects/${projectID}/vote`, fetcher, {revalidateIfStale: false});
     useEffect(() => {
-        console.info(`${componentLoggingTag}`, voteResp)
+        console.info(`${componentLoggingTag} vote resp`, voteResp)
         if (typeof voteResp === "object" && voteResp.data.ok) {
             setVote(voteResp.data.vote);
             if (typeof onClick === "function") {
@@ -50,8 +50,9 @@ const ProjectScore = (props) => {
         }
     }, [voteResp]);
 
-    const projectVote = (userVote) => async (e) => {
-        const loggingTag = `${componentLoggingTag}[${userVote === 1 ? "Upvote" : "Downvote"}]`;
+    const projectVote = async (userVote) => {
+        const loggingTag = `${componentLoggingTag}[projectVote][${userVote === 1 ? "Upvote" : "Downvote"}]`;
+        console.info(`${loggingTag} calling...`);
         if (typeof onClick === "function") {
             console.info(`${loggingTag} triggering onclick...`);
             onClick(userVote);
@@ -88,14 +89,28 @@ const ProjectScore = (props) => {
     }
 
     return (
-        <Grid container alignItems="center">
+        <Grid container alignItems="center" columnSpacing={1}>
             <Grid item xs={5}>
-                <Chip label={score} variant="outlined" sx={{ color: "black", fontWeight: "bold"}}/>
+                <Box
+                  sx={{
+                      border: `1px solid #cccccc`,
+                      borderRadius: "50%",
+                      height: "34px",
+                      width: "34px",
+                      color: "black",
+                      fontWeight: "bold",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                >
+                    {score}
+                </Box>
             </Grid>
             <Grid item xs={7}>
                 <Grid container>
                     <Grid item>
-                        <IconButton onClick={projectVote(1)} size="small" sx={{height: "15px"}}>
+                        <IconButton onClick={() => {projectVote(1)}} size="small" sx={{height: "15px"}}>
                             <ThumbUp
                                 sx={{
                                     color: vote === 1 ? "black" : "gray",
@@ -106,7 +121,7 @@ const ProjectScore = (props) => {
                         <span>{upvotes}</span>
                     </Grid>
                     <Grid item>
-                        <IconButton onClick={projectVote(-1)} size="small" sx={{height: "15px"}}>
+                        <IconButton onClick={() => {projectVote(-1)}} size="small" sx={{height: "15px"}}>
                             <ThumbDown
                                 sx={{
                                     color: vote === -1 ? "black" : "gray",

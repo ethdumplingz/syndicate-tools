@@ -21,6 +21,7 @@ import GetRoleBtn from "../components/GetRoleBtn";
 import InfoAvailableBtn from "../components/InfoAvailableBtn";
 import EditProjectBtn from "../components/EditProjectBtn";
 import ProjectScore from "../components/ProjectScore";
+import {base} from "next/dist/build/webpack/config/blocks/base";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -221,64 +222,39 @@ const render = {
 		return `${ethPrice} Ξ`;
 	},
 	actions: ({params, set_id:setID = "default"} = {}) => {
-		const {value, row} = params;
+		const {id, row} = params;
+		// const value = params.getValue();
 		const loggingTag = `${baseLoggingTag}[actions]`;
 		// const router = useRouter();
 		// console.info(`[render][actions] id:`, value);
-		console.info(`${loggingTag} row`, row)
-		return(
-			<Box
-				sx={{
-					display: "flex"
-				}}
-			>
-				<Grid
-					container
-					columnSpacing={1}
-				>
-					{/*<Grid item>*/}
-					{/*	<Tooltip title={"View Project"}>*/}
-					{/*		<IconButton*/}
-					{/*			onClick={(e)=>{*/}
-					{/*				router.push(`/projects/${value}`);*/}
-					{/*			}}*/}
-					{/*		>*/}
-					{/*			<LaunchIcon/>*/}
-					{/*		</IconButton>*/}
-					{/*	</Tooltip>*/}
-					{/*</Grid>*/}
-					<Grid item>
-						<ProjectScore id={value} title={row.title} />
-					</Grid>
-					<Grid item>
-						<FollowProjectBtn id={value} title={row.title} />
-					</Grid>
-					<Grid item>
-						<EditProjectBtn
-							id={row.id}
-						/>
-					</Grid>
-					{
-						setID === "active-projects" ? (
-							<Grid item>
-								<AddToCalendarBtn
-									id={value}
-									event={{
-										name: row.title,
-										details: row.description,
-										start: row.ts_presale_start,
-										end: row.ts_presale_end
-									}}
-								/>
-							</Grid>
-						) : (
-							<></>
-						)
-					}
-				</Grid>
-			</Box>
-			
-		)
+		console.info(`${loggingTag} row`, row);
+		console.info(`${loggingTag} id`, id);
+		
+		const actions = [
+			<Grid item>
+				<FollowProjectBtn id={id} title={row.title} />
+			</Grid>,
+			<Grid item>
+				<EditProjectBtn
+					id={id}
+				/>
+			</Grid>,
+		]
+		if(setID === "active-projects"){
+			actions.push(<Grid item>
+				<AddToCalendarBtn
+					id={id}
+					event={{
+						name: row.title,
+						details: row.description,
+						start: row.ts_presale_start,
+						end: row.ts_presale_end
+					}}
+				/>
+			</Grid>)
+		}
+		
+		return actions;
 	},
 	checkbox: (params) => {
 		const loggingTag = `${baseLoggingTag}[checkbox]`;
@@ -317,6 +293,17 @@ const render = {
 				url={value}
 			/>
 		)
+	},
+	score: (params) => {
+		const loggingTag = `${baseLoggingTag}[score]`;
+		console.info(`${loggingTag} params`, params);
+		const {row} = params;
+		const {id, title} = row;
+		return [
+			<Grid item>
+				<ProjectScore id={id} title={title} />
+			</Grid>
+		]
 	},
 	header:{
 		date: (params) => {

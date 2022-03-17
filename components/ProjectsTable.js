@@ -34,7 +34,7 @@ const fetchTableData = async (url) => {
 const ProjectsTable = (props) => {
 	const componentLoggingTag = `[ProjectsTable]`;
 	
-	const {data:resp, error, isValidating} = useSWR('/projects/get', fetchTableData);
+	const {data:resp, error, isValidating} = useSWR('/projects/get', fetchTableData, {revalidateIfStale: false});
 	
 	if(error){
 		console.error(`${componentLoggingTag} error:`, error);
@@ -114,12 +114,20 @@ const ProjectsTable = (props) => {
 				sortable: false
 			},
 			{
+				field: "user_address",
+				headerName: "Score",
+				headerAlign: "left",
+				minWidth: 100,
+				type: "actions",
+				getActions: render.score
+			},
+			{
 				field: "id",
 				headerName: "Actions",
 				headerAlign: "left",
 				type: "actions",
-				minWidth: 260,
-				renderCell: (params) => {
+				minWidth: 140,
+				getActions: (params) => {
 					return render.actions({params})
 				}
 			}

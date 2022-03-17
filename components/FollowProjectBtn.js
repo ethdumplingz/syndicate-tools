@@ -21,11 +21,12 @@ const FollowProjectBtn = (props) => {
 	const {address} = useSyndicateAuthenticationContext();
 	const {onClick, id:projectID, title=""} = props;
 	const componentLoggingTag = `[FollowProjectBtn][proj: ${projectID}][proj name: ${title}]`;
-	
+	console.info(`${componentLoggingTag} address: "${address}" project id: ${projectID}`);
 	const [isWatching, setWatching] = useState(false);
 	
 	const {data:resp, error} = useSWR(`/users/${address}/projects/${projectID}/following`, fetcher, {
-		revalidateIfStale: false
+		revalidateIfStale: false,
+		revalidateOnFocus: false
 	});
 	
 	// console.info(`${componentLoggingTag} watching:`, isWatching);

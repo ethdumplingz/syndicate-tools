@@ -185,7 +185,7 @@ const ActiveProjectsTable = (props) => {
 				headerAlign: "left",
 				type: "actions",
 				minWidth: 280,
-				renderCell: (params) => {
+				getActions: (params) => {
 					return render.actions({params, set_id: "active-projects"})
 				}
 			}

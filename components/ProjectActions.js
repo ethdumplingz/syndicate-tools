@@ -17,16 +17,16 @@ const ProjectActions = (props) => {
 			justifyContent={"flex-end"}
 			alignItems={"center"}
 		>
-			<Grid
-				item
-				sx={{
-					display: isWatching ? "block" : "none"
-				}}
-			>
-				<UserProjectStatus
-					id={projectID}
-				/>
-			</Grid>
+			{/*<Grid*/}
+			{/*	item*/}
+			{/*	sx={{*/}
+			{/*		display: isWatching ? "block" : "none"*/}
+			{/*	}}*/}
+			{/*>*/}
+			{/*	<UserProjectStatus*/}
+			{/*		id={projectID}*/}
+			{/*	/>*/}
+			{/*</Grid>*/}
 			<Grid
 				item
 				sx={{
