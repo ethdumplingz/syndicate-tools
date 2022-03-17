@@ -231,18 +231,10 @@ const render = {
 		console.info(`${loggingTag} id`, id);
 		
 		const actions = [
-			<Grid item>
-				<FollowProjectBtn id={id} title={row.title} />
-			</Grid>,
-			<Grid item>
-				<EditProjectBtn
-					id={id}
-				/>
-			</Grid>,
+			<EditProjectBtn id={id}/>,
 		]
 		if(setID === "active-projects"){
-			actions.push(<Grid item>
-				<AddToCalendarBtn
+			actions.push(<AddToCalendarBtn
 					id={id}
 					event={{
 						name: row.title,
@@ -250,8 +242,7 @@ const render = {
 						start: row.ts_presale_start,
 						end: row.ts_presale_end
 					}}
-				/>
-			</Grid>)
+				/>)
 		}
 		
 		return actions;
@@ -298,11 +289,29 @@ const render = {
 		const loggingTag = `${baseLoggingTag}[score]`;
 		console.info(`${loggingTag} params`, params);
 		const {row} = params;
-		const {id, title} = row;
+		const {id, title, vote, upvotes, downvotes, score} = row;
 		return [
-			<Grid item>
-				<ProjectScore id={id} title={title} />
-			</Grid>
+			<ProjectScore
+				id={id}
+				title={title}
+				vote={vote}
+				upvotes={upvotes}
+				downvotes={downvotes}
+				score={score}
+			/>
+		]
+	},
+	following: (params) => {
+		const loggingTag = `${baseLoggingTag}[following]`;
+		console.info(`${loggingTag} params`, params);
+		const {row} = params;
+		const {id, title, is_following} = row;
+		return[
+			<FollowProjectBtn
+				id={id}
+				title={title}
+				is_following={is_following}
+			/>
 		]
 	},
 	header:{

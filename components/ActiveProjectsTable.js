@@ -180,11 +180,27 @@ const ActiveProjectsTable = (props) => {
 				sortable: false
 			},
 			{
+				field: "vote",
+				headerName: "Score",
+				headerAlign: "left",
+				minWidth: 100,
+				type: "actions",
+				getActions: render.score
+			},
+			{
+				field: "is_following",
+				headerName: "Following",
+				minWidth: 0,
+				headerAlign: "center",
+				type: "actions",
+				getActions: render.following
+			},
+			{
 				field: "id",
 				headerName: "Actions",
 				headerAlign: "left",
 				type: "actions",
-				minWidth: 280,
+				minWidth: 80,
 				getActions: (params) => {
 					return render.actions({params, set_id: "active-projects"})
 				}

@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import {useRouter} from "next/router";
 import {render} from "../utils/TableRenderHelper";
 import ProjectTableActions from "./ProjectTableActions";
+import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 
 
 const TableWrapper = (props) => {
@@ -33,8 +34,9 @@ const fetchTableData = async (url) => {
 
 const ProjectsTable = (props) => {
 	const componentLoggingTag = `[ProjectsTable]`;
+	const {address} = useSyndicateAuthenticationContext();
 	
-	const {data:resp, error, isValidating} = useSWR('/projects/get', fetchTableData, {revalidateIfStale: false});
+	const {data:resp, error, isValidating} = useSWR(`/projects/get?user=${address}`, fetchTableData, {revalidateIfStale: false});
 	
 	if(error){
 		console.error(`${componentLoggingTag} error:`, error);
@@ -114,12 +116,20 @@ const ProjectsTable = (props) => {
 				sortable: false
 			},
 			{
-				field: "user_address",
+				field: "vote",
 				headerName: "Score",
 				headerAlign: "left",
 				minWidth: 100,
 				type: "actions",
 				getActions: render.score
+			},
+			{
+				field: "is_following",
+				headerName: "Following",
+				minWidth: 0,
+				headerAlign: "center",
+				type: "actions",
+				getActions: render.following
 			},
 			{
 				field: "id",

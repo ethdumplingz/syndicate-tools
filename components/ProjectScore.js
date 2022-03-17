@@ -18,53 +18,40 @@ const fetcher = async (url) => {
 
 const ProjectScore = (props) => {
     const {address} = useSyndicateAuthenticationContext();
-    const {onClick, id: projectID, title = ""} = props;
+    const {onClick, id: projectID, title = "", vote, score, upvotes, downvotes} = props;
     const componentLoggingTag = `[ProjectScore][proj: ${projectID}][proj name: ${title}]`;
-
-    const [score, setScore] = useState(0);
-    const [vote, setVote] = useState(0);
-    const [upvotes, setUpvotes] = useState(0);
-    const [downvotes, setDownvotes] = useState(0);
-    // console.info(`${componentLoggingTag} re render`);
-    const {data: scoreResp} = useSWR(`/projects/get/${projectID}/score`, fetcher, {revalidateIfStale: false});
+    console.info(`${componentLoggingTag} vote: ${vote}`, vote === -1);
+    const [voteState, setVote] = useState(vote);
+    const [scoreState, setScore] = useState(score);
+    const [upvotesState, setUpvotes] = useState(upvotes);
+    const [downvotesState, setDownvotes] = useState(downvotes);
     useEffect(() => {
-        console.info(`${componentLoggingTag} score resp`, scoreResp)
-        if (typeof scoreResp === "object" && scoreResp.data.ok) {
-            setScore(scoreResp.data.score.score);
-            setUpvotes(scoreResp.data.score.upvotes);
-            setDownvotes(scoreResp.data.score.downvotes);
-            if (typeof onClick === "function") {
-                onClick(scoreResp.data.score.score);
-            }
-        }
-    }, [scoreResp]);
-
-    const {data: voteResp} = useSWR(`/users/${address}/projects/${projectID}/vote`, fetcher, {revalidateIfStale: false});
+        setVote(vote);
+    }, [vote]);
     useEffect(() => {
-        console.info(`${componentLoggingTag} vote resp`, voteResp)
-        if (typeof voteResp === "object" && voteResp.data.ok) {
-            setVote(voteResp.data.vote);
-            if (typeof onClick === "function") {
-                onClick(voteResp.data.vote);
-            }
-        }
-    }, [voteResp]);
-
+        setScore(score);
+    }, [score]);
+    useEffect(() => {
+        setUpvotes(upvotes);
+    }, [upvotes]);
+    useEffect(() => {
+        setDownvotes(downvotes);
+    }, [downvotes]);
     const projectVote = async (userVote) => {
         const loggingTag = `${componentLoggingTag}[projectVote][${userVote === 1 ? "Upvote" : "Downvote"}]`;
         console.info(`${loggingTag} calling...`);
-        if (typeof onClick === "function") {
-            console.info(`${loggingTag} triggering onclick...`);
-            onClick(userVote);
-        }
 
         let newVote = userVote;
         if (userVote === 1) {
-            newVote = vote === 1 ? 0 : 1;
+            newVote = voteState === 1 ? 0 : 1;
         } else if (userVote === -1) {
-            newVote = vote === -1 ? 0 : -1;
+            newVote = voteState === -1 ? 0 : -1;
         }
-
+  
+        setVote(newVote);
+        
+        console.info(`${loggingTag} new vote status:`, voteState);
+        
         const reqBody = {
             user: address,
             project_id: projectID,
@@ -73,17 +60,14 @@ const ProjectScore = (props) => {
 
         try {
             const voteResult = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/vote`, reqBody);
-            if (typeof scoreResp === "object" && voteResult.data.ok) {
-                setVote(newVote);
+            console.info(`${loggingTag} vote result`, voteResult);
+            if (typeof voteResult === "object" && voteResult.data.ok) {
                 setScore(voteResult.data.score.score);
                 setUpvotes(voteResult.data.score.upvotes);
                 setDownvotes(voteResult.data.score.downvotes);
                 console.info(`${loggingTag} new vote status:`, vote);
             }
         } catch (e) {
-            if (typeof onClick === "function") {
-                onClick(vote);
-            }
             console.error(`${loggingTag} Error:`, e);
         }
     }
@@ -104,7 +88,7 @@ const ProjectScore = (props) => {
                       justifyContent: "center"
                     }}
                 >
-                    {score}
+                    {scoreState}
                 </Box>
             </Grid>
             <Grid item xs={7}>
@@ -113,23 +97,23 @@ const ProjectScore = (props) => {
                         <IconButton onClick={() => {projectVote(1)}} size="small" sx={{height: "15px"}}>
                             <ThumbUp
                                 sx={{
-                                    color: vote === 1 ? "black" : "gray",
+                                    color: voteState === 1 ? "black" : "gray",
                                     fontSize: 15
                                 }}
                             />
                         </IconButton>
-                        <span>{upvotes}</span>
+                        <span>{upvotesState}</span>
                     </Grid>
                     <Grid item>
                         <IconButton onClick={() => {projectVote(-1)}} size="small" sx={{height: "15px"}}>
                             <ThumbDown
                                 sx={{
-                                    color: vote === -1 ? "black" : "gray",
+                                    color: voteState === -1 ? "black" : "gray",
                                     fontSize: 15
                                 }}
                             />
                         </IconButton>
-                        <span>{downvotes}</span>
+                        <span>{downvotesState}</span>
                     </Grid>
                 </Grid>
             </Grid>
