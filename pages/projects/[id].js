@@ -54,7 +54,7 @@ const ProjectURLRow = (props) => {
 	
 	return (
 		<ProjectInfoRow
-			label={"Website"}
+			label={label}
 			value={displayStr}
 		/>
 	)

@@ -5,6 +5,7 @@ import {fetchProjectInfo} from "../utils/project";
 import useSWR from "swr";
 import {useRouter} from "next/router";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
+import {validateURL} from "../utils/urls";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 dayjs.extend(utc);
@@ -37,7 +38,7 @@ const FormActionBtn = (props) => {
 
 const FormTextField = (props) => {
 	const componentLoggingTag = `[FormTextField]`;
-	const {value="",defaultValue, maxRows = 1, onChange = ()=>{}, children, label="", type="text", step = 1, helperText=""} = props;
+	const {value="",defaultValue, maxRows = 1, onChange = ()=>{}, children, label="", type="text", step = 1, helperText="", error = false} = props;
 	// console.info(`${componentLoggingTag} props`, props);
 	return(
 		<TextField
@@ -52,6 +53,7 @@ const FormTextField = (props) => {
 			type={type}
 			step={step}
 			helperText={helperText}
+			error={error}
 		>
 			{children}
 		</TextField>
@@ -274,6 +276,29 @@ const ProjectForm = (props) => {
 		}
 	}
 	
+	const checkIfUrlsAreInvalid = () => {
+		const loggingTag = `${componentLoggingTag}[checkIfUrlsAreInvalid]`;
+		let invalid = false;
+		try{
+			const urlsToValidate = [
+				twitter,
+				discord.url,
+				discord.role_acquisition_url,
+				discord.wallet_submission_url
+			];
+			
+			urlsToValidate.forEach( (url, index) => {
+				if(!validateURL({url, type: index === 0 ? "twitter" : "discord"})){
+					invalid = true;
+					console.info(`${loggingTag} url: ${url} is invalid!`);
+				}
+			});
+		} catch(e){
+			console.error(`${loggingTag} Error:`, e);
+		}
+		return invalid;
+	}
+	
 	const resetProjectForm = async () => {
 		const loggingTag = `${componentLoggingTag}[resetProjectForm]`;
 		try{
@@ -395,9 +420,11 @@ const ProjectForm = (props) => {
 					>
 						<FormTextField
 							value={twitter}
+							error={!validateURL({url: twitter})}
 							label={"Twitter URL"}
 							type={"url"}
 							onChange={(e)=>{setTwitter(e.currentTarget.value)}}
+							helperText={!validateURL({url: twitter}) ? "Invalid URL" : ""}
 						/>
 					</Grid>
 					<Grid
@@ -413,6 +440,8 @@ const ProjectForm = (props) => {
 							<FormTextField
 								value={discord.url}
 								label={"Discord URL"}
+								error={!validateURL({url:discord.url, type: "discord"})}
+								helperText={!validateURL({url: discord.url, type: "discord"}) ? "Invalid URL" : ""}
 								type={"url"}
 								onChange={(e)=>{setDiscord({...discord, url:e.currentTarget.value})}}
 							/>
@@ -431,6 +460,8 @@ const ProjectForm = (props) => {
 					<Grid item>
 						<FormTextField
 							value={discord.role_acquisition_url}
+							error={!validateURL({url:discord.role_acquisition_url, type: "discord"})}
+							helperText={!validateURL({url: discord.role_acquisition_url, type: "discord"}) ? "Invalid URL" : ""}
 							label={"Role Acquisition URL"}
 							type={"url"}
 							onChange={(e)=>{setDiscord({...discord, role_acquisition_url: e.currentTarget.value})}}
@@ -439,6 +470,8 @@ const ProjectForm = (props) => {
 					<Grid item>
 						<FormTextField
 							value={discord.wallet_submission_url}
+							error={!validateURL({url:discord.wallet_submission_url, type: "discord"})}
+							helperText={!validateURL({url: discord.wallet_submission_url, type: "discord"}) ? "Invalid URL" : ""}
 							label={"Wallet Submission URL"}
 							type={"url"}
 							onChange={(e)=>{setDiscord({...discord, wallet_submission_url: e.currentTarget.value})}}
@@ -558,7 +591,7 @@ const ProjectForm = (props) => {
 						<Grid item>
 							<FormActionBtn
 								variant={"contained"}
-								disabled={reqOutcome.pending}
+								disabled={reqOutcome.pending || checkIfUrlsAreInvalid()}
 								onClick={shouldFetchProjectInfo ? updateProjectOnServer : addProjectToServer}
 								text={"Save"}
 							/>
