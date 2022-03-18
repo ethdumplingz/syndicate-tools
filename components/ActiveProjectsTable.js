@@ -1,4 +1,4 @@
-import {Grid, Typography, Button} from "@mui/material";
+import {Grid, Typography, Button, useTheme} from "@mui/material";
 import axios from "axios";
 import useSWR from "swr";
 import {DataGrid} from "@mui/x-data-grid";
@@ -35,8 +35,8 @@ const fetchTableData = async (url) => {
 
 const ActiveProjectsTable = (props) => {
 	const componentLoggingTag = `[ActiveProjectsTable]`;
-	
-	const {address} = useSyndicateAuthenticationContext();
+	const theme = useTheme();
+	const {address, isAdmin} = useSyndicateAuthenticationContext();
 	
 	const {data:resp, error, isValidating} = useSWR(`/users/${address}/projects/active`, fetchTableData);
 	
@@ -200,9 +200,9 @@ const ActiveProjectsTable = (props) => {
 				headerName: "Actions",
 				headerAlign: "left",
 				type: "actions",
-				minWidth: 80,
+				minWidth: 200,
 				getActions: (params) => {
-					return render.actions({params, set_id: "active-projects"})
+					return render.actions({params, set_id: "active-projects", is_admin:isAdmin})
 				}
 			}
 		]
@@ -211,10 +211,17 @@ const ActiveProjectsTable = (props) => {
 				<ProjectTableActions/>
 				<Grid
 					item
+					sx={{
+						'& .Project-isActive-false':{
+							display: !isAdmin ? "none" : "flex",
+							backgroundColor: isAdmin ? theme.palette.light[10] : "transparent"
+						}
+					}}
 				>
 					<DataGrid
 						columns={columns}
 						rows={projects}
+						getRowClassName={render.row}
 						density={"comfortable"}
 						autoHeight={true}
 						sx={{

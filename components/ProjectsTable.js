@@ -1,4 +1,4 @@
-import {Grid, Typography, Button} from "@mui/material";
+import {Grid, Typography, Button, useTheme} from "@mui/material";
 import axios from "axios";
 import useSWR from "swr";
 import {DataGrid} from "@mui/x-data-grid";
@@ -34,7 +34,8 @@ const fetchTableData = async (url) => {
 
 const ProjectsTable = (props) => {
 	const componentLoggingTag = `[ProjectsTable]`;
-	const {address} = useSyndicateAuthenticationContext();
+	const {address, isAdmin} = useSyndicateAuthenticationContext();
+	const theme = useTheme();
 	
 	const {data:resp, error, isValidating} = useSWR(`/projects/get?user=${address}`, fetchTableData, {revalidateIfStale: false});
 	
@@ -138,7 +139,7 @@ const ProjectsTable = (props) => {
 				type: "actions",
 				minWidth: 140,
 				getActions: (params) => {
-					return render.actions({params})
+					return render.actions({params, is_admin: isAdmin})
 				}
 			}
 		];
@@ -148,11 +149,18 @@ const ProjectsTable = (props) => {
 				<ProjectTableActions/>
 				<Grid
 					item
+					sx={{
+						'& .Project-isActive-false':{
+							display: !isAdmin ? "none" : "flex",
+							backgroundColor: isAdmin ? theme.palette.light[10] : "transparent"
+						}
+					}}
 				>
 					<DataGrid
 						rowsPerPageOptions={[]}
 						columns={columns}
 						rows={projects}
+						getRowClassName={render.row}
 						density={"comfortable"}
 						autoHeight={true}
 						sx={{

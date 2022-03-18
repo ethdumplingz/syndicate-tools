@@ -22,6 +22,8 @@ import InfoAvailableBtn from "../components/InfoAvailableBtn";
 import EditProjectBtn from "../components/EditProjectBtn";
 import ProjectScore from "../components/ProjectScore";
 import {base} from "next/dist/build/webpack/config/blocks/base";
+import ToggleProjectBtn from "../components/project-actions/ToggleProjectBtn";
+import DeleteProjectBtn from "../components/project-actions/DeleteProjectBtn";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -221,7 +223,7 @@ const render = {
 		const ethPrice = Number(value).toFixed(2);
 		return `${ethPrice} Ξ`;
 	},
-	actions: ({params, set_id:setID = "default"} = {}) => {
+	actions: ({params, set_id:setID = "default", is_admin:isAdmin = false} = {}) => {
 		const {id, row} = params;
 		// const value = params.getValue();
 		const loggingTag = `${baseLoggingTag}[actions]`;
@@ -243,6 +245,14 @@ const render = {
 						end: row.ts_presale_end
 					}}
 				/>)
+		}
+		if(isAdmin){
+			const {is_active} = row;
+			console.info(`${loggingTag} isActive:`, is_active);
+			actions.push(
+				<ToggleProjectBtn id={id} is_active={is_active}/>,
+				<DeleteProjectBtn id={id}/>
+			)
 		}
 		
 		return actions;
@@ -329,6 +339,14 @@ const render = {
 				</>
 			)
 		}
+	},
+	row: (params) => {
+		const loggingTag = `${baseLoggingTag}[row]`;
+		console.info(`${loggingTag} params`, params);
+		const {row} = params,
+			{is_active} = row;
+		
+		return (`Project-isActive-${is_active}`);
 	}
 }
 
