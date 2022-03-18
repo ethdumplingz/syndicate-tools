@@ -38,7 +38,7 @@ const FormActionBtn = (props) => {
 
 const FormTextField = (props) => {
 	const componentLoggingTag = `[FormTextField]`;
-	const {value="",defaultValue, maxRows = 1, onChange = ()=>{}, children, label="", type="text", step = 1, helperText="", error = false} = props;
+	const {value="",defaultValue, maxRows = 1, onChange = ()=>{}, min, children, label="", type="text", step = 1, helperText="", error = false} = props;
 	// console.info(`${componentLoggingTag} props`, props);
 	return(
 		<TextField
@@ -54,6 +54,7 @@ const FormTextField = (props) => {
 			step={step}
 			helperText={helperText}
 			error={error}
+			min={min}
 		>
 			{children}
 		</TextField>
@@ -107,11 +108,16 @@ const ProjectForm = (props) => {
 	});
 	const [unit, setUnit] = useState("ETH");
 	const [supply, setSupply] = useState(0);
+	const [publicSale, setPublicSale] = useState({
+		start: 0
+	});
 	const [presale, setPresale] = useState({
 		per_transaction: 0,
 		per_wallet: 0,
-		start: dayjs().format("YYYY-MM-DDTHH:mm"),//prepopulating the date value to NOW
-		end: dayjs().format("YYYY-MM-DDTHH:mm")//prepopulating the date value to NOW
+		start: 0,
+		end: 0
+		// start: dayjs().format("YYYY-MM-DDTHH:mm"),//prepopulating the date value to NOW
+		// end: dayjs().format("YYYY-MM-DDTHH:mm")//prepopulating the date value to NOW
 	});
 	const [contractAddress, setContractAddress] = useState("");
 	const [description, setDescription] = useState("");
@@ -156,6 +162,7 @@ const ProjectForm = (props) => {
 				// ts_presale_end: presale.end,
 				ts_presale_start: formatDatetimeForServer(presale.start),
 				ts_presale_end: formatDatetimeForServer(presale.end),
+				ts_public_sale: formatDatetimeForServer(publicSale.start),
 				address: contractAddress,
 				description,
 				max_supply: supply,
@@ -207,8 +214,9 @@ const ProjectForm = (props) => {
 				presale_price: price.presale,
 				public_price: price.public,
 				sale_unit: unit,
-				ts_presale_start: dayjs(presale.start).utc().format("YYYY-MM-DDTHH:mm:ss"),
-				ts_presale_end: dayjs(presale.end).utc().format("YYYY-MM-DDTHH:mm:ss"),
+				ts_presale_start: formatDatetimeForServer(presale.start),
+				ts_presale_end: formatDatetimeForServer(presale.end),
+				ts_public_sale: formatDatetimeForServer(publicSale.start),
 				address: contractAddress,
 				description,
 				max_supply: supply,
@@ -311,6 +319,9 @@ const ProjectForm = (props) => {
 				presale:0,
 				public: 0
 			});
+			setPublicSale({
+				start: 0
+			})
 			setPresale({
 				start:0,
 				end: 0
@@ -338,7 +349,7 @@ const ProjectForm = (props) => {
 		if(typeof data !== "undefined"){
 			const resp = data,
 				project = resp.data.project[0];
-			const {title, description, website_url, twitter_url, discord_url, role_acquisition_url, wallet_submission_url, presale_price, public_price, ts_presale_start, ts_presale_end, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = project;
+			const {title, description, website_url, twitter_url, discord_url, role_acquisition_url, wallet_submission_url, presale_price, public_price, ts_presale_start, ts_presale_end, ts_public_sale, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = project;
 			
 			useEffect(() => {
 				setTitle(title);
@@ -360,6 +371,7 @@ const ProjectForm = (props) => {
 				console.info(`${componentLoggingTag}[localization] formatted time`, formattedTimes);
 				setSupply(max_supply);
 				setPresale(formattedTimes);
+				setPublicSale({start: formatDatetimeForForm(ts_public_sale)})
 				// console.info(`${componentLoggingTag} presale state:`, presale);
 				setWLUrl(wl_register_url);
 			}, []);
@@ -376,7 +388,8 @@ const ProjectForm = (props) => {
 					flexGrow={1}
 					rowSpacing={4}
 					sx={{
-						pt:4
+						pt: 4,
+						pb: 4
 					}}
 				>
 					<Grid
@@ -531,21 +544,34 @@ const ProjectForm = (props) => {
 						container
 						alignItems={"center"}
 						columnSpacing={3}
+						flexWrap={"nowrap"}
+						columns={3}
 					>
-						<Grid item>
+						<Grid item xs={3} md={1}>
 							<FormTextField
 								helperText={"Presale Start"}
 								value={presale.start}
+								min={dayjs().format("YYYY-MM-DDTHH:mm")}
 								type={"datetime-local"}
 								onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, start:e.currentTarget.value})}}
 							/>
 						</Grid>
-						<Grid item>
+						<Grid item xs={3} md={1}>
 							<FormTextField
 								helperText={"Presale End"}
+								min={presale.start}
 								value={presale.end}
 								type={"datetime-local"}
 								onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, end:e.currentTarget.value})}}
+							/>
+						</Grid>
+						<Grid item xs={3} md={1}>
+							<FormTextField
+								helperText={"Public Start"}
+								min={presale.end}
+								value={publicSale.start}
+								type={"datetime-local"}
+								onChange={(e)=>{console.info(`public start`,e.currentTarget.value);setPublicSale({...publicSale, start:e.currentTarget.value})}}
 							/>
 						</Grid>
 					</Grid>

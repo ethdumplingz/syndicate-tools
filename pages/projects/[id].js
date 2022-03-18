@@ -122,13 +122,13 @@ const ProjectView = (props) => {
 	} else if (resp){
 		const loggingTag = `${componentLoggingTag}[resp rcvd]`;
 		const info = resp.data.project[0];
-		const {title, description, website_url, discord_url, role_acquisition, wallet_submission_url, twitter_url, ts_presale_start, ts_presale_end, presale_price, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = info;
+		const {title, description, website_url, discord_url, role_acquisition, wallet_submission_url, twitter_url, ts_presale_start, ts_presale_end, ts_public_sale, presale_price, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = info;
 		console.info(`${componentLoggingTag} project info:`, info);
 		
-		console.info(`${loggingTag} pre dayjs`, ts_presale_start);
-		
-		console.info(`${loggingTag} post dayjs`, dayjs(ts_presale_start).utc());
-		console.info(`${loggingTag} post dayjs unix`, dayjs(ts_presale_start).unix());
+		// console.info(`${loggingTag} pre dayjs`, ts_presale_start);
+		//
+		// console.info(`${loggingTag} post dayjs`, dayjs(ts_presale_start).utc());
+		// console.info(`${loggingTag} post dayjs unix`, dayjs(ts_presale_start).unix());
 		return(
 			<ProjectViewContainer>
 				<Grid
@@ -194,6 +194,10 @@ const ProjectView = (props) => {
 					<ProjectInfoRow
 						label={"Presale End"}
 						value={formatTimeForDisplay(ts_presale_end)}
+					/>
+					<ProjectInfoRow
+						label={"Public Sale"}
+						value={formatTimeForDisplay(ts_public_sale === null ? 0 : ts_public_sale)}
 					/>
 					<Grid
 						item
