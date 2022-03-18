@@ -1,7 +1,7 @@
 import {Alert, Button, FormControlLabel, FormGroup, Grid, Snackbar, Switch, TextField, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import fetchProjectInfo from "../utils/project";
+import {fetchProjectInfo} from "../utils/project";
 import useSWR from "swr";
 import {useRouter} from "next/router";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";

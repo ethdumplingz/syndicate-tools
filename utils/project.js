@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetchProjectInfo = async (url) => {
+export const fetchProjectInfo = async (url) => {
 	const loggingTag = `[fetchProjectInfo]`;
 	try{
 		console.info(`${loggingTag} url: ${url}`);
@@ -11,4 +11,13 @@ const fetchProjectInfo = async (url) => {
 	}
 }
 
-export default fetchProjectInfo;
+export const convertScoreToStatus = (score = 0) => {
+	const loggingTag = `[convertScoreToStatus]`;
+	let status = "good";
+	try{
+		status = score < 0 ? "danger" : score < 3 ? "ok" : "good";
+	} catch(e){
+		console.error(`${loggingTag} Error:`, e);
+	}
+	return status;
+}

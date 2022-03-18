@@ -215,6 +215,12 @@ const ActiveProjectsTable = (props) => {
 						'& .Project-isActive-false':{
 							display: !isAdmin ? "none" : "flex",
 							backgroundColor: isAdmin ? theme.palette.light[10] : "transparent"
+						},
+						'& .Project-Status-DANGER' : {
+							backgroundColor: theme.palette.projects.danger
+						},
+						'& .Project-Status-OK' : {
+							backgroundColor: theme.palette.projects.ok
 						}
 					}}
 				>

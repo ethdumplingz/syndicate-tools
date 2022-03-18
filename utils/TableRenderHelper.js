@@ -1,14 +1,11 @@
-import {Box, IconButton, Typography, Link, Grid, Tooltip} from "@mui/material";
+import {IconButton, Typography, Link, Grid, Tooltip} from "@mui/material";
 import dayjs from "dayjs";
-import {useRouter} from "next/router";
 import {project} from "./strings";
 import WebsiteIcon from "@mui/icons-material/Public";
 import RaffleIcon from "@mui/icons-material/ConfirmationNumber";
 import NotAvailableIcon from "@mui/icons-material/NotInterested";
 import DatetimeIcon from "@mui/icons-material/CalendarToday";
-import LaunchIcon from "@mui/icons-material/Launch";
 import FollowProjectBtn from "../components/FollowProjectBtn";
-import {Twitter} from "@mui/icons-material";
 import WebsiteIconBtn from "../components/WebsiteIconBtn";
 import TwitterIconBtn from "../components/TwitterIconBtn";
 import DiscordIconBtn from "../components/DiscordIconBtn";
@@ -16,14 +13,17 @@ import RaffleIconBtn from "../components/RaffleIconBtn";
 import CountdownTimer from "../components/CountdownTimer";
 import AddToCalendarBtn from "../components/AddToCalendarBtn";
 import ProjectActionCheckbox from "../components/ProjectActionCheckbox";
-import SubmitWalletBtn from "../components/SubmitWalletBtn";
-import GetRoleBtn from "../components/GetRoleBtn";
+
 import InfoAvailableBtn from "../components/InfoAvailableBtn";
 import EditProjectBtn from "../components/EditProjectBtn";
 import ProjectScore from "../components/ProjectScore";
-import {base} from "next/dist/build/webpack/config/blocks/base";
+import ProjectStatusTooltip from "../components/ProjectStatusTooltip";
+
 import ToggleProjectBtn from "../components/project-actions/ToggleProjectBtn";
 import DeleteProjectBtn from "../components/project-actions/DeleteProjectBtn";
+
+
+import {convertScoreToStatus} from "../utils/project";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -62,10 +62,23 @@ const render = {
 	title: (params) => {
 		const loggingTag = `${baseLoggingTag}[title]`;
 		// console.info(`${loggingTag} params`, params);
+		const {row} = params,
+			{score} = row,
+			projectReliabilityStatus = convertScoreToStatus(score);
+		
+		console.info(`${loggingTag} project reliability: ${projectReliabilityStatus}`);
+		
 		return(
 			<TableTextCell>
 				<Link href={`/projects/${params.row.id}`}>
-					{params.value}
+					<Grid container columnSpacing={1}>
+						<Grid item>
+							<Typography>{params.value}</Typography>
+						</Grid>
+						{projectReliabilityStatus !== "good" ? (<Grid item><ProjectStatusTooltip score={score} status={projectReliabilityStatus}/></Grid>) : ''}
+					</Grid>
+					
+					
 				</Link>
 			</TableTextCell>
 		)
@@ -344,9 +357,10 @@ const render = {
 		const loggingTag = `${baseLoggingTag}[row]`;
 		console.info(`${loggingTag} params`, params);
 		const {row} = params,
-			{is_active} = row;
+			{is_active, score} = row,
+			projectStatus = `Project-Status-${convertScoreToStatus(score).toUpperCase()}`;
 		
-		return (`Project-isActive-${is_active}`);
+		return (`Project-isActive-${is_active} ${projectStatus}`);
 	}
 }
 

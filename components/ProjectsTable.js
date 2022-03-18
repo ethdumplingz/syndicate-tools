@@ -58,7 +58,7 @@ const ProjectsTable = (props) => {
 				field: "title",
 				headerName: "Title",
 				renderCell: render.title,
-				minWidth: 150
+				minWidth: 200
 			},
 			// {
 			// 	field: "is_discord_open",
@@ -150,9 +150,15 @@ const ProjectsTable = (props) => {
 				<Grid
 					item
 					sx={{
-						'& .Project-isActive-false':{
+						'& .Project-isActive-false': {
 							display: !isAdmin ? "none" : "flex",
-							backgroundColor: isAdmin ? theme.palette.light[10] : "transparent"
+							backgroundColor: isAdmin ? theme.palette.light[100] : "transparent"
+						},
+						'& .Project-Status-DANGER' : {
+							backgroundColor: theme.palette.projects.danger
+						},
+						'& .Project-Status-OK' : {
+							backgroundColor: theme.palette.projects.ok
 						}
 					}}
 				>

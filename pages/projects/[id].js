@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import axios from "axios";
 import {Typography, Grid, Button, Tooltip} from "@mui/material";
-import fetchProjectInfo from "../../utils/project";
+import {fetchProjectInfo} from "../../utils/project";
 import ProjectActions from "../../components/ProjectActions";
 
 import dayjs from "dayjs";
