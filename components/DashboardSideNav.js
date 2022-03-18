@@ -10,7 +10,9 @@ import AddIcon from "@mui/icons-material/Add";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import WLGameIcon from "@mui/icons-material/VisibilityOutlined";
+import AdminIcon from "@mui/icons-material/SupportAgent";
 import {useRouter} from "next/router";
+import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 
 const items = [
 	{
@@ -31,6 +33,13 @@ const items = [
 				icon: <WLGameIcon />,
 				path: "/projects/active"
 			},
+			{
+				id: "projects-admin",
+				str: "Admins",
+				icon: <AdminIcon/>,
+				adminsOnly: true,
+				path: "/projects/admins"
+			}
 			// {
 			// 	id: "projects-add",
 			// 	str: "Add",
@@ -56,6 +65,7 @@ const items = [
 const DashboardSideNav = (props) => {
 	
 	const router = useRouter();
+	const {isAdmin} = useSyndicateAuthenticationContext();
 	const [isOpen, setOpen] = useState(true);
 	const [sectionExpanded, setSectionExpanded] = useState({
 		"projects" : true
@@ -129,6 +139,7 @@ const DashboardSideNav = (props) => {
 													key={index}
 													button
 													sx={{
+														display: (child.adminsOnly && !isAdmin) ? "none" : "flex",
 														padding: "14px 24px",
 													}}
 													onClick={(e)=>{router.push(child.path)}}
@@ -136,7 +147,7 @@ const DashboardSideNav = (props) => {
 													<ListItemIcon
 														sx={{
 															color: "black",
-															minWidth: "46px"
+															minWidth: "46px",
 														}}
 													>
 														{child.icon}

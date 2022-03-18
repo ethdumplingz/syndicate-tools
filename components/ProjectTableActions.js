@@ -1,9 +1,12 @@
 import {Grid, Button} from "@mui/material";
 import AddProjectIcon from "@mui/icons-material/Add";
 import Link from "next/link";
+import BulkAddProjectsBtn from "./BulkAddProjectsBtn";
+import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 
 const ProjectTableActions = (props) => {
 	const componentLoggingTag = `[ProjectTableActions]`;
+	const {isAdmin} = useSyndicateAuthenticationContext();
 	return(
 		<Grid
 			item
@@ -12,6 +15,7 @@ const ProjectTableActions = (props) => {
 				mt: 1,
 				mb: 1
 			}}
+			columnSpacing={2}
 		>
 			<Grid item>
 				<Link href={`/projects/add`}>
@@ -27,6 +31,11 @@ const ProjectTableActions = (props) => {
 					</Button>
 				</Link>
 			</Grid>
+			{isAdmin ? <Grid item>
+				<BulkAddProjectsBtn/>
+			</Grid> : <></>
+			}
+			
 		</Grid>
 	)
 }
