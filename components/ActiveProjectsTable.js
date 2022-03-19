@@ -3,7 +3,6 @@ import axios from "axios";
 import useSWR from "swr";
 import {DataGrid} from "@mui/x-data-grid";
 import dayjs from "dayjs";
-import {useRouter} from "next/router";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 import {project} from "../utils/strings";
 import {render} from "../utils/TableRenderHelper";

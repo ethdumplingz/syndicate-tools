@@ -1,6 +1,6 @@
 import {Grid, Button, Input, Typography} from "@mui/material";
 import FileInput from "../../../components/FileInput";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useSyndicateAuthenticationContext} from "../../../components/SyndicateAuthenticationProvider";
 import {useRouter} from "next/router";
 import axios from "axios";
@@ -9,10 +9,13 @@ const BulkAdd = (props) => {
 	const componentLoggingTag = `[BulkAdd]`;
 	const{isAdmin} = useSyndicateAuthenticationContext();
 	const router = useRouter();
-	if(!isAdmin){
-		//non admins shouldn't be on this page!
-		router.push("/projects/view");
-	}
+	useEffect(()=>{
+		if(!isAdmin){
+			//non admins shouldn't be on this page!
+			router.push("/projects/view");
+		}
+	}, [isAdmin]);
+	
 	
 	const[file, setFile] = useState(null);
 	
