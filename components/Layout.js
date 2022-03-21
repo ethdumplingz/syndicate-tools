@@ -3,6 +3,7 @@ import {Typography, Box} from "@mui/material";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import NavigateBackBtn from "../components/NavigateBackBtn";
 import IsLoadingView from "./IsLoadingView";
 
 const Layout = (props) => {

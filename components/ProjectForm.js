@@ -8,6 +8,7 @@ import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvid
 import {validateURL} from "../utils/urls";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import NavigateBackBtn from "./NavigateBackBtn";
 dayjs.extend(utc);
 
 const delay = (time = 5000) => {
@@ -394,10 +395,20 @@ const ProjectForm = (props) => {
 				>
 					<Grid
 						item
+						container
+						alignItems={"center"}
+						columnSpacing={1}
 					>
-						<Typography
-							variant={"h4"}
-						>{shouldFetchProjectInfo ? "Edit" : "Add"} Project</Typography>
+						<Grid
+							item
+						>
+							<NavigateBackBtn/>
+						</Grid>
+						<Grid item>
+							<Typography
+								variant={"h4"}
+							>{shouldFetchProjectInfo ? "Edit" : "Add"} Project</Typography>
+						</Grid>
 					</Grid>
 					<Grid
 						item

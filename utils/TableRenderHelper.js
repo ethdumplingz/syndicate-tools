@@ -71,14 +71,12 @@ const render = {
 		return(
 			<TableTextCell>
 				<Link href={`/projects/${params.row.id}`}>
-					<Grid container columnSpacing={1}>
+					<Grid container columnSpacing={1} flexWrap={"nowrap"}>
 						<Grid item>
-							<Typography>{params.value}</Typography>
+							<Typography sx={{whiteSpace: "normal"}}>{params.value}</Typography>
 						</Grid>
 						{projectReliabilityStatus !== "good" ? (<Grid item><ProjectStatusTooltip score={score} status={projectReliabilityStatus}/></Grid>) : ''}
 					</Grid>
-					
-					
 				</Link>
 			</TableTextCell>
 		)
