@@ -195,7 +195,7 @@ const render = {
 					}}
 				>
 					{actions.map((action, index) => (
-						<a key={action.id} href={action.value}>
+						<a key={action.id} target={"_blank"} href={action.value}>
 							<Grid item>
 								{action.icon}
 							</Grid>
