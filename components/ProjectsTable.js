@@ -117,12 +117,12 @@ const ProjectsTable = (props) => {
 				sortable: false
 			},
 			{
-				field: "vote",
+				field: "score",
 				headerName: "Score",
 				headerAlign: "left",
 				minWidth: 100,
-				type: "actions",
-				getActions: render.score
+				type: "number",
+				renderCell: render.score
 			},
 			{
 				field: "is_following",
