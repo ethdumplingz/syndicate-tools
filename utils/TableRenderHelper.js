@@ -190,6 +190,9 @@ const render = {
 				<Grid
 					container
 					columnSpacing={2}
+					sx={{
+						ml:0
+					}}
 				>
 					{actions.map((action, index) => (
 						<a key={action.id} href={action.value}>

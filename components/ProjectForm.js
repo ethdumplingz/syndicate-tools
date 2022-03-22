@@ -88,7 +88,7 @@ const formatDatetimeForServer = (clientDateTime) => {
 const ProjectForm = (props) => {
 	const componentLoggingTag = `[ProjectForm]`;
 	
-	const { isAdmin }= useSyndicateAuthenticationContext();
+	const { isAdmin, address }= useSyndicateAuthenticationContext();
 	
 	const router = useRouter();
 	const {id = ""} = props;
@@ -256,7 +256,8 @@ const ProjectForm = (props) => {
 		const loggingTag = `${componentLoggingTag}[deleteProjectOnServer]`;
 		try{
 			const payload = {
-				id
+				id,
+				user: address
 			}
 			console.info(`${loggingTag} Payload to be sent to server:`, payload);
 			
@@ -563,28 +564,34 @@ const ProjectForm = (props) => {
 						<Grid item xs={3} md={1}>
 							<FormTextField
 								helperText={"Presale Start"}
+								// minDateTime={new Date()}
 								value={presale.start}
-								min={dayjs().format("YYYY-MM-DDTHH:mm")}
 								type={"datetime-local"}
+								// onViewChange={(e)=>{console.info(`[onViewChange] event`, e)}}
 								onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, start:e.currentTarget.value})}}
+								// onChange={(e)=>{console.info(e)}}
 							/>
 						</Grid>
 						<Grid item xs={3} md={1}>
 							<FormTextField
 								helperText={"Presale End"}
-								min={presale.start}
+								// minDateTime={new Date(presale.start)}
 								value={presale.end}
 								type={"datetime-local"}
 								onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, end:e.currentTarget.value})}}
+								// onChange={(e)=>{console.info(e)}}
 							/>
 						</Grid>
 						<Grid item xs={3} md={1}>
 							<FormTextField
+								renderInput={(props) => <TextField {...props}/>}
 								helperText={"Public Start"}
-								min={presale.end}
+								// minDateTime={new Date(presale.end)}
 								value={publicSale.start}
+								// value={""}
 								type={"datetime-local"}
 								onChange={(e)=>{console.info(`public start`,e.currentTarget.value);setPublicSale({...publicSale, start:e.currentTarget.value})}}
+								// onChange={(e)=>{console.info(e)}}
 							/>
 						</Grid>
 					</Grid>
