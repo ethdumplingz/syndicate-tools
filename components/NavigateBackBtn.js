@@ -1,4 +1,4 @@
-import {IconButton} from "@mui/material";
+import {IconButton, Tooltip} from "@mui/material";
 import {useRouter} from "next/router";
 import BackIcon from "@mui/icons-material/ArrowBack";
 import {useState, useEffect} from "react";
@@ -33,14 +33,16 @@ const NavigateBackBtn = (props) => {
 	}
 	
 	return(
-		<IconButton
-			onClick={navigateBack}
-			sx={{
-				display: display ? "block" : "none"
-			}}
-		>
-			<BackIcon/>
-		</IconButton>
+		<Tooltip title={"Go Back"}>
+			<IconButton
+				onClick={navigateBack}
+				sx={{
+					display: display ? "flex" : "none"
+				}}
+			>
+				<BackIcon/>
+			</IconButton>
+		</Tooltip>
 	)
 }
 

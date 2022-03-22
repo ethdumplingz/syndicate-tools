@@ -4,6 +4,7 @@ import FollowProjectBtn from "./FollowProjectBtn";
 import UserProjectStatus from "./UserProjectStatus";
 import useSWR from "swr";
 import axios from "axios";
+import NavigateBackBtn from "./NavigateBackBtn";
 
 const ProjectActions = (props) => {
 	const componentLoggingTag = `[ProjectActions]`;
@@ -14,9 +15,13 @@ const ProjectActions = (props) => {
 		<Grid
 			container
 			columnSpacing={4}
-			justifyContent={"flex-end"}
+			justifyContent={"space-between"}
 			alignItems={"center"}
 		>
+			<Grid
+				item>
+				<NavigateBackBtn/>
+			</Grid>
 			{/*<Grid*/}
 			{/*	item*/}
 			{/*	sx={{*/}
