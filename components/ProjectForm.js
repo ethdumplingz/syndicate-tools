@@ -66,7 +66,7 @@ const formatDatetimeForForm = (dbDatetime) => {
 	const loggingTag = `[formatDateTimeForForm]`;
 	let datetime = "";
 	try{
-		datetime = dayjs(dbDatetime).format("YYYY-MM-DDTHH:mm:ss");
+		datetime = dbDatetime !== null ? dayjs(dbDatetime).format("YYYY-MM-DDTHH:mm:ss") : null;
 	} catch(e){
 		console.error(`${loggingTag} Error:`, e);
 	}
@@ -78,7 +78,7 @@ const formatDatetimeForServer = (clientDateTime) => {
 	let datetime = "";
 	try{
 		//need to convert timestamps to be UTC before sending to server
-		datetime = dayjs(clientDateTime.length > 0 ? clientDateTime : 0).utc().format("YYYY-MM-DDTHH:mm:ss");
+		datetime = clientDateTime !== null ? dayjs(clientDateTime.length > 0 ? clientDateTime : 0).utc().format("YYYY-MM-DDTHH:mm:ss") : null;
 	} catch(e){
 		console.error(`${loggingTag} Error:`, e);
 	}
@@ -202,6 +202,7 @@ const ProjectForm = (props) => {
 		const loggingTag = `${componentLoggingTag}[updateProjectOnServer]`;
 		try{
 			// console.info(`${loggingTag} presale`, presale);
+			console.info(`${loggingTag} public sale:`, publicSale);
 			const payload = {
 				id: id,
 				title,
@@ -372,6 +373,7 @@ const ProjectForm = (props) => {
 				console.info(`${componentLoggingTag}[localization] formatted time`, formattedTimes);
 				setSupply(max_supply);
 				setPresale(formattedTimes);
+				// setPublicSale({start: formatDatetimeForForm(ts_public_sale)})
 				setPublicSale({start: formatDatetimeForForm(ts_public_sale)})
 				// console.info(`${componentLoggingTag} presale state:`, presale);
 				setWLUrl(wl_register_url);
