@@ -12,6 +12,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import WLGameIcon from "@mui/icons-material/VisibilityOutlined";
 import AdminIcon from "@mui/icons-material/SupportAgent";
 import {useRouter} from "next/router";
+import Link from "next/link";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 
 const items = [
@@ -62,6 +63,14 @@ const items = [
 	},
 ]
 
+const ConditionalLinkWrapper = (props) => {
+	const componentLoggingTag = `[ConditionalLinkWrapper]`;
+	const {condition, wrapper, children} = props
+	return(
+		condition ? wrapper(children) : children
+	)
+}
+
 const DashboardSideNav = (props) => {
 	
 	const router = useRouter();
@@ -100,30 +109,35 @@ const DashboardSideNav = (props) => {
 			<List>
 				{items.map((item, index) => (
 					<React.Fragment key={index}>
-						<ListItem
-							button
-							key={index}
-							disabled={item.disabled}
-							sx={{
-								padding: "14px 24px"
-							}}
-							onClick={item.expandable ? (e) => {
-								const prevItemExpanded = sectionExpanded[item.id],
-									newSectionExpandedState = {...sectionExpanded, [item.id]: !prevItemExpanded}
-								setSectionExpanded(newSectionExpandedState);
-							} : (typeof item.path === "string" && item.path.length > 0) ? () => {router.push(item.path)} : () => {}}
+						<ConditionalLinkWrapper
+							condition={typeof item.path === "string"}
+							wrapper={children => <Link href={item.path}>{children}</Link>}
 						>
-							<ListItemIcon
+							<ListItem
+								button
+								key={index}
+								disabled={item.disabled}
 								sx={{
-									color: "black",
-									minWidth: "50px"
+									padding: "14px 24px"
 								}}
+								onClick={item.expandable ? (e) => {
+									const prevItemExpanded = sectionExpanded[item.id],
+										newSectionExpandedState = {...sectionExpanded, [item.id]: !prevItemExpanded}
+									setSectionExpanded(newSectionExpandedState);
+								} : () => {}}
 							>
-								{item.icon}
-							</ListItemIcon>
-							<ListItemText primary={item.str} />
-							{item.expandable && sectionExpanded[item.id] ? <ExpandLess /> : item.expandable ? <ExpandMore /> : ''}
-						</ListItem>
+								<ListItemIcon
+									sx={{
+										color: "black",
+										minWidth: "50px"
+									}}
+								>
+									{item.icon}
+								</ListItemIcon>
+								<ListItemText primary={item.str} />
+								{item.expandable && sectionExpanded[item.id] ? <ExpandLess /> : item.expandable ? <ExpandMore /> : ''}
+							</ListItem>
+						</ConditionalLinkWrapper>
 						{
 							typeof item.children === "object"  && item.children.length > 0 ? (
 								<Collapse
