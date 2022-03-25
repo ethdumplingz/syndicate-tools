@@ -32,6 +32,7 @@ const projectStages = [
 		display_str: "Sold"
 	},
 ]
+
 module.exports = {
 	project:{
 		stages: projectStages

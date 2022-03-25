@@ -3,8 +3,6 @@ import {useState, useEffect} from "react";
 import {useContext} from "react";
 import { useMoralis, useNFTBalances} from "react-moralis";
 import axios from "axios";
-import useSWR from "swr";
-
 
 export const SyndicateAuthenticationContext = React.createContext({});
 

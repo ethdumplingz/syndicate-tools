@@ -356,7 +356,7 @@ const render = {
 	},
 	row: (params) => {
 		const loggingTag = `${baseLoggingTag}[row]`;
-		console.info(`${loggingTag} params`, params);
+		// console.info(`${loggingTag} params`, params);
 		const {row} = params,
 			{is_active, score} = row,
 			projectStatus = `Project-Status-${convertScoreToStatus(score).toUpperCase()}`;

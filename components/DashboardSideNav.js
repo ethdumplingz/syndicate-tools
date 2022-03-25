@@ -51,8 +51,8 @@ const items = [
 	{
 		id: "profit-loss",
 		str: "Profit/Loss",
-		disabled: true,
-		icon: <CalculateIcon />
+		icon: <CalculateIcon />,
+		path: "/wallet/profit-loss"
 	},
 	{
 		id: "calendar",
@@ -111,7 +111,7 @@ const DashboardSideNav = (props) => {
 								const prevItemExpanded = sectionExpanded[item.id],
 									newSectionExpandedState = {...sectionExpanded, [item.id]: !prevItemExpanded}
 								setSectionExpanded(newSectionExpandedState);
-							} : ()=>{}}
+							} : (typeof item.path === "string" && item.path.length > 0) ? () => {router.push(item.path)} : () => {}}
 						>
 							<ListItemIcon
 								sx={{
