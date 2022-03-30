@@ -2,11 +2,13 @@ import {Grid, Typography, Button, useTheme} from "@mui/material";
 import axios from "axios";
 import useSWR from "swr";
 import {DataGrid} from "@mui/x-data-grid";
+import {useState} from "react";
 import dayjs from "dayjs";
 import {useRouter} from "next/router";
 import {render} from "../utils/TableRenderHelper";
 import ProjectTableActions from "./ProjectTableActions";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
+import CustomGridToolBar from "./CustomGridToolBar";
 
 
 const TableWrapper = (props) => {
@@ -36,7 +38,7 @@ const ProjectsTable = (props) => {
 	const componentLoggingTag = `[ProjectsTable]`;
 	const {address, isAdmin} = useSyndicateAuthenticationContext();
 	const theme = useTheme();
-	
+	const [pageSize, setPageSize] = useState(15);
 	const {data:resp, error, isValidating} = useSWR(`/projects/get?user=${address}`, fetchTableData, {revalidateIfStale: false});
 	
 	if(error){
@@ -89,6 +91,7 @@ const ProjectsTable = (props) => {
 				type: "datetime",
 				renderHeader: render.header.date,
 				renderCell: render.countdown,
+				headerAlign: "center",
 				cellClassName: "center",
 				minWidth: 180,
 			},
@@ -164,7 +167,9 @@ const ProjectsTable = (props) => {
 					}}
 				>
 					<DataGrid
-						rowsPerPageOptions={[]}
+						rowsPerPageOptions={[5,10,15,25,50,100]}
+						pageSize={pageSize}
+						onPageSizeChange={(newPage) => setPageSize(newPage)}
 						columns={columns}
 						rows={projects}
 						getRowClassName={render.row}
@@ -173,6 +178,14 @@ const ProjectsTable = (props) => {
 						sx={{
 							'& .center':{
 								justifyContent: "center"
+							}
+						}}
+						components={{
+							Toolbar: CustomGridToolBar
+						}}
+						initialState={{
+							pagination:{
+								pageSize:25
 							}
 						}}
 					/>
