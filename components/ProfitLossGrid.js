@@ -22,31 +22,26 @@ const ProfitLossGrid = (props) => {
 			cellClassName: 'center',
 		},
 		{
-			field: "stats",
+			field: "floor_price",
 			type: "number",
 			headerName: "Value",
 			headerAlign: "center",
 			cellClassName: 'center',
 			valueGetter: (params) => {
 				// console.info(`[valueGetter]`, params);
-				const {num_tokens, stats} = params.row;
-				return num_tokens * stats.floor_price;
+				const {num_tokens, floor_price} = params.row;
+				return num_tokens * floor_price;
 			},
 			renderCell: (params) => {
 				return `${Math.round(100*params.value)/100}E`;
 			}
 		},
 		{
-			field: "transaction",
+			field: "total_cost",
 			type: "number",
 			headerName: "Cost",
 			headerAlign: "center",
 			cellClassName: 'center',
-			valueGetter: (params) => {
-				// console.info(`[valueGetter]`, params);
-				const {value_in_eth} = params.value;
-				return parseFloat(value_in_eth);
-			},
 			renderCell: (params) => {
 				return `${Math.round(100*params.value)/100}E`;
 			}
@@ -77,8 +72,8 @@ const ProfitLossGrid = (props) => {
 			valueGetter: (params) => {
 				// console.info(`[valueGetter]`, params);
 				
-				const {transaction, num_tokens, dev_seller_fee_basis_points, opensea_seller_fee_basis_points} = params.row;
-				const breakEvenPoint = (transaction.value_in_eth * (1 + ((parseInt(dev_seller_fee_basis_points) + parseInt(opensea_seller_fee_basis_points))/10000))/num_tokens);
+				const {value, num_tokens, dev_seller_fee_basis_points, opensea_seller_fee_basis_points} = params.row;
+				const breakEvenPoint = (value * (1 + ((parseInt(dev_seller_fee_basis_points) + parseInt(opensea_seller_fee_basis_points))/10000))/num_tokens);
 				return breakEvenPoint;
 			},
 			renderCell: (params) => {
@@ -102,7 +97,12 @@ const ProfitLossGrid = (props) => {
 			<Grid item>
 				<DataGrid
 					rowsPerPageOptions={[]}
-					getRowId={(row) => row._id}
+					getRowId={(row) => row.token_address}
+					initialState={{
+						sorting: {
+							sortModel: [{ field: 'floor_price', sort: 'desc' }],
+						},
+					}}
 					columns={columns}
 					rows={collections}
 					getRowClassName={render.row}

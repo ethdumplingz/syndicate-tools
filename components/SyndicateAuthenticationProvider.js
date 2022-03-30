@@ -27,7 +27,7 @@ export const SyndicateAuthenticationProvider = (props) => {
 	const [isAdmin, setAdmin] = useState(false);
 	const [address, setAddress] = useState("");
 	
-	const {isAuthenticated, user, account, isWeb3Enabled, authenticate} = useMoralis();
+	const { isAuthenticated, user, account, isWeb3Enabled, authenticate} = useMoralis();
 	const { getNFTBalances, data, error, isLoading, isFetching } = useNFTBalances();
 	
 	useEffect(() => {
@@ -38,7 +38,7 @@ export const SyndicateAuthenticationProvider = (props) => {
 	
 	useEffect(async () => {
 		const loggingTag = `${componentLoggingTag}[auth:${isAuthenticated}][isWeb3Enabled:${isWeb3Enabled}] `;
-		console.info(`${loggingTag} authentication state changed`);
+		console.info(`${loggingTag} isAuthenticated or isWeb3Enabled state changed`);
 		setLoading(true);
 		try{
 			if(isAuthenticated){
