@@ -183,11 +183,6 @@ const ProjectsTable = (props) => {
 						components={{
 							Toolbar: CustomGridToolBar
 						}}
-						initialState={{
-							pagination:{
-								pageSize:25
-							}
-						}}
 					/>
 				</Grid>
 			</>

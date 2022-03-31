@@ -7,6 +7,7 @@ import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvid
 import {project} from "../utils/strings";
 import {render} from "../utils/TableRenderHelper";
 import ProjectTableActions from "./ProjectTableActions";
+import {useState} from "react";
 
 const TableWrapper = (props) => {
 	const {children} = props;
@@ -36,6 +37,7 @@ const ActiveProjectsTable = (props) => {
 	const componentLoggingTag = `[ActiveProjectsTable]`;
 	const theme = useTheme();
 	const {address, isAdmin} = useSyndicateAuthenticationContext();
+	const [pageSize, setPageSize] = useState(15);
 	
 	const {data:resp, error, isValidating} = useSWR(`/users/${address}/projects/active`, fetchTableData);
 	
@@ -229,6 +231,9 @@ const ActiveProjectsTable = (props) => {
 						getRowClassName={render.row}
 						density={"comfortable"}
 						autoHeight={true}
+						rowsPerPageOptions={[5,10,15,25,50,100]}
+						pageSize={pageSize}
+						onPageSizeChange={(newPage) => setPageSize(newPage)}
 						sx={{
 							'& .center':{
 								justifyContent: "center"
