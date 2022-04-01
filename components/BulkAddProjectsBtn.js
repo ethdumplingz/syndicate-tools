@@ -1,4 +1,5 @@
 import {Button} from "@mui/material";
+import BulkAddIcon from "@mui/icons-material/LibraryAddOutlined";
 import Link from "next/link";
 
 const BulkAddProjectsBtn = (props) => {
@@ -14,7 +15,10 @@ const BulkAddProjectsBtn = (props) => {
 					pl:2,
 					pr:2
 				}}
-			>Bulk Add</Button>
+			>
+				<BulkAddIcon size={"sm"} sx={{mr:1}}/>
+				Bulk Add
+			</Button>
 		</Link>
 	)
 }

@@ -41,18 +41,12 @@ const ProjectsTable = (props) => {
 	const [pageSize, setPageSize] = useState(15);
 	const {data:resp, error, isValidating} = useSWR(`/projects/get?user=${address}`, fetchTableData, {revalidateIfStale: false});
 	
-	if(error){
-		console.error(`${componentLoggingTag} error:`, error);
-		return(
-			<TableWrapper>
-				<Grid item>
-					<Typography>Table Content</Typography>
-				</Grid>
-			</TableWrapper>
-		)
-	} else if(resp) {
+	
 		console.info(`${componentLoggingTag} data received!`, resp);
-		const projects = resp.data.projects;
+		let projects = [];
+		if(resp){
+			projects = resp.data.projects;
+		}
 		console.info(`${componentLoggingTag} projects received`, projects);
 		
 		const columns = [
@@ -172,6 +166,7 @@ const ProjectsTable = (props) => {
 						onPageSizeChange={(newPage) => setPageSize(newPage)}
 						columns={columns}
 						rows={projects}
+						loading={isValidating}
 						getRowClassName={render.row}
 						density={"comfortable"}
 						autoHeight={true}
@@ -187,18 +182,5 @@ const ProjectsTable = (props) => {
 				</Grid>
 			</>
 		)
-	} else if (isValidating){
-		return(
-			<TableWrapper>
-				<Typography>Validating...</Typography>
-			</TableWrapper>
-		)
-	} else {
-		return(
-			<TableWrapper>
-				<Typography>Loading...</Typography>
-			</TableWrapper>
-		)
-	}
 }
 export default ProjectsTable;

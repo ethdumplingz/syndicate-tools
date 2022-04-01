@@ -3,10 +3,12 @@ import CollectionRow from "./CollectionRow";
 import {usePortfolioContext} from "./UserPortfolioProvider";
 import {render} from "../utils/TableRenderHelper";
 import {DataGrid} from "@mui/x-data-grid";
+import {useState} from "react";
 
 const ProfitLossGrid = (props) => {
 	const componentLoggingTag = `[ProfitLossGrid]`;
-	const {collections} = usePortfolioContext();
+	const {collections, isLoading} = usePortfolioContext();
+	const [pageSize, setPageSize] = useState(15);
 	console.info(`${componentLoggingTag} collections`, collections);
 	const columns = [
 		{
@@ -33,7 +35,7 @@ const ProfitLossGrid = (props) => {
 				return num_tokens * floor_price;
 			},
 			renderCell: (params) => {
-				return `${Math.round(100*params.value)/100}E`;
+				return `${Math.round(100*params.value)/100} Ξ`;
 			}
 		},
 		{
@@ -43,7 +45,7 @@ const ProfitLossGrid = (props) => {
 			headerAlign: "center",
 			cellClassName: 'center',
 			renderCell: (params) => {
-				return `${Math.round(100*params.value)/100}E`;
+				return `${Math.round(100*params.value)/100} Ξ`;
 			}
 		},
 		{
@@ -59,7 +61,7 @@ const ProfitLossGrid = (props) => {
 				
 			},
 			renderCell: (params) => {
-				console.info(`${componentLoggingTag}[render]`, params);
+				// console.info(`${componentLoggingTag}[render]`, params);
 				return `${Math.round(100*params.value)/100}%`
 			}
 		},
@@ -71,14 +73,12 @@ const ProfitLossGrid = (props) => {
 			cellClassName: 'center',
 			valueGetter: (params) => {
 				// console.info(`[valueGetter]`, params);
-				
 				const {value, num_tokens, dev_seller_fee_basis_points, opensea_seller_fee_basis_points} = params.row;
-				const breakEvenPoint = (value * (1 + ((parseInt(dev_seller_fee_basis_points) + parseInt(opensea_seller_fee_basis_points))/10000))/num_tokens);
-				return breakEvenPoint;
+				return (value * (1 + ((parseInt(dev_seller_fee_basis_points) + parseInt(opensea_seller_fee_basis_points))/10000))/num_tokens);
 			},
 			renderCell: (params) => {
-				console.info(`${componentLoggingTag}[render]`, params);
-				return `${Math.round(100*params.value)/100}E`
+				// console.info(`${componentLoggingTag}[render]`, params);
+				return `${Math.round(100*params.value)/100} Ξ`
 			}
 		},
 	];
@@ -96,13 +96,16 @@ const ProfitLossGrid = (props) => {
 			</Grid>
 			<Grid item>
 				<DataGrid
-					rowsPerPageOptions={[]}
+					rowsPerPageOptions={[5,10,15,25,50,100]}
+					pageSize={pageSize}
+					onPageSizeChange={(newPage) => setPageSize(newPage)}
 					getRowId={(row) => row.token_address}
 					initialState={{
 						sorting: {
 							sortModel: [{ field: 'floor_price', sort: 'desc' }],
 						},
 					}}
+					loading={isLoading}
 					columns={columns}
 					rows={collections}
 					getRowClassName={render.row}

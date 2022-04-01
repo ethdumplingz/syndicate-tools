@@ -31,6 +31,7 @@ export const UserPortfolioProvider = (props) => {
 	
 	useEffect(()=>{
 		console.info(`${componentLoggingTag} data`, data);
+		let abortController = new AbortController();//needed to prevent a memory leak
 		if(
 			(data !== null) &&
 			(data.length > 0)
@@ -39,10 +40,15 @@ export const UserPortfolioProvider = (props) => {
 		){
 			setCollections(data);
 		}
+		return () => {
+			abortController.abort();
+		}
 	}, [data]);
 	
 	const portfolioContext = {
 		collections,
+		isLoading,
+		error
 	};
 	
 	return (
