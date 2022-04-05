@@ -10,10 +10,10 @@ const BulkAddProjectsBtn = (props) => {
 				sx={{
 					textTransform: "uppercase",
 					borderRadius: "2px",
-					pt:1,
-					pb:1,
-					pl:2,
-					pr:2
+					pt: 1,
+					pb: 1,
+					pl: 2,
+					pr: 2
 				}}
 			>
 				<BulkAddIcon size={"sm"} sx={{mr:1}}/>

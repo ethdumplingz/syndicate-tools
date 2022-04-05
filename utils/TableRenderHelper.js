@@ -173,7 +173,11 @@ const render = {
 			propsToLookFor = ["website_url", "twitter_url", "discord_url", "wl_register_url"];
 		
 		Object.keys(row).map(key => {
-			if(propsToLookFor.indexOf(key) > -1){
+			if(
+				(propsToLookFor.indexOf(key) > -1) &&
+				(row[key] !== null) &&
+				(row[key].length > 0)
+			){
 				actions.push({
 					id: key,
 					value: row[key],
