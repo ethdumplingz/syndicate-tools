@@ -1,5 +1,6 @@
 import {Grid, Typography} from '@mui/material';
 import BulkAddProjectsBtn from "../../../components/BulkAddProjectsBtn";
+import AdminProjectsGrid from "../../../components/AdminProjectsGrid";
 const Admins = (props) => {
 	return(
 		<Grid
@@ -12,10 +13,16 @@ const Admins = (props) => {
 			<Grid item>
 				<Typography sx={{fontSize: "1.5rem"}}>Actions:</Typography>
 			</Grid>
-			<Grid item container>
+			<Grid
+				item
+				container
+				flexDirection={"column"}
+				rowSpacing={3}
+			>
 				<Grid item>
 					<BulkAddProjectsBtn/>
 				</Grid>
+				<AdminProjectsGrid/>
 			</Grid>
 		</Grid>
 	)
