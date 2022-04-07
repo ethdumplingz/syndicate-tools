@@ -67,6 +67,7 @@ const ProjectInfoRow = (props) => {
 			item
 			container
 			justifyContent={"space-between"}
+			flexWrap={"nowrap"}
 			sx={{
 				fontSize: "1.25rem"
 			}}
@@ -79,10 +80,18 @@ const ProjectInfoRow = (props) => {
 					}}
 				>{label}:</Typography>
 			</Grid>
-			<Grid item>
+			<Grid
+				item
+				sx={{
+					minWidth: 0
+				}}
+			>
 				<Typography
 					sx={{
-						fontSize: "inherit"
+						fontSize: "inherit",
+						textOverflow: "ellipsis",
+						overflow: "hidden",
+						whiteSpace: "nowrap"
 					}}
 				>{value}</Typography>
 			</Grid>

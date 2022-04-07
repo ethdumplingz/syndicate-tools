@@ -21,7 +21,7 @@ const ProjectEditView = (props) => {
 	const router = useRouter();
 	const { id } = router.query;
 	console.info(`${componentLoggingTag} editing project: ${id}`);
-	const {data, error, isValidating} = useSWR(`/projects/get/${id}`, fetchProjectInfo,{revalidateIfStale: false});
+	const {data, error, isValidating} = useSWR(`/projects/get/${id}`, fetchProjectInfo,{revalidateIfStale: false, revalidateOnFocus: false});
 	if(isValidating){
 		return(
 			<IsLoadingView/>
@@ -46,3 +46,6 @@ const ProjectEditView = (props) => {
 }
 
 export default ProjectEditView;
+
+
+
