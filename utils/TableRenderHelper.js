@@ -266,7 +266,7 @@ const render = {
 		}
 		if(isAdmin){
 			const {is_active} = row;
-			// console.info(`${loggingTag} isActive:`, is_active);
+			// console.info(`${loggingTag} isActive: ${is_active}`, row);
 			actions.push(
 				<ToggleProjectBtn id={id} is_active={is_active}/>,
 				<DeleteProjectBtn id={id}/>
