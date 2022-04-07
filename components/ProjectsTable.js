@@ -163,6 +163,7 @@ const ProjectsTable = (props) => {
 					<DataGrid
 						rowsPerPageOptions={[5,10,15,25,50,100]}
 						pageSize={pageSize}
+						disableSelectionOnClick
 						onPageSizeChange={(newPage) => setPageSize(newPage)}
 						columns={columns}
 						rows={projects}

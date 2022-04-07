@@ -97,6 +97,7 @@ const ProfitLossGrid = (props) => {
 			<Grid item>
 				<DataGrid
 					rowsPerPageOptions={[5,10,15,25,50,100]}
+					disableSelectionOnClick
 					pageSize={pageSize}
 					onPageSizeChange={(newPage) => setPageSize(newPage)}
 					getRowId={(row) => row.token_address}

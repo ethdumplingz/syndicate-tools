@@ -266,6 +266,7 @@ const ActiveProjectsTable = (props) => {
 				}}
 			>
 				<DataGrid
+					disableSelectionOnClick
 					columns={columns}
 					rows={projects}
 					getRowClassName={render.row}
