@@ -285,7 +285,7 @@ const render = {
 						"raffle_won";
 		const isChecked = row[userSpecificField];
 		// console.info(`${loggingTag} user specific value: ${row[field]}`);
-		console.info(`${loggingTag} value: ${value}`, row)
+		// console.info(`${loggingTag} value: ${value}`, row)
 		return (
 			<Grid
 				container
