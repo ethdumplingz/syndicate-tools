@@ -5,13 +5,18 @@ const Admins = (props) => {
 	return(
 		<Grid
 			container
-			spacing={2}
+			spacing={3}
 			sx={{
 				p:4
 			}}
 		>
 			<Grid item>
-				<Typography sx={{fontSize: "1.5rem"}}>Actions:</Typography>
+				<Typography
+					variant={"h1"}
+					sx={{
+						fontSize:"1.6rem"
+					}}
+				>Admins</Typography>
 			</Grid>
 			<Grid
 				item

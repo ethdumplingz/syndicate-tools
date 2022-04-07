@@ -61,16 +61,29 @@ const BulkAdd = (props) => {
 	return (
 		<Grid
 			container
-			spacing={2}
+			spacing={3}
 			sx={{
 				p:4
 			}}
 			flexDirection={"column"}
 		>
 			<Grid item>
-				<Typography sx={{fontSize: "1.5rem"}}>Add Projects in Bulk</Typography>
+				<Typography
+					variant={"h1"}
+					sx={{
+						fontSize: "1.6rem"
+				}}
+				>Add Projects in Bulk</Typography>
 			</Grid>
-			<Grid item container alignItems={"center"} columnSpacing={3}>
+			<Grid
+				item
+				container
+				alignItems={"center"}
+				columnSpacing={3}
+				sx={{
+					maxWidth: "800px"
+				}}
+			>
 				<Grid item flex={1}>
 					<FileInput label={"Click here to upload your CSV"} onChange={uploadFile}/>
 				</Grid>
