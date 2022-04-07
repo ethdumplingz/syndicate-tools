@@ -113,13 +113,13 @@ const ProjectForm = (props) => {
 	const [unit, setUnit] = useState("ETH");
 	const [supply, setSupply] = useState(max_supply);
 	const [publicSale, setPublicSale] = useState({
-		start: ts_public_sale
+		start: formatDatetimeForForm(ts_public_sale)
 	});
 	const [presale, setPresale] = useState({
 		per_transaction: max_per_transaction,
 		per_wallet: max_per_wallet,
-		start: ts_presale_start,
-		end: ts_presale_end
+		start: formatDatetimeForForm(ts_presale_start),
+		end: formatDatetimeForForm(ts_presale_end)
 	});
 	const [contractAddress, setContractAddress] = useState("");
 	
