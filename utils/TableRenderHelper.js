@@ -281,7 +281,7 @@ const render = {
 		const {field, row, value} = params;
 		const userSpecificField = field === "num_role_assigned" ? "role_assigned" :
 				field === "num_wallet_added" ? "wallet_added" : 
-					field === "num_minted" ? "minted" :
+					field === "num_mints" ? "minted" :
 						"raffle_won";
 		const isChecked = row[userSpecificField];
 		// console.info(`${loggingTag} user specific value: ${row[field]}`);
