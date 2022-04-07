@@ -65,31 +65,36 @@ const ActiveProjectsTable = (props) => {
 			renderCell: render.title
 		},
 		{
-			field: "raffle_won",
+			// field: "raffle_won",
+			field: "num_allowlisted",
 			headerName: "WL",
 			headerAlign: "center",
 			cellClassName: 'center',
+			type: "number",
 			renderCell: render.checkbox
 		},
 		{
-			field: "role_assigned",
+			field: "num_role_assigned",
 			headerName: "Role",
 			headerAlign: "center",
 			cellClassName: 'center',
+			type: "number",
 			renderCell: render.checkbox
 		},
 		{
-			field: "wallet_added",
+			field: "num_wallet_added",
 			headerName: "Wallet",
 			headerAlign: 'center',
 			cellClassName: 'center',
+			type: "number",
 			renderCell: render.checkbox
 		},
 		{
-			field: "minted",
+			field: "num_mints",
 			headerName: "Mint",
 			headerAlign: "center",
 			cellClassName: 'center',
+			type: "number",
 			renderCell: render.checkbox
 		},
 		{

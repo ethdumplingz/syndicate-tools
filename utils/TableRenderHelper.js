@@ -46,7 +46,7 @@ const TableTextCell = (props) => {
 const stageDisplayStr = (id) => {
 	const loggingTag = `[stageDisplayStr]`;
 	const item = stages.find(stage => stage.id === id);
-	// console.info(`${loggingTag} ${id} item:`, item);
+	console.info(`${loggingTag} ${id} item:`, item);
 	return item.display_str;
 }
 
@@ -279,15 +279,30 @@ const render = {
 		const loggingTag = `${baseLoggingTag}[checkbox]`;
 		
 		const {field, row, value} = params;
-		
+		const userSpecificField = field === "num_role_assigned" ? "role_assigned" :
+				field === "num_wallet_added" ? "wallet_added" : 
+					field === "num_minted" ? "minted" :
+						"raffle_won";
+		const isChecked = row[userSpecificField];
+		// console.info(`${loggingTag} user specific value: ${row[field]}`);
+		console.info(`${loggingTag} value: ${value}`, row)
 		return (
-			// <div>{params.value}</div>
-			<ProjectActionCheckbox
-				field={field}
-				project_id={row.id}
-				label={stageDisplayStr(field)}
-				value={value}
-			/>
+			<Grid
+				container
+				alignItems={"center"}
+			>
+				<Grid item>
+					<ProjectActionCheckbox
+						field={userSpecificField}
+						project_id={row.id}
+						label={stageDisplayStr(userSpecificField)}
+						value={isChecked}
+					/>
+				</Grid>
+				<Grid item>
+					<Typography>({value})</Typography>
+				</Grid>
+			</Grid>
 		)
 	},
 	text: (params) => {
