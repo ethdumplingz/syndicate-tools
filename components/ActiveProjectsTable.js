@@ -205,6 +205,7 @@ const ActiveProjectsTable = (props) => {
 			field: "id",
 			headerName: "Actions",
 			headerAlign: "left",
+			align: 'left',
 			type: "actions",
 			minWidth: 200,
 			getActions: (params) => {
