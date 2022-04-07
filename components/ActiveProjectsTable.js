@@ -7,7 +7,7 @@ import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvid
 import {project} from "../utils/strings";
 import {render} from "../utils/TableRenderHelper";
 import ProjectTableActions from "./ProjectTableActions";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 
 const TableWrapper = (props) => {
 	const {children} = props;
@@ -143,8 +143,14 @@ const ActiveProjectsTable = (props) => {
 		{
 			field: "wl_source",
 			headerName: "Source",
+			editable: true,
 			type: "text",
 			cellClassName: "center",
+			valueGetter: (params) => {
+				const {value} = params;
+				
+				return value === null ? "N/A" : value;
+			},
 			renderCell: render.text,
 		},
 		{
@@ -200,7 +206,42 @@ const ActiveProjectsTable = (props) => {
 				return render.actions({params, set_id: "active-projects", is_admin:isAdmin})
 			}
 		}
-	]
+	];
+	
+	const updateProjectSource = useCallback(async({project_id = "", value = ""})=>{
+		const loggingTag = `${componentLoggingTag}[updateProjectSource]`;
+		try{
+			const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/users/projects/actions/update`, {
+				user: address,
+				project_id,
+				action: "wl_source",
+				value
+			});
+			console.info(`${loggingTag} result:`, result);
+			return result;
+		} catch(e){
+			console.error(`${loggingTag} Error:`, e);
+			throw e;
+		}
+	}, [address]);
+	
+	const processRowUpdate = useCallback(async (newRow) => {
+		const loggingTag = `${componentLoggingTag}[processRowUpdate]`;
+		try{
+			console.info(`${loggingTag} new row:`, newRow);
+			const {id, wl_source} = newRow;
+			const updateResult = await updateProjectSource({
+				project_id: id,
+				value: wl_source
+			});
+			
+			return newRow;
+		} catch(e){
+			console.error(`${loggingTag} Error:`, e);
+			throw e;
+		}
+	}, []);
+	
 	return (
 		<>
 			<ProjectTableActions/>
@@ -223,12 +264,16 @@ const ActiveProjectsTable = (props) => {
 					columns={columns}
 					rows={projects}
 					getRowClassName={render.row}
+					rowsPerPageOptions={[5,10,15,25,50,100]}
 					density={"comfortable"}
 					autoHeight={true}
 					loading={isValidating}
-					rowsPerPageOptions={[5,10,15,25,50,100]}
 					pageSize={pageSize}
 					onPageSizeChange={(newPage) => setPageSize(newPage)}
+					processRowUpdate={processRowUpdate}
+					experimentalFeatures={{
+						newEditingApi: true
+					}}
 					sx={{
 						'& .center':{
 							justifyContent: "center"

@@ -46,7 +46,7 @@ const TableTextCell = (props) => {
 const stageDisplayStr = (id) => {
 	const loggingTag = `[stageDisplayStr]`;
 	const item = stages.find(stage => stage.id === id);
-	console.info(`${loggingTag} ${id} item:`, item);
+	// console.info(`${loggingTag} ${id} item:`, item);
 	return item.display_str;
 }
 
@@ -66,7 +66,7 @@ const render = {
 			{score} = row,
 			projectReliabilityStatus = convertScoreToStatus(score);
 		
-		console.info(`${loggingTag} project reliability: ${projectReliabilityStatus}`);
+		// console.info(`${loggingTag} project reliability: ${projectReliabilityStatus}`);
 		
 		return(
 			<TableTextCell>
@@ -222,7 +222,7 @@ const render = {
 	countdown: (params) => {
 		const loggingTag = `[render][countdown]`;
 		if(typeof params.value === "string"){
-			console.info(`${loggingTag} row:`, params.row);
+			// console.info(`${loggingTag} row:`, params.row);
 			return(
 				<CountdownTimer
 					presale={{
@@ -247,8 +247,8 @@ const render = {
 		const loggingTag = `${baseLoggingTag}[actions]`;
 		// const router = useRouter();
 		// console.info(`[render][actions] id:`, value);
-		console.info(`${loggingTag} row`, row);
-		console.info(`${loggingTag} id`, id);
+		// console.info(`${loggingTag} row`, row);
+		// console.info(`${loggingTag} id`, id);
 		
 		const actions = [
 			<EditProjectBtn id={id}/>,
@@ -266,7 +266,7 @@ const render = {
 		}
 		if(isAdmin){
 			const {is_active} = row;
-			console.info(`${loggingTag} isActive:`, is_active);
+			// console.info(`${loggingTag} isActive:`, is_active);
 			actions.push(
 				<ToggleProjectBtn id={id} is_active={is_active}/>,
 				<DeleteProjectBtn id={id}/>

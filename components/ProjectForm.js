@@ -88,40 +88,40 @@ const formatDatetimeForServer = (clientDateTime) => {
 const ProjectForm = (props) => {
 	const componentLoggingTag = `[ProjectForm]`;
 	
-	const { isAdmin, address }= useSyndicateAuthenticationContext();
+	console.info(`${componentLoggingTag} project form`, props);
+	const {title:projectTitle, description:desc, website_url = "", twitter_url = "", discord_url = "", role_acquisition_url = "", wallet_submission_url = "", presale_price = 0, public_price = 0, ts_presale_start = 0, ts_presale_end = 0, ts_public_sale = 0, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = props;
+	const { isAdmin, address } = useSyndicateAuthenticationContext();
 	
 	const router = useRouter();
 	const {id = ""} = props;
 	
-	const [title, setTitle] = useState("");
-	const [wlUrl, setWLUrl] = useState("");
-	const [website, setWebsite] = useState("");
-	const [twitter, setTwitter] = useState("");
+	const [title, setTitle] = useState(projectTitle);
+	const [description, setDescription] = useState(desc);
+	const [wlUrl, setWLUrl] = useState(wl_register_url);
+	const [website, setWebsite] = useState(website_url);
+	const [twitter, setTwitter] = useState(twitter_url);
 	const [discord, setDiscord] = useState({
 		isOpen: true,
-		url: "",
-		role_acquisition_url: "",
-		wallet_submission_url: ""
+		url: discord_url,
+		role_acquisition_url: role_acquisition_url,
+		wallet_submission_url: wallet_submission_url
 	});
 	const [price, setPrice] = useState({
-		presale: 0,
-		public: 0
+		presale: presale_price,
+		public: public_price
 	});
 	const [unit, setUnit] = useState("ETH");
-	const [supply, setSupply] = useState(0);
+	const [supply, setSupply] = useState(max_supply);
 	const [publicSale, setPublicSale] = useState({
-		start: 0
+		start: ts_public_sale
 	});
 	const [presale, setPresale] = useState({
-		per_transaction: 0,
-		per_wallet: 0,
-		start: 0,
-		end: 0
-		// start: dayjs().format("YYYY-MM-DDTHH:mm"),//prepopulating the date value to NOW
-		// end: dayjs().format("YYYY-MM-DDTHH:mm")//prepopulating the date value to NOW
+		per_transaction: max_per_transaction,
+		per_wallet: max_per_wallet,
+		start: ts_presale_start,
+		end: ts_presale_end
 	});
 	const [contractAddress, setContractAddress] = useState("");
-	const [description, setDescription] = useState("");
 	
 	const [reqOutcome, setReqOutcome] = useState({
 		pending: false,
@@ -335,339 +335,284 @@ const ProjectForm = (props) => {
 		}
 	}
 	
-	const shouldFetchProjectInfo = id.length > 0;
-	
-	const {data, error} = useSWR(shouldFetchProjectInfo ? `/projects/get/${id}` : null, fetchProjectInfo,{revalidateIfStale: false});
-	
-	if(error){
-		return (
-			<Grid item container>
-				<Grid item>
-					<Typography> Error: Unable to load this project.  Click <a onClick={(e)=>{router.reload()}}>here</a> to try again.</Typography>
-				</Grid>
-			</Grid>
-		)
-	} else if (data || !shouldFetchProjectInfo){
-		// console.info(`${componentLoggingTag} data:`, data);
-		if(typeof data !== "undefined"){
-			const resp = data,
-				project = resp.data.project[0];
-			const {title, description, website_url, twitter_url, discord_url, role_acquisition_url, wallet_submission_url, presale_price, public_price, ts_presale_start, ts_presale_end, ts_public_sale, wl_register_url, max_supply, max_per_transaction, max_per_wallet} = project;
-			
-			useEffect(() => {
-				setTitle(title);
-				setDescription(description);
-				setWebsite(website_url);
-				setTwitter(twitter_url);
-				setDiscord({...discord, url: discord_url, role_acquisition_url, wallet_submission_url});
-				setPrice({
-					presale: presale_price,
-					public: public_price
-				});
-				console.info(`${componentLoggingTag}[localization] presale start: ${ts_presale_start} end: ${ts_presale_end}`);
-				const formattedTimes = {
-					per_transaction: max_per_transaction,
-					per_wallet: max_per_wallet,
-					start: formatDatetimeForForm(ts_presale_start),
-					end: formatDatetimeForForm(ts_presale_end),
-				}
-				console.info(`${componentLoggingTag}[localization] formatted time`, formattedTimes);
-				setSupply(max_supply);
-				setPresale(formattedTimes);
-				// setPublicSale({start: formatDatetimeForForm(ts_public_sale)})
-				setPublicSale({start: formatDatetimeForForm(ts_public_sale)})
-				// console.info(`${componentLoggingTag} presale state:`, presale);
-				setWLUrl(wl_register_url);
-			}, []);
-			
-		}
-		
-		console.info(`${componentLoggingTag} is admin? `, isAdmin);
-		return (
-			<>
+	console.info(`${componentLoggingTag} is admin? `, isAdmin);
+	const isEditView = id.length > 0;
+	return (
+		<>
+			<Grid
+				container
+				direction={"column"}
+				alignItems={"stretch"}
+				flexGrow={1}
+				rowSpacing={4}
+				sx={{
+					pt: 4,
+					pb: 4
+				}}
+			>
 				<Grid
+					item
 					container
-					direction={"column"}
-					alignItems={"stretch"}
-					flexGrow={1}
-					rowSpacing={4}
-					sx={{
-						pt: 4,
-						pb: 4
-					}}
+					alignItems={"center"}
+					columnSpacing={1}
 				>
 					<Grid
 						item
-						container
-						alignItems={"center"}
-						columnSpacing={1}
 					>
-						<Grid
-							item
-						>
-							<NavigateBackBtn/>
-						</Grid>
-						<Grid item>
-							<Typography
-								variant={"h4"}
-							>{shouldFetchProjectInfo ? "Edit" : "Add"} Project</Typography>
-						</Grid>
-					</Grid>
-					<Grid
-						item
-					>
-						<FormTextField
-							value={title}
-							label={"Title"}
-							onChange={(e)=>{console.info(`${componentLoggingTag} title on change triggered!`); setTitle(e.currentTarget.value)}}
-						/>
-					</Grid>
-					<Grid
-						item
-					>
-						<FormTextField
-							value={wlUrl}
-							label={"Whitelist URL"}
-							type={"url"}
-							onChange={(e)=>{setWLUrl(e.currentTarget.value)}}
-						/>
-					</Grid>
-					<Grid
-						item
-					>
-						<FormTextField
-							value={website}
-							label={"Website URL"}
-							type={"url"}
-							onChange={(e)=>{setWebsite(e.currentTarget.value)}}
-						/>
-					</Grid>
-					<Grid
-						item
-					>
-						<FormTextField
-							value={twitter}
-							error={!validateURL({url: twitter})}
-							label={"Twitter URL"}
-							type={"url"}
-							onChange={(e)=>{setTwitter(e.currentTarget.value)}}
-							helperText={!validateURL({url: twitter}) ? "Invalid URL" : ""}
-						/>
-					</Grid>
-					<Grid
-						item
-						container
-						columnSpacing={3}
-						alignItems={"center"}
-					>
-						<Grid
-							item
-							flexGrow={1}
-						>
-							<FormTextField
-								value={discord.url}
-								label={"Discord URL"}
-								error={!validateURL({url:discord.url, type: "discord"})}
-								helperText={!validateURL({url: discord.url, type: "discord"}) ? "Invalid URL" : ""}
-								type={"url"}
-								onChange={(e)=>{setDiscord({...discord, url:e.currentTarget.value})}}
-							/>
-						</Grid>
-						<Grid
-							item
-							sx={{
-								display: "none"
-							}}
-						>
-							<FormGroup>
-								<FormControlLabel control={<Switch defaultChecked onChange={(e)=>{console.info(e.target.checked); setDiscord({...discord, isOpen: e.target.checked})}}/>} label="Public" />
-							</FormGroup>
-						</Grid>
+						<NavigateBackBtn/>
 					</Grid>
 					<Grid item>
-						<FormTextField
-							value={discord.role_acquisition_url}
-							error={!validateURL({url:discord.role_acquisition_url, type: "discord"})}
-							helperText={!validateURL({url: discord.role_acquisition_url, type: "discord"}) ? "Invalid URL" : ""}
-							label={"Role Acquisition URL"}
-							type={"url"}
-							onChange={(e)=>{setDiscord({...discord, role_acquisition_url: e.currentTarget.value})}}
-						/>
-					</Grid>
-					<Grid item>
-						<FormTextField
-							value={discord.wallet_submission_url}
-							error={!validateURL({url:discord.wallet_submission_url, type: "discord"})}
-							helperText={!validateURL({url: discord.wallet_submission_url, type: "discord"}) ? "Invalid URL" : ""}
-							label={"Wallet Submission URL"}
-							type={"url"}
-							onChange={(e)=>{setDiscord({...discord, wallet_submission_url: e.currentTarget.value})}}
-						/>
-					</Grid>
-					<Grid
-						item
-						container
-						alignItems={"center"}
-						wrap={"nowrap"}
-						spacing={3}
-					>
-						<Grid item>
-							<FormTextField
-								label={"(Presale) Price"}
-								value={price.presale}
-								type={"number"}
-								step={0.05}
-								onChange={(e) => {setPrice({...price, presale: e.currentTarget.value})}}
-							/>
-						</Grid>
-						<Grid item>
-							<FormTextField
-								label={"(Public) Price"}
-								defaultValue={price.presale}
-								value={price.public}
-								type={"number"}
-								step={0.05}
-								onChange={(e) => {setPrice({...price, public: e.currentTarget.value})}}
-							/>
-						</Grid>
-						<Grid item>
-							<FormTextField
-								label={"Max Supply"}
-								value={supply}
-								onChange={(e) => {setSupply(e.currentTarget.value)}}
-							/>
-						</Grid>
-						<Grid item>
-							<FormTextField
-								label={"Max Per Transaction"}
-								value={presale.per_transaction}
-								onChange={(e) => {setPresale({...presale, per_transaction:e.currentTarget.value})}}
-							/>
-						</Grid>
-						<Grid item>
-							<FormTextField
-								label={"Max Per Wallet"}
-								value={presale.per_wallet}
-								onChange={(e) => {setPresale({...presale, per_wallet:e.currentTarget.value})}}
-							/>
-						</Grid>
-					</Grid>
-					{/*presale section*/}
-					<Grid
-						item
-						container
-						alignItems={"center"}
-						columnSpacing={3}
-						flexWrap={"nowrap"}
-						columns={3}
-					>
-						<Grid item xs={3} md={1}>
-							<FormTextField
-								helperText={"Presale Start"}
-								// minDateTime={new Date()}
-								value={presale.start}
-								type={"datetime-local"}
-								// onViewChange={(e)=>{console.info(`[onViewChange] event`, e)}}
-								onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, start:e.currentTarget.value})}}
-								// onChange={(e)=>{console.info(e)}}
-							/>
-						</Grid>
-						<Grid item xs={3} md={1}>
-							<FormTextField
-								helperText={"Presale End"}
-								// minDateTime={new Date(presale.start)}
-								value={presale.end}
-								type={"datetime-local"}
-								onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, end:e.currentTarget.value})}}
-								// onChange={(e)=>{console.info(e)}}
-							/>
-						</Grid>
-						<Grid item xs={3} md={1}>
-							<FormTextField
-								renderInput={(props) => <TextField {...props}/>}
-								helperText={"Public Start"}
-								// minDateTime={new Date(presale.end)}
-								value={publicSale.start}
-								// value={""}
-								type={"datetime-local"}
-								onChange={(e)=>{console.info(`public start`,e.currentTarget.value);setPublicSale({...publicSale, start:e.currentTarget.value})}}
-								// onChange={(e)=>{console.info(e)}}
-							/>
-						</Grid>
-					</Grid>
-					<Grid
-						item
-					>
-						<FormTextField
-							value={contractAddress}
-							label={"Contract Address"}
-							maxRows={5}
-							onChange={(e)=>{setContractAddress(e.currentTarget.value)}}
-						/>
-					</Grid>
-					<Grid
-						item
-					>
-						<FormTextField
-							value={description}
-							label={"Description"}
-							maxRows={5}
-							onChange={(e)=>{setDescription(e.currentTarget.value)}}
-						/>
-					</Grid>
-					<Grid
-						item
-						container
-						alignItems={"center"}
-						justifyContent={"flex-end"}
-						columnSpacing={3}
-					>
-						<Grid
-							item
-							sx={{
-								display: isAdmin ? "block" : "none"
-							}}
-						>
-							<FormActionBtn
-								variant={"outlined"}
-								text={shouldFetchProjectInfo ? "Delete" : "Reset"}
-								onClick={shouldFetchProjectInfo ? deleteProjectOnServer : resetProjectForm}
-							/>
-						</Grid>
-						<Grid item>
-							<FormActionBtn
-								variant={"contained"}
-								disabled={reqOutcome.pending || checkIfUrlsAreInvalid()}
-								onClick={shouldFetchProjectInfo ? updateProjectOnServer : addProjectToServer}
-								text={"Save"}
-							/>
-						</Grid>
+						<Typography
+							variant={"h4"}
+						>{isEditView ? "Edit" : "Add"} Project</Typography>
 					</Grid>
 				</Grid>
-				<Snackbar
-					anchorOrigin={{ vertical:"top", horizontal:"right" }}
-					open={reqOutcome.display}
-					autoHideDuration={6000}
-					onClose={handleAlertClose}
+				<Grid
+					item
 				>
-					<Alert
-						onClose={handleAlertClose}
-						severity={reqOutcome.severity}
+					<FormTextField
+						value={title}
+						label={"Title"}
+						onChange={(e)=>{console.info(`${componentLoggingTag} title on change triggered!`); setTitle(e.currentTarget.value)}}
+					/>
+				</Grid>
+				<Grid
+					item
+				>
+					<FormTextField
+						value={wlUrl}
+						label={"Whitelist URL"}
+						type={"url"}
+						onChange={(e)=>{setWLUrl(e.currentTarget.value)}}
+					/>
+				</Grid>
+				<Grid
+					item
+				>
+					<FormTextField
+						value={website}
+						label={"Website URL"}
+						type={"url"}
+						onChange={(e)=>{setWebsite(e.currentTarget.value)}}
+					/>
+				</Grid>
+				<Grid
+					item
+				>
+					<FormTextField
+						value={twitter}
+						error={!validateURL({url: twitter})}
+						label={"Twitter URL"}
+						type={"url"}
+						onChange={(e)=>{setTwitter(e.currentTarget.value)}}
+						helperText={!validateURL({url: twitter}) ? "Invalid URL" : ""}
+					/>
+				</Grid>
+				<Grid
+					item
+					container
+					columnSpacing={3}
+					alignItems={"center"}
+				>
+					<Grid
+						item
+						flexGrow={1}
 					>
-						{reqOutcome.message}
-					</Alert>
-				</Snackbar>
-			</>
-		)
-	} else {
-		return(
-			<Grid item container>
+						<FormTextField
+							value={discord.url}
+							label={"Discord URL"}
+							error={!validateURL({url:discord.url, type: "discord"})}
+							helperText={!validateURL({url: discord.url, type: "discord"}) ? "Invalid URL" : ""}
+							type={"url"}
+							onChange={(e)=>{setDiscord({...discord, url:e.currentTarget.value})}}
+						/>
+					</Grid>
+					<Grid
+						item
+						sx={{
+							display: "none"
+						}}
+					>
+						<FormGroup>
+							<FormControlLabel control={<Switch defaultChecked onChange={(e)=>{console.info(e.target.checked); setDiscord({...discord, isOpen: e.target.checked})}}/>} label="Public" />
+						</FormGroup>
+					</Grid>
+				</Grid>
 				<Grid item>
-					<Typography> Loading...</Typography>
+					<FormTextField
+						value={discord.role_acquisition_url}
+						error={!validateURL({url:discord.role_acquisition_url, type: "discord"})}
+						helperText={!validateURL({url: discord.role_acquisition_url, type: "discord"}) ? "Invalid URL" : ""}
+						label={"Role Acquisition URL"}
+						type={"url"}
+						onChange={(e)=>{setDiscord({...discord, role_acquisition_url: e.currentTarget.value})}}
+					/>
+				</Grid>
+				<Grid item>
+					<FormTextField
+						value={discord.wallet_submission_url}
+						error={!validateURL({url:discord.wallet_submission_url, type: "discord"})}
+						helperText={!validateURL({url: discord.wallet_submission_url, type: "discord"}) ? "Invalid URL" : ""}
+						label={"Wallet Submission URL"}
+						type={"url"}
+						onChange={(e)=>{setDiscord({...discord, wallet_submission_url: e.currentTarget.value})}}
+					/>
+				</Grid>
+				<Grid
+					item
+					container
+					alignItems={"center"}
+					wrap={"nowrap"}
+					spacing={3}
+				>
+					<Grid item>
+						<FormTextField
+							label={"(Presale) Price"}
+							value={price.presale}
+							type={"number"}
+							step={0.05}
+							onChange={(e) => {setPrice({...price, presale: e.currentTarget.value})}}
+						/>
+					</Grid>
+					<Grid item>
+						<FormTextField
+							label={"(Public) Price"}
+							defaultValue={price.presale}
+							value={price.public}
+							type={"number"}
+							step={0.05}
+							onChange={(e) => {setPrice({...price, public: e.currentTarget.value})}}
+						/>
+					</Grid>
+					<Grid item>
+						<FormTextField
+							label={"Max Supply"}
+							value={supply}
+							onChange={(e) => {setSupply(e.currentTarget.value)}}
+						/>
+					</Grid>
+					<Grid item>
+						<FormTextField
+							label={"Max Per Transaction"}
+							value={presale.per_transaction}
+							onChange={(e) => {setPresale({...presale, per_transaction:e.currentTarget.value})}}
+						/>
+					</Grid>
+					<Grid item>
+						<FormTextField
+							label={"Max Per Wallet"}
+							value={presale.per_wallet}
+							onChange={(e) => {setPresale({...presale, per_wallet:e.currentTarget.value})}}
+						/>
+					</Grid>
+				</Grid>
+				{/*presale section*/}
+				<Grid
+					item
+					container
+					alignItems={"center"}
+					columnSpacing={3}
+					flexWrap={"nowrap"}
+					columns={3}
+				>
+					<Grid item xs={3} md={1}>
+						<FormTextField
+							helperText={"Presale Start"}
+							// minDateTime={new Date()}
+							value={presale.start}
+							type={"datetime-local"}
+							// onViewChange={(e)=>{console.info(`[onViewChange] event`, e)}}
+							onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, start:e.currentTarget.value})}}
+							// onChange={(e)=>{console.info(e)}}
+						/>
+					</Grid>
+					<Grid item xs={3} md={1}>
+						<FormTextField
+							helperText={"Presale End"}
+							// minDateTime={new Date(presale.start)}
+							value={presale.end}
+							type={"datetime-local"}
+							onChange={(e)=>{console.info(e.currentTarget.value);setPresale({...presale, end:e.currentTarget.value})}}
+							// onChange={(e)=>{console.info(e)}}
+						/>
+					</Grid>
+					<Grid item xs={3} md={1}>
+						<FormTextField
+							renderInput={(props) => <TextField {...props}/>}
+							helperText={"Public Start"}
+							// minDateTime={new Date(presale.end)}
+							value={publicSale.start}
+							// value={""}
+							type={"datetime-local"}
+							onChange={(e)=>{console.info(`public start`,e.currentTarget.value);setPublicSale({...publicSale, start:e.currentTarget.value})}}
+							// onChange={(e)=>{console.info(e)}}
+						/>
+					</Grid>
+				</Grid>
+				<Grid
+					item
+				>
+					<FormTextField
+						value={contractAddress}
+						label={"Contract Address"}
+						maxRows={5}
+						onChange={(e)=>{setContractAddress(e.currentTarget.value)}}
+					/>
+				</Grid>
+				<Grid
+					item
+				>
+					<FormTextField
+						value={description}
+						label={"Description"}
+						maxRows={5}
+						onChange={(e)=>{setDescription(e.currentTarget.value)}}
+					/>
+				</Grid>
+				<Grid
+					item
+					container
+					alignItems={"center"}
+					justifyContent={"flex-end"}
+					columnSpacing={3}
+				>
+					<Grid
+						item
+						sx={{
+							display: isAdmin ? "block" : "none"
+						}}
+					>
+						<FormActionBtn
+							variant={"outlined"}
+							text={isEditView ? "Delete" : "Reset"}
+							onClick={isEditView ? deleteProjectOnServer : resetProjectForm}
+						/>
+					</Grid>
+					<Grid item>
+						<FormActionBtn
+							variant={"contained"}
+							disabled={reqOutcome.pending || checkIfUrlsAreInvalid()}
+							onClick={isEditView ? updateProjectOnServer : addProjectToServer}
+							text={"Save"}
+						/>
+					</Grid>
 				</Grid>
 			</Grid>
-		)
-	}
+			<Snackbar
+				anchorOrigin={{ vertical:"top", horizontal:"right" }}
+				open={reqOutcome.display}
+				autoHideDuration={6000}
+				onClose={handleAlertClose}
+			>
+				<Alert
+					onClose={handleAlertClose}
+					severity={reqOutcome.severity}
+				>
+					{reqOutcome.message}
+				</Alert>
+			</Snackbar>
+		</>
+	)
 }
 
 export default ProjectForm;

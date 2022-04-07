@@ -105,7 +105,7 @@ const CountdownTimer = (props) => {
 	} else if (dayjs(presale.start).unix() === 0) {
 		return (<Typography>N/A</Typography>)
 	} else if (timeFromNow(presale.end) < 0){
-		console.info(`${componentLoggingTag} time from now (presale end): ${timeFromNow(presale.end)} full presale end string: ${presale.end}`);
+		// console.info(`${componentLoggingTag} time from now (presale end): ${timeFromNow(presale.end)} full presale end string: ${presale.end}`);
 		return(
 			<Tooltip title={`Ended on: ${dayjs(presale.end).format('llll')}`}>
 				<Typography sx={{fontWeight: 600}}>It's over!</Typography>
