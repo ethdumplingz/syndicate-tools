@@ -9,9 +9,9 @@ const nextConfig = {
 	env: {
 		baseURI: process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://syndicate-api.onrender.com"
 	},
-	// compiler:{
-	// 	removeConsole: process.env.NODE_ENV !== "development"
-	// },
+	compiler:{
+		removeConsole: process.env.NODE_ENV !== "development"
+	},
 	swcMinify: true
 }
 
