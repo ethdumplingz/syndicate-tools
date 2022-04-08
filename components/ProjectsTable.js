@@ -43,6 +43,7 @@ const ProjectsTable = (props) => {
 	
 	
 		console.info(`${componentLoggingTag} data received!`, resp);
+		
 		let projects = [];
 		if(resp){
 			projects = resp.data.projects;

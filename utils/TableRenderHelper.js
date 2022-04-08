@@ -24,6 +24,7 @@ import DeleteProjectBtn from "../components/project-actions/DeleteProjectBtn";
 
 
 import {convertScoreToStatus} from "../utils/project";
+import ReportIssueBtn from "../components/ReportIssueBtn";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -252,6 +253,7 @@ const render = {
 		
 		const actions = [
 			<EditProjectBtn id={id}/>,
+			<ReportIssueBtn/>,
 		]
 		if(setID === "active-projects"){
 			actions.push(<AddToCalendarBtn
