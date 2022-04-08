@@ -79,28 +79,31 @@ const CountdownTimer = (props) => {
 	
 	if(timeFromNow(tsPresaleStart) > 0){
 		return (
-			<Grid
-				container
-				columnSpacing={1}
-				justifyContent={"flex-end"}
-			>
-				{
-					Object.keys(timeTil).map((key, index) => {
-						if(typeof timeTil[key] === "number" && timeTil[key] > -1){
-							return(
-								<React.Fragment key={index}>
-									<UnitWrapper>
-										<TimeUnit value={timeTil[key]} unit={key}/>
-									</UnitWrapper>
-									<UnitWrapper>
-										<CountdownDivider/>
-									</UnitWrapper>
-								</React.Fragment>
-							)
-						}
-					})
-				}
-			</Grid>
+			<Tooltip title={dayjs(tsPresaleStart).format('llll')}>
+				<Grid
+					container
+					columnSpacing={1}
+					justifyContent={"flex-end"}
+				>
+					
+					{
+						Object.keys(timeTil).map((key, index) => {
+							if(typeof timeTil[key] === "number" && timeTil[key] > -1){
+								return(
+									<React.Fragment key={index}>
+										<UnitWrapper>
+											<TimeUnit value={timeTil[key]} unit={key}/>
+										</UnitWrapper>
+										<UnitWrapper>
+											<CountdownDivider/>
+										</UnitWrapper>
+									</React.Fragment>
+								)
+							}
+						})
+					}
+				</Grid>
+			</Tooltip>
 		)
 	} else if (dayjs(presale.start).unix() === 0) {
 		return (<Typography>N/A</Typography>)

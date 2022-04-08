@@ -20,11 +20,11 @@ import ProjectScore from "../components/ProjectScore";
 import ProjectStatusTooltip from "../components/ProjectStatusTooltip";
 
 import ToggleProjectBtn from "../components/project-actions/ToggleProjectBtn";
-import DeleteProjectBtn from "../components/project-actions/DeleteProjectBtn";
 
 
 import {convertScoreToStatus} from "../utils/project";
 import ReportIssueBtn from "../components/ReportIssueBtn";
+import SyndicateIndicator from "../components/SyndicateIndicator";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -64,18 +64,19 @@ const render = {
 		const loggingTag = `${baseLoggingTag}[title]`;
 		// console.info(`${loggingTag} params`, params);
 		const {row} = params,
-			{score} = row,
+			{score, from_syndicate} = row,
 			projectReliabilityStatus = convertScoreToStatus(score);
 		
 		// console.info(`${loggingTag} project reliability: ${projectReliabilityStatus}`);
-		
+		console.info(`${loggingTag} row`, row);
 		return(
 			<TableTextCell>
 				<Link href={`/projects/${params.row.id}`}>
-					<Grid container columnSpacing={1} flexWrap={"nowrap"}>
+					<Grid container columnSpacing={1.5} flexWrap={"nowrap"}>
 						<Grid item>
 							<Typography sx={{whiteSpace: "normal"}}>{params.value}</Typography>
 						</Grid>
+						{from_syndicate ? (<Grid item><SyndicateIndicator/></Grid>) : ''}
 						{projectReliabilityStatus !== "good" ? (<Grid item><ProjectStatusTooltip score={score} status={projectReliabilityStatus}/></Grid>) : ''}
 					</Grid>
 				</Link>
@@ -209,7 +210,20 @@ const render = {
 				</Grid>
 			)
 		} else {
-			return(<NotAvailableIndicator/>)
+			return(
+				<Grid
+					container
+					spacing={1}
+					alignItems={"center"}
+					sx={{
+						ml:0
+					}}
+				>
+					<Grid item>
+						{/*<NotAvailableIndicator/>*/}
+					</Grid>
+				</Grid>
+			)
 		}
 	},
 	datetime: (params) => {
@@ -222,12 +236,12 @@ const render = {
 	},
 	countdown: (params) => {
 		const loggingTag = `[render][countdown]`;
-		if(typeof params.value === "string"){
+		if(typeof params.value !== "undefined"){
 			// console.info(`${loggingTag} row:`, params.row);
 			return(
 				<CountdownTimer
 					presale={{
-						start: dayjs(params.value),
+						start: dayjs(params.row.ts_presale_start),
 						end: dayjs(params.row.ts_presale_end)
 					}}
 				/>

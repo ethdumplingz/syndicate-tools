@@ -52,8 +52,15 @@ const ProjectsTable = (props) => {
 		
 		const columns = [
 			{
+				field:"from_syndicate",
+				headerName: "Syndicate Affiliate",
+				type:'boolean',
+				filterable: true,
+				hide: true
+			},
+			{
 				field: "title",
-				headerName: "Title",
+				headerName: "Project",
 				renderCell: render.title,
 				minWidth: 200
 			},
@@ -83,9 +90,14 @@ const ProjectsTable = (props) => {
 			{
 				field: "ts_presale_start",
 				headerName: "Presale",
-				type: "datetime",
+				type: "dateTime",
 				renderHeader: render.header.date,
 				renderCell: render.countdown,
+				valueGetter:(params) => {
+					// console.info(`valueGetter datetime`, params);
+					const {value} = params;
+					return new Date(value);
+				},
 				headerAlign: "center",
 				cellClassName: "center",
 				minWidth: 180,
@@ -99,18 +111,11 @@ const ProjectsTable = (props) => {
 				cellClassName: "center",
 				minWidth: 80,
 			},
-			// {
-			// 	field: "ts_presale_end",
-			// 	headerName: "Presale End",
-			// 	type: "datetime",
-			// 	renderCell: render.datetime,
-			// 	minWidth: 160,
-			// },
 			{
 				field: "website_url",
 				headerName: "Links",
 				headerClassName: 'center',
-				cellClassName: 'center',
+				align: "left",
 				renderCell: render.urls,
 				width: 200,
 				sortable: false
@@ -180,6 +185,13 @@ const ProjectsTable = (props) => {
 						}}
 						components={{
 							Toolbar: CustomGridToolBar
+						}}
+						componentsProps={{
+							filterPanel: {
+								filterFormProps:{
+								
+								}
+							}
 						}}
 					/>
 				</Grid>

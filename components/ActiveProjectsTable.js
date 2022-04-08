@@ -8,6 +8,7 @@ import {project} from "../utils/strings";
 import {render} from "../utils/TableRenderHelper";
 import ProjectTableActions from "./ProjectTableActions";
 import {useCallback, useState} from "react";
+import CustomGridToolBar from "./CustomGridToolBar";
 
 const TableWrapper = (props) => {
 	const {children} = props;
@@ -52,12 +53,13 @@ const ActiveProjectsTable = (props) => {
 	console.info(`${componentLoggingTag} projects received`, projects);
 	
 	const columns = [
-		// {
-		// 	field: "stage",
-		// 	headerName: "Progress",
-		// 	minWidth: 150,
-		// 	renderCell: render.stage
-		// },
+		{
+			field:"from_syndicate",
+			headerName: "Syndicate Collab",
+			type:'boolean',
+			filterable: true,
+			hide: true
+		},
 		{
 			field: "title",
 			headerName: "Project",
@@ -161,8 +163,13 @@ const ActiveProjectsTable = (props) => {
 		{
 			field: "ts_presale_start",
 			headerName: "Presale",
-			type: "datetime",
+			type: "dateTime",
 			cellClassName: "center",
+			valueGetter:(params) => {
+				// console.info(`valueGetter datetime`, params);
+				const {value} = params;
+				return new Date(value);
+			},
 			minWidth: 180,
 			renderHeader: render.header.date,
 			renderCell: render.countdown,
@@ -285,6 +292,9 @@ const ActiveProjectsTable = (props) => {
 						'& .center':{
 							justifyContent: "center"
 						}
+					}}
+					components={{
+						Toolbar: CustomGridToolBar
 					}}
 				/>
 			</Grid>
