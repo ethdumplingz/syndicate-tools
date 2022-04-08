@@ -130,6 +130,39 @@ const ProjectForm = (props) => {
 		message: "Success!"
 	});
 	
+	const isEditView = id.length > 0;
+	
+	const [projectExists, setProjectExists] = useState(false);
+	
+	useEffect(async () => {
+		const request = axios.CancelToken.source();
+		if(!isEditView){
+			const exists = await checkIfProjectExists({url: twitter, cancel_token: request.token});
+			setProjectExists(exists);
+		}
+		
+		
+		return () => request.cancel();
+	}, [twitter, isEditView]);
+	
+	const checkIfProjectExists = async ({url = "", cancel_token:cancelToken = ""} = {}) => {
+		const loggingTag = `${componentLoggingTag}[checkIfProjectExists]`;
+		let exists = false;
+		try{
+			const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URI}/projects/exists`, {
+				cancelToken,
+				params: {
+					twitter: url
+				}
+			});
+			exists = response.data.exists;
+			console.info(`${loggingTag} response rcvd!`, response);
+		} catch(e){
+			console.error(`${loggingTag} Error:`, e);
+		}
+		return exists;
+	}
+	
 	const handleAlertClose = (e) => {
 		const loggingTag = `[handleAlertClose]`;
 		try{
@@ -336,7 +369,7 @@ const ProjectForm = (props) => {
 	}
 	
 	console.info(`${componentLoggingTag} is admin? `, isAdmin);
-	const isEditView = id.length > 0;
+	
 	return (
 		<>
 			<Grid
@@ -591,7 +624,7 @@ const ProjectForm = (props) => {
 					<Grid item>
 						<FormActionBtn
 							variant={"contained"}
-							disabled={reqOutcome.pending || checkIfUrlsAreInvalid()}
+							disabled={reqOutcome.pending || checkIfUrlsAreInvalid() || projectExists}
 							onClick={isEditView ? updateProjectOnServer : addProjectToServer}
 							text={"Save"}
 						/>

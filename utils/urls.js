@@ -22,7 +22,7 @@ export const validateURL = ({url, type = "twitter"}) => {
 				}
 			}
 			
-			console.info(`${loggingTag}[url:${url}] pattern check: ${urlPatternCheck}`);
+			// console.info(`${loggingTag}[url:${url}] pattern check: ${urlPatternCheck}`);
 			
 			isValid = url === null || url.length  === 0 || urlPatternCheck;
 		}
