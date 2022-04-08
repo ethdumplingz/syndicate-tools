@@ -271,7 +271,7 @@ const render = {
 			// console.info(`${loggingTag} isActive: ${is_active}`, row);
 			actions.push(
 				<ToggleProjectBtn id={id} is_active={is_active}/>,
-				<DeleteProjectBtn id={id}/>
+				// <DeleteProjectBtn id={id}/>
 			)
 		}
 		
