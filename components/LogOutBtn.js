@@ -6,7 +6,7 @@ const LogOutBtn = (props) => {
 	const componentLoggingTag = `[LogOutBtn]`;
 	
 	const theme = useTheme();
-	const { logout } = useMoralis();
+	const { logout, isAuthenticating, isAuthenticated } = useMoralis();
 	
 	const logUserOut = (e) => {
 		const loggingTag = `${componentLoggingTag}[logUserOut]`;
@@ -21,13 +21,21 @@ const LogOutBtn = (props) => {
 	return (
 		<Button
 			variant={"contained"}
+			disabled={isAuthenticating || !isAuthenticated}
 			sx={{
 				backgroundColor: theme.palette.primary.main,
-				padding: "20px 30px"
+				color: "#FFFFFF",
+				width: "100%",
+				borderRadius: "0px",
+				pt: 1,
+				pb: 1,
+				"&:hover":{
+					backgroundColor: theme.palette.primary.light
+				}
 			}}
 			onClick={logUserOut}
 		>
-			Sign In
+			Log Out
 		</Button>
 	)
 }

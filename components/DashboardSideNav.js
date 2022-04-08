@@ -1,7 +1,18 @@
 import * as React from 'react';
 import {useState} from "react";
 
-import {Box, SwipeableDrawer, Button, List, Divider, ListItem, ListItemIcon, ListItemText, Collapse } from '@mui/material';
+import {
+	Button,
+	SwipeableDrawer,
+	Grid,
+	List,
+	Divider,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Collapse,
+	useTheme
+} from '@mui/material';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import CalenderIcon from '@mui/icons-material/CalendarToday';
 import TableIcon from "@mui/icons-material/TableChart";
@@ -14,6 +25,8 @@ import AdminIcon from "@mui/icons-material/SupportAgent";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
+import LogOutBtn from "./LogOutBtn";
+import {useMoralis} from "react-moralis";
 
 const items = [
 	{
@@ -73,8 +86,10 @@ const ConditionalLinkWrapper = (props) => {
 
 const DashboardSideNav = (props) => {
 	
+	const theme = useTheme();
 	const router = useRouter();
-	const {isAdmin} = useSyndicateAuthenticationContext();
+	const {isAuthenticated} = useMoralis();
+	const {isAdmin, isAgent} = useSyndicateAuthenticationContext();
 	const [isOpen, setOpen] = useState(true);
 	const [sectionExpanded, setSectionExpanded] = useState({
 		"projects" : true
@@ -85,101 +100,117 @@ const DashboardSideNav = (props) => {
 	}
 	
 	const list = () => (
-		<Box
+		<Grid
+			container
 			sx={{
 				width: 250
 			}}
+			flexGrow={1}
 			role="presentation"
+			flexDirection={"column"}
+			justifyContent={"space-between"}
 		>
-			<List>
-				<ListItem>
-					<ListItemIcon>
-						<img src={require("../images/circle_stroke_logo.svg")} alt={"The Syndicate"} height={42} width={42}/>
-					</ListItemIcon>
-					<ListItemText
-						sx={{
-							'& .MuiListItemText-primary':{
-								fontSize: "1.2rem"
-							}
-						}}
-					>Syndicate893</ListItemText>
-				</ListItem>
-			</List>
-			<Divider/>
-			<List>
-				{items.map((item, index) => (
-					<React.Fragment key={index}>
-						<ConditionalLinkWrapper
-							condition={typeof item.path === "string"}
-							wrapper={children => <Link href={item.path}>{children}</Link>}
-						>
-							<ListItem
-								button
-								key={index}
-								disabled={item.disabled}
-								sx={{
-									padding: "14px 24px"
-								}}
-								onClick={item.expandable ? (e) => {
-									const prevItemExpanded = sectionExpanded[item.id],
-										newSectionExpandedState = {...sectionExpanded, [item.id]: !prevItemExpanded}
-									setSectionExpanded(newSectionExpandedState);
-								} : () => {}}
+			<Grid item>
+				<List>
+					<ListItem>
+						<ListItemIcon>
+							<img src={require("../images/circle_stroke_logo.svg")} alt={"The Syndicate"} height={42} width={42}/>
+						</ListItemIcon>
+						<ListItemText
+							sx={{
+								'& .MuiListItemText-primary':{
+									fontSize: "1.2rem"
+								}
+							}}
+						>Syndicate893</ListItemText>
+					</ListItem>
+				</List>
+				<Divider/>
+				<List>
+					{items.map((item, index) => (
+						<React.Fragment key={index}>
+							<ConditionalLinkWrapper
+								condition={typeof item.path === "string"}
+								wrapper={children => <Link href={item.path}>{children}</Link>}
 							>
-								<ListItemIcon
+								<ListItem
+									button
+									key={index}
+									disabled={item.disabled || !isAuthenticated || !isAgent}
 									sx={{
-										color: "black",
-										minWidth: "50px"
+										padding: "14px 24px"
 									}}
+									onClick={item.expandable ? (e) => {
+										const prevItemExpanded = sectionExpanded[item.id],
+											newSectionExpandedState = {...sectionExpanded, [item.id]: !prevItemExpanded}
+										setSectionExpanded(newSectionExpandedState);
+									} : () => {}}
 								>
-									{item.icon}
-								</ListItemIcon>
-								<ListItemText primary={item.str} />
-								{item.expandable && sectionExpanded[item.id] ? <ExpandLess /> : item.expandable ? <ExpandMore /> : ''}
-							</ListItem>
-						</ConditionalLinkWrapper>
-						{
-							typeof item.children === "object"  && item.children.length > 0 ? (
-								<Collapse
-									in={sectionExpanded[item.id]}
-									sx={{
-										backgroundColor: `rgba(0,0,0,0.04)`
-									}}
-								>
-									<List>
-										{
-											item.children.map((child, index) => (
-												<ListItem
-													key={index}
-													button
-													sx={{
-														display: (child.adminsOnly && !isAdmin) ? "none" : "flex",
-														padding: "14px 24px",
-													}}
-													onClick={(e)=>{router.push(child.path)}}
-												>
-													<ListItemIcon
+									<ListItemIcon
+										sx={{
+											color: "black",
+											minWidth: "50px"
+										}}
+									>
+										{item.icon}
+									</ListItemIcon>
+									<ListItemText primary={item.str} />
+									{item.expandable && sectionExpanded[item.id] ? <ExpandLess /> : item.expandable ? <ExpandMore /> : ''}
+								</ListItem>
+							</ConditionalLinkWrapper>
+							{
+								typeof item.children === "object"  && item.children.length > 0 ? (
+									<Collapse
+										in={sectionExpanded[item.id]}
+										sx={{
+											backgroundColor: `rgba(0,0,0,0.04)`
+										}}
+									>
+										<List>
+											{
+												item.children.map((child, index) => (
+													<ListItem
+														key={index}
+														button
+														disabled={item.disabled || !isAuthenticated || !isAgent}
 														sx={{
-															color: "black",
-															minWidth: "46px",
+															display: (child.adminsOnly && !isAdmin) ? "none" : "flex",
+															padding: "14px 24px",
 														}}
+														onClick={(e)=>{router.push(child.path)}}
 													>
-														{child.icon}
-													</ListItemIcon>
-													<ListItemText primary={child.str}/>
-												</ListItem>
-											))
-										}
-									</List>
-								</Collapse>
-							) : (
-								<></>
-							)
-						}
-					</React.Fragment>
-				))}
-			</List>
-		</Box>
+														<ListItemIcon
+															sx={{
+																color: "black",
+																minWidth: "46px",
+															}}
+														>
+															{child.icon}
+														</ListItemIcon>
+														<ListItemText primary={child.str}/>
+													</ListItem>
+												))
+											}
+										</List>
+									</Collapse>
+								) : (
+									<></>
+								)
+							}
+						</React.Fragment>
+					))}
+				</List>
+			</Grid>
+			<Grid
+				item
+				sx={{
+					p: 3,
+					display: isAgent ? "block" : "none"
+				}}
+			>
+				<LogOutBtn/>
+			</Grid>
+		</Grid>
 	);
 	
 	return (
