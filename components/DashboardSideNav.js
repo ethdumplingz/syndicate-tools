@@ -66,6 +66,7 @@ const items = [
 		id: "profit-loss",
 		str: "Profit/Loss",
 		icon: <CalculateIcon />,
+		disabled: true,
 		path: "/wallet/profit-loss"
 	},
 	{
@@ -130,13 +131,13 @@ const DashboardSideNav = (props) => {
 					{items.map((item, index) => (
 						<React.Fragment key={index}>
 							<ConditionalLinkWrapper
-								condition={typeof item.path === "string"}
+								condition={typeof item.path === "string"}di
 								wrapper={children => <Link href={item.path}>{children}</Link>}
 							>
 								<ListItem
 									button
 									key={index}
-									disabled={item.disabled || !isAuthenticated || !isAgent}
+									disabled={(item.disabled || !isAuthenticated || !isAgent) && (!isAdmin)}
 									sx={{
 										padding: "14px 24px"
 									}}
