@@ -256,7 +256,7 @@ const render = {
 			<ReportIssueBtn/>,
 		]
 		if(setID === "active-projects"){
-			actions.push(<AddToCalendarBtn
+			actions.splice(1, 0, <AddToCalendarBtn
 					id={id}
 					event={{
 						name: row.title,
