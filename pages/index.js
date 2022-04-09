@@ -4,9 +4,9 @@ import {useEffect} from "react";
 const Index = () => {
   const router = useRouter();
   
-  useEffect( () => {
-    router.redirect(`/projects/view`);
-  }, []);
+  // useEffect( () => {
+  //   router.redirect(`/projects/view`);
+  // }, []);
   
   
   return (
