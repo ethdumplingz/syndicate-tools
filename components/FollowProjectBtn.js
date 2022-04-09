@@ -55,7 +55,7 @@ const FollowProjectBtn = (props) => {
 	}
 	
 	return(
-		<Tooltip title={following ? "Follow" : "Unfollow"}>
+		<Tooltip title={!following ? "Follow" : "Unfollow"}>
 			<IconButton
 				onClick={updateProjectFollowStatus}
 			>
