@@ -6,8 +6,7 @@ import Head from "next/head";
 import Layout from "../components/Layout";
 import { SyndicateAuthenticationProvider } from "../components/SyndicateAuthenticationProvider";
 import { MoralisProvider } from "react-moralis";
-import AdapterDayJS from "@mui/lab/AdapterDayjs";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import PlausibleProvider from "next-plausible";
 
 import * as React from "react";
 
@@ -17,7 +16,8 @@ const App = ({ Component, pageProps}) => {
 			appId={"5w1stbOP83Wj7jtIkpGYA8cTFcd2YgOQHU1J87YU"}
 			serverUrl={"https://3bvfs4ldi8dd.usemoralis.com:2053/server"}
 		>
-			{/*<LocalizationProvider dateAdapter={AdapterDayJS}>*/}
+			<PlausibleProvider domain={"tools.syndicate893.com"} trackLocalhost={true} trackOutboundLinks={true}>
+				{/*<LocalizationProvider dateAdapter={AdapterDayJS}>*/}
 				<SyndicateAuthenticationProvider>
 					<ThemeProvider theme={theme}>
 						<Head>
@@ -29,7 +29,8 @@ const App = ({ Component, pageProps}) => {
 						</Layout>
 					</ThemeProvider>
 				</SyndicateAuthenticationProvider>
-			{/*</LocalizationProvider>*/}
+				{/*</LocalizationProvider>*/}
+			</PlausibleProvider>
 		</MoralisProvider>
 	)
 }
