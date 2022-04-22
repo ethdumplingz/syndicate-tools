@@ -92,12 +92,19 @@ const ProjectsTable = (props) => {
 				headerName: "Presale",
 				type: "dateTime",
 				renderHeader: render.header.date,
-				renderCell: render.countdown,
 				valueGetter:(params) => {
 					// console.info(`valueGetter datetime`, params);
-					const {value} = params;
-					return new Date(value);
+					const {value, row} = params;
+					let finalDate = value;
+					
+					if(new Date(value).getTime() === 0){
+						console.info(`valueGetter datetime: ${value}, row:`, row);
+						finalDate = 2147483647000;//short term hack to prevent projects where the presale is unknown, we display that last 4.22.22
+					}
+					console.info(`valueGetter datetime: ${finalDate}`);
+					return new Date(finalDate);
 				},
+				renderCell: render.countdown,
 				headerAlign: "center",
 				cellClassName: "center",
 				minWidth: 180,

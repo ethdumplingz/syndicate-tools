@@ -21,7 +21,7 @@ const FollowProjectBtn = (props) => {
 	const {address} = useSyndicateAuthenticationContext();
 	const {onClick, id:projectID, title="", is_following} = props;
 	const componentLoggingTag = `[FollowProjectBtn][proj: ${projectID}][proj name: ${title}]`;
-	console.info(`${componentLoggingTag} address: "${address}" project id: ${projectID}`);
+	// console.info(`${componentLoggingTag} address: "${address}" project id: ${projectID}`);
 	const [following, setFollowing] = useState(is_following);
 	
 	useEffect(()=>{

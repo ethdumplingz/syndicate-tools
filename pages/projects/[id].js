@@ -117,6 +117,10 @@ const ProjectView = (props) => {
 	const componentLoggingTag = `[ProjectView]`;
 	const router = useRouter();
 	const { id } = router.query;
+	const path = router.pathname;
+	console.error(`${componentLoggingTag}`, id);
+	console.info(`${componentLoggingTag} query:`, router.query);
+	console.info(`${componentLoggingTag} path:`, path);
 	const {data:resp, error, isValidating} = useSWR(`/projects/get/${id}`, fetchProjectInfo);
 	
 	if(error){

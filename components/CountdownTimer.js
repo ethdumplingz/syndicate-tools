@@ -77,7 +77,8 @@ const CountdownTimer = (props) => {
 		return () => clearInterval(interval);
 	}, []);
 	
-	if(timeFromNow(tsPresaleStart) > 0){
+	const presaleCutOffInMS = 31536000000;
+	if(timeFromNow(tsPresaleStart) > 0 && timeFromNow(tsPresaleStart) < presaleCutOffInMS){
 		return (
 			<Tooltip title={dayjs(tsPresaleStart).format('llll')}>
 				<Grid
@@ -105,7 +106,10 @@ const CountdownTimer = (props) => {
 				</Grid>
 			</Tooltip>
 		)
-	} else if (dayjs(presale.start).unix() === 0) {
+	} else if (
+		(dayjs(presale.start).unix() === 0) ||
+		(timeFromNow(tsPresaleStart) >= presaleCutOffInMS)
+	){
 		return (<Typography>N/A</Typography>)
 	} else if (timeFromNow(presale.end) < 0){
 		// console.info(`${componentLoggingTag} time from now (presale end): ${timeFromNow(presale.end)} full presale end string: ${presale.end}`);

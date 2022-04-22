@@ -64,14 +64,14 @@ const render = {
 		const loggingTag = `${baseLoggingTag}[title]`;
 		// console.info(`${loggingTag} params`, params);
 		const {row} = params,
-			{score, from_syndicate} = row,
+			{score, from_syndicate, id} = row,
 			projectReliabilityStatus = convertScoreToStatus(score);
 		
 		// console.info(`${loggingTag} project reliability: ${projectReliabilityStatus}`);
-		console.info(`${loggingTag} row`, row);
+		// console.info(`${loggingTag} row`, row);
 		return(
 			<TableTextCell>
-				<Link href={`/projects/${params.row.id}`}>
+				<Link href={`/projects/${id}`}>
 					<Grid container columnSpacing={1.5} flexWrap={"nowrap"}>
 						<Grid item>
 							<Typography sx={{whiteSpace: "normal"}}>{params.value}</Typography>
@@ -227,21 +227,32 @@ const render = {
 		}
 	},
 	datetime: (params) => {
-		if(typeof params.value === "string"){
-			const formattedDateTime = dayjs(params.value).format("ddd MM/DD/YY h:mm A");
-			return(formattedDateTime)
-		} else {
-			return("N/A");
+		const loggingTag = `[render][datetime]`;
+		let value = "N/A";
+		try{
+			if(typeof params.value === "string"){
+				const formattedDateTime = dayjs(params.value).format("ddd MM/DD/YY h:mm A");
+				// if()
+				value = formattedDateTime;
+			}
+		} catch(e){
+			console.error(`${loggingTag} Error:`, e);
+			
+		} finally {
+			return (value);
 		}
+		
 	},
 	countdown: (params) => {
 		const loggingTag = `[render][countdown]`;
 		if(typeof params.value !== "undefined"){
-			// console.info(`${loggingTag} row:`, params.row);
+			const {row, value} = params;
+			console.info(`${loggingTag} value: ${value}, row:`, row);
+			
 			return(
 				<CountdownTimer
 					presale={{
-						start: dayjs(params.row.ts_presale_start),
+						start: dayjs(params.value),
 						end: dayjs(params.row.ts_presale_end)
 					}}
 				/>
@@ -346,7 +357,7 @@ const render = {
 	},
 	score: (params) => {
 		const loggingTag = `${baseLoggingTag}[score]`;
-		console.info(`${loggingTag} params`, params);
+		// console.info(`${loggingTag} params`, params);
 		const {row} = params;
 		const {id, title, vote, upvotes, downvotes, score} = row;
 		return [
@@ -362,7 +373,7 @@ const render = {
 	},
 	following: (params) => {
 		const loggingTag = `${baseLoggingTag}[following]`;
-		console.info(`${loggingTag} params`, params);
+		// console.info(`${loggingTag} params`, params);
 		const {row} = params;
 		const {id, title, is_following} = row;
 		return[
@@ -377,7 +388,7 @@ const render = {
 		date: (params) => {
 			const loggingTag = `${baseLoggingTag}[header][date]`;
 			const {colDef} = params;
-			console.info(`${loggingTag} params`, params);
+			// console.info(`${loggingTag} params`, params);
 			
 			return(
 				<>
