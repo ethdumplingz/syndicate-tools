@@ -2,26 +2,13 @@ import {Grid, Typography, Button, useTheme} from "@mui/material";
 import axios from "axios";
 import useSWR from "swr";
 import {DataGrid} from "@mui/x-data-grid";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import dayjs from "dayjs";
 import {useRouter} from "next/router";
 import {render} from "../utils/TableRenderHelper";
 import ProjectTableActions from "./ProjectTableActions";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 import CustomGridToolBar from "./CustomGridToolBar";
-
-
-const TableWrapper = (props) => {
-	const {children} = props;
-	return (
-		<Grid
-			item
-			container
-		>
-			{children}
-		</Grid>
-	)
-}
 
 const fetchTableData = async (url) => {
 	const loggingTag = `[fetchTableData]`;
@@ -34,11 +21,18 @@ const fetchTableData = async (url) => {
 	}
 }
 
+function escapeRegExp(value) {
+	return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
 const ProjectsTable = (props) => {
 	const componentLoggingTag = `[ProjectsTable]`;
 	const {address, isAdmin} = useSyndicateAuthenticationContext();
 	const theme = useTheme();
 	const [pageSize, setPageSize] = useState(15);
+	const [searchText, setSearchText] = useState("");
+	const [rows, setRows] = useState([])
+	
 	const {data:resp, error, isValidating} = useSWR(`/projects/get?user=${address}`, fetchTableData, {revalidateIfStale: false});
 	
 	
@@ -49,6 +43,27 @@ const ProjectsTable = (props) => {
 			projects = resp.data.projects;
 		}
 		console.info(`${componentLoggingTag} projects received`, projects);
+		useEffect(() => {
+			if(typeof resp !== "undefined" && resp.data.projects){
+				setRows(projects);
+			}
+			
+		}, [resp]);
+	
+	const requestSearch = (searchValue) => {
+		const loggingTag = `[requestSearch]`;
+		setSearchText(searchValue);
+		if(searchValue.length > 0){
+			const searchRegex = new RegExp(escapeRegExp(searchValue.toLowerCase()), 'i');
+			const filteredRows = rows.filter((row) => {
+				console.info(`${loggingTag}`, rows);
+				return searchRegex.test(row.title.toLowerCase().toString());//only going to search against the title
+			});
+			setRows(filteredRows);
+		} else {
+			setRows(projects)
+		}
+	};
 		
 		const columns = [
 			{
@@ -180,7 +195,7 @@ const ProjectsTable = (props) => {
 						disableSelectionOnClick
 						onPageSizeChange={(newPage) => setPageSize(newPage)}
 						columns={columns}
-						rows={projects}
+						rows={rows}
 						loading={isValidating}
 						getRowClassName={render.row}
 						density={"comfortable"}
@@ -194,10 +209,10 @@ const ProjectsTable = (props) => {
 							Toolbar: CustomGridToolBar
 						}}
 						componentsProps={{
-							filterPanel: {
-								filterFormProps:{
-								
-								}
+							toolbar:{
+								value: searchText,
+								onChange: (e) => requestSearch(e.target.value),
+								clearSearch: () => requestSearch("")
 							}
 						}}
 					/>
