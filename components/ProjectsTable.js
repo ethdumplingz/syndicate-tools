@@ -35,20 +35,19 @@ const ProjectsTable = (props) => {
 	
 	const {data:resp, error, isValidating} = useSWR(`/projects/get?user=${address}`, fetchTableData, {revalidateIfStale: false});
 	
+	console.info(`${componentLoggingTag} data received!`, resp);
 	
-		console.info(`${componentLoggingTag} data received!`, resp);
-		
-		let projects = [];
-		if(resp){
-			projects = resp.data.projects;
+	let projects = [];
+	if(resp){
+		projects = resp.data.projects;
+	}
+	console.info(`${componentLoggingTag} projects received`, projects);
+	useEffect(() => {
+		if(typeof resp !== "undefined" && resp.data.projects){
+			setRows(projects);
 		}
-		console.info(`${componentLoggingTag} projects received`, projects);
-		useEffect(() => {
-			if(typeof resp !== "undefined" && resp.data.projects){
-				setRows(projects);
-			}
-			
-		}, [resp]);
+		
+	}, [resp]);
 	
 	const requestSearch = (searchValue) => {
 		const loggingTag = `[requestSearch]`;

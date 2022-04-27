@@ -7,21 +7,8 @@ import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvid
 import {project} from "../utils/strings";
 import {render} from "../utils/TableRenderHelper";
 import ProjectTableActions from "./ProjectTableActions";
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import CustomGridToolBar from "./CustomGridToolBar";
-
-const TableWrapper = (props) => {
-	const {children} = props;
-	return (
-		<Grid
-			item
-			container
-		>
-			{children}
-		</Grid>
-	)
-}
-
 
 const fetchTableData = async (url) => {
 	const loggingTag = `[fetchTableData]`;
@@ -34,16 +21,19 @@ const fetchTableData = async (url) => {
 	}
 }
 
+function escapeRegExp(value) {
+	return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
 const ActiveProjectsTable = (props) => {
 	const componentLoggingTag = `[ActiveProjectsTable]`;
 	const theme = useTheme();
 	const {address, isAdmin} = useSyndicateAuthenticationContext();
 	const [pageSize, setPageSize] = useState(15);
+	const [searchText, setSearchText] = useState("");
+	const [rows, setRows] = useState([])
 	
 	const {data:resp, error, isValidating} = useSWR(`/users/${address}/projects/active`, fetchTableData);
-	
-	console.info(`${componentLoggingTag} projects`, render);
-	
 	
 	console.info(`${componentLoggingTag} data received!`, resp);
 	let projects = [];
@@ -51,6 +41,28 @@ const ActiveProjectsTable = (props) => {
 		projects = resp.data.projects;
 	}
 	console.info(`${componentLoggingTag} projects received`, projects);
+	
+	useEffect(() => {
+		if(typeof resp !== "undefined" && resp.data.projects){
+			setRows(projects);
+		}
+		
+	}, [resp]);
+	
+	const requestSearch = (searchValue) => {
+		const loggingTag = `[requestSearch]`;
+		setSearchText(searchValue);
+		if(searchValue.length > 0){
+			const searchRegex = new RegExp(escapeRegExp(searchValue.toLowerCase()), 'i');
+			const filteredRows = rows.filter((row) => {
+				console.info(`${loggingTag}`, rows);
+				return searchRegex.test(row.title.toLowerCase().toString());//only going to search against the title
+			});
+			setRows(filteredRows);
+		} else {
+			setRows(projects)
+		}
+	};
 	
 	const columns = [
 		{
@@ -276,7 +288,7 @@ const ActiveProjectsTable = (props) => {
 				<DataGrid
 					disableSelectionOnClick
 					columns={columns}
-					rows={projects}
+					rows={rows}
 					getRowClassName={render.row}
 					rowsPerPageOptions={[5,10,15,25,50,100]}
 					density={"comfortable"}
@@ -295,6 +307,13 @@ const ActiveProjectsTable = (props) => {
 					}}
 					components={{
 						Toolbar: CustomGridToolBar
+					}}
+					componentsProps={{
+						toolbar:{
+							value: searchText,
+							onChange: (e) => requestSearch(e.target.value),
+							clearSearch: () => requestSearch("")
+						}
 					}}
 				/>
 			</Grid>
