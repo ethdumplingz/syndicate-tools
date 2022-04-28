@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import axios from "axios";
-import {Typography, Grid, Button, Tooltip} from "@mui/material";
+import {useEffect, useState} from "react";
+import {Typography, Grid, Button, Tooltip, Box} from "@mui/material";
 import {fetchProjectInfo} from "../../utils/project";
 import ProjectActions from "../../components/ProjectActions";
 
@@ -44,11 +44,11 @@ const ProjectURLRow = (props) => {
 		<a href={url} target={"_blank"}>{url}</a>
 	) : (
 		<Tooltip title={"To be confirmed"}>
-			<Typography
+			<Box
 				sx={{
 					fontSize: "1.25rem"
 				}}
-			>TBC</Typography>
+			>TBC</Box>
 		</Tooltip>
 	);
 	
@@ -114,14 +114,16 @@ const formatTimeForDisplay = (datetime) => {
 }
 
 const ProjectView = (props) => {
-	const componentLoggingTag = `[ProjectView]`;
+	
 	const router = useRouter();
-	const { id } = router.query;
 	const path = router.pathname;
-	console.error(`${componentLoggingTag}`, id);
-	console.info(`${componentLoggingTag} query:`, router.query);
+	
+	const { id:projectID } = router.query;
+	
+	const componentLoggingTag = `[ProjectView][id:${projectID}]`;
+	console.info(`${componentLoggingTag} props`, props);
 	console.info(`${componentLoggingTag} path:`, path);
-	const {data:resp, error, isValidating} = useSWR(`/projects/get/${id}`, fetchProjectInfo);
+	const {data:resp, error, isValidating} = useSWR(`/projects/get/${projectID}`, fetchProjectInfo);
 	
 	if(error){
 		console.error(`${componentLoggingTag} Error:`, error);
@@ -148,7 +150,7 @@ const ProjectView = (props) => {
 					item
 					container
 				>
-					<ProjectActions id={id}/>
+					<ProjectActions id={projectID}/>
 				</Grid>
 				<Grid
 					item
@@ -258,7 +260,7 @@ const ProjectView = (props) => {
 										fontSize: "1.0rem",
 										p: "8px 18px"
 									}}
-									onClick={(e)=>{router.push(`/projects/${id}/edit`)}}
+									onClick={(e)=>{router.push(`/projects/${projectID}/edit`)}}
 								>Edit</Button>
 							</Grid>
 						</Grid>

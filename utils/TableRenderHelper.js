@@ -1,4 +1,4 @@
-import {IconButton, Typography, Link, Grid, Tooltip} from "@mui/material";
+import {IconButton, Typography, Grid, Tooltip} from "@mui/material";
 import dayjs from "dayjs";
 import {project} from "./strings";
 import WebsiteIcon from "@mui/icons-material/Public";
@@ -25,6 +25,8 @@ import ToggleProjectBtn from "../components/project-actions/ToggleProjectBtn";
 import {convertScoreToStatus} from "../utils/project";
 import ReportIssueBtn from "../components/ReportIssueBtn";
 import SyndicateIndicator from "../components/SyndicateIndicator";
+
+import Link from "next/link";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
@@ -74,7 +76,15 @@ const render = {
 				<Link href={`/projects/${id}`}>
 					<Grid container columnSpacing={1.5} flexWrap={"nowrap"}>
 						<Grid item>
-							<Typography sx={{whiteSpace: "normal"}}>{params.value}</Typography>
+							<Typography
+								sx={{
+									whiteSpace: "normal",
+									textDecoration:"underline",
+									'&:hover':{
+										cursor: "pointer"
+									}
+								}}
+							>{params.value}</Typography>
 						</Grid>
 						{from_syndicate ? (<Grid item><SyndicateIndicator/></Grid>) : ''}
 						{projectReliabilityStatus !== "good" ? (<Grid item><ProjectStatusTooltip score={score} status={projectReliabilityStatus}/></Grid>) : ''}
@@ -247,8 +257,7 @@ const render = {
 		const loggingTag = `[render][countdown]`;
 		if(typeof params.value !== "undefined"){
 			const {row, value} = params;
-			console.info(`${loggingTag} value: ${value}, row:`, row);
-			
+			// console.info(`${loggingTag} value: ${value}, row:`, row);
 			return(
 				<CountdownTimer
 					presale={{

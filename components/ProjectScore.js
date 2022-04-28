@@ -8,7 +8,7 @@ import {ThumbDown, ThumbUp} from "@mui/icons-material";
 const fetcher = async (url) => {
     const loggingTag = `[fetcher]`;
     try {
-        console.info(`${loggingTag} url: ${url}`);
+        // console.info(`${loggingTag} url: ${url}`);
         return await axios.get(`${process.env.NEXT_PUBLIC_BASE_URI}${url}`);
     } catch (e) {
         console.error(`${loggingTag} Error:`, e);
@@ -20,7 +20,7 @@ const ProjectScore = (props) => {
     const {address} = useSyndicateAuthenticationContext();
     const {onClick, id: projectID, title = "", vote, score, upvotes, downvotes} = props;
     const componentLoggingTag = `[ProjectScore][proj: ${projectID}][proj name: ${title}]`;
-    console.info(`${componentLoggingTag} vote: ${vote}`, vote === -1);
+    // console.info(`${componentLoggingTag} vote: ${vote}`, vote === -1);
     const [voteState, setVote] = useState(vote);
     const [scoreState, setScore] = useState(score);
     const [upvotesState, setUpvotes] = useState(upvotes);

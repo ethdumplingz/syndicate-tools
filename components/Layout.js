@@ -7,13 +7,14 @@ import NavigateBackBtn from "../components/NavigateBackBtn";
 import IsLoadingView from "./IsLoadingView";
 
 const Layout = (props) => {
-	
+	const componentLoggingTag = `[Layout]`;
 	const router = useRouter();
 	const {children:content} = props;
 	const {isAgent, isPending} = useSyndicateAuthenticationContext();
 	
 	useEffect(()=>{
 		if(!isPending && !isAgent){
+			console.info(`${componentLoggingTag} redirecting user to /signin...`)
 			router.push("/signin");
 		}
 	}, []);
