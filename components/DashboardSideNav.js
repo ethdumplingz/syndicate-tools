@@ -11,6 +11,7 @@ import {
 	ListItemIcon,
 	ListItemText,
 	Collapse,
+	SvgIcon,
 	useTheme
 } from '@mui/material';
 import CalculateIcon from '@mui/icons-material/Calculate';
@@ -22,6 +23,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import WLGameIcon from "@mui/icons-material/VisibilityOutlined";
 import AdminIcon from "@mui/icons-material/SupportAgent";
+import SyndicateLogo from "../images/circle_stroke_logo.svg";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
@@ -115,7 +117,15 @@ const DashboardSideNav = (props) => {
 				<List>
 					<ListItem>
 						<ListItemIcon>
-							<img src={require("../images/circle_stroke_logo.svg")} alt={"The Syndicate"} height={42} width={42}/>
+							<SvgIcon
+								component={SyndicateLogo}
+								htmlColor={"#000000"}
+								viewBox={"0 0 266 251"}
+								sx={{
+									height: 42,
+									width: 42
+								}}
+							/>
 						</ListItemIcon>
 						<ListItemText
 							sx={{

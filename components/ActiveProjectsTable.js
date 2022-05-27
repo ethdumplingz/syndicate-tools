@@ -125,6 +125,16 @@ const ActiveProjectsTable = (props) => {
 			cellClassName: 'center',
 			renderCell: render.information
 		},
+		// {
+		// 	field: "public_price",
+		// 	headerName: "Comment",
+		// 	editable: true,
+		// 	type: "text",
+		// 	minWidth: 300,
+		// 	valueGetter:() => {
+		// 		return ("Test comment this is going to be something... Lorem Ipsum")
+		// 	}
+		// },
 		{
 			field: "presale_price",
 			headerName: "Presale",

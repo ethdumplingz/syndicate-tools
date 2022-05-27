@@ -10,6 +10,8 @@ import PlausibleProvider from "next-plausible";
 
 import * as React from "react";
 
+import Favicon from "../images/favicon.png";
+
 const App = ({ Component, pageProps}) => {
 	return (
 		<MoralisProvider
@@ -17,11 +19,11 @@ const App = ({ Component, pageProps}) => {
 			serverUrl={"https://3bvfs4ldi8dd.usemoralis.com:2053/server"}
 		>
 			<PlausibleProvider domain={"tools.syndicate893.com"} trackLocalhost={true} trackOutboundLinks={true}>
-				{/*<LocalizationProvider dateAdapter={AdapterDayJS}>*/}
 				<SyndicateAuthenticationProvider>
 					<ThemeProvider theme={theme}>
 						<Head>
 							<title>Syndicate 893</title>
+							<link rel={"shortcut icon"} href={Favicon}/>
 							<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
 						</Head>
 						<Layout>
@@ -29,7 +31,6 @@ const App = ({ Component, pageProps}) => {
 						</Layout>
 					</ThemeProvider>
 				</SyndicateAuthenticationProvider>
-				{/*</LocalizationProvider>*/}
 			</PlausibleProvider>
 		</MoralisProvider>
 	)

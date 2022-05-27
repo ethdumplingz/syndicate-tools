@@ -11,8 +11,8 @@ const SignIn = (props) => {
 
 	useEffect(()=>{
 		if(isAgent){
-			router.push(`/projects/view`);
-			// router.back();
+			// router.push(`/projects/view`);
+			router.back();
 		}
 	}, [isAgent]);
 	return (

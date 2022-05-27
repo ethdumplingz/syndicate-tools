@@ -13,11 +13,12 @@ const Layout = (props) => {
 	const {isAgent, isPending} = useSyndicateAuthenticationContext();
 	
 	useEffect(()=>{
-		if(!isPending && !isAgent){
-			console.info(`${componentLoggingTag} redirecting user to /signin...`)
-			router.push("/signin");
-		}
-	}, []);
+		console.info(`${componentLoggingTag}[useEffect] isAgent: ${isAgent} isPending:${isPending}`);
+		// if(!isPending && !isAgent){
+		// 	console.info(`${componentLoggingTag} redirecting user to /signin...`)
+		// 	router.push("/signin");
+		// }
+	}, [isAgent, isPending]);
 	
 	return (
 		<>

@@ -93,14 +93,14 @@ const ProjectsTable = (props) => {
 				cellClassName: 'center',
 				valueFormatter: render.mintPrice,
 			},
-			{
-				field: "public_price",
-				headerName: "Public",
-				headerAlign: "center",
-				minWidth: 120,
-				cellClassName: 'center',
-				valueFormatter: render.mintPrice
-			},
+			// {
+			// 	field: "public_price",
+			// 	headerName: "Public",
+			// 	headerAlign: "center",
+			// 	minWidth: 120,
+			// 	cellClassName: 'center',
+			// 	valueFormatter: render.mintPrice
+			// },
 			{
 				field: "ts_presale_start",
 				headerName: "Presale",

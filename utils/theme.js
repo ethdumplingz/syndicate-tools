@@ -7,7 +7,9 @@ const theme = createTheme({
 		primary: {
 			main: '#000000',
 			'100': "#f7f7f7",
+			'500': "#999999",
 			'600': "#7D7D7D",
+			
 			'800': "#262626"
 		},
 		secondary: {
@@ -23,6 +25,10 @@ const theme = createTheme({
 			// ok: yellow[100],
 			ok: 'transparent',
 			good: green[100]
+		},
+		socials: {
+			twitter: `#1D9BF0`,
+			discord: `#5865F2`
 		}
 	},
 	typography:{

@@ -1,6 +1,7 @@
-import { Box, Grid, Typography } from "@mui/material";
+import {Box, Grid, SvgIcon, Typography} from "@mui/material";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
+import SyndicateLogo from "../images/circle_stroke_logo.svg";
 const Index = () => {
   const router = useRouter();
   
@@ -36,7 +37,13 @@ const Index = () => {
               textAlign: "center"
             }}
           >
-            <img src={require("../images/circle_stroke_logo.svg")} alt={"The Syndicate"} height={250} width={264}/>
+            <SvgIcon
+              component={SyndicateLogo}
+              sx={{
+                height: 250,
+                width: 264
+              }}
+            />
           </Grid>
           <Grid
             item
