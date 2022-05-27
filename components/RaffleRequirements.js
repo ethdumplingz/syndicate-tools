@@ -21,7 +21,10 @@ const RaffleRequirementSocialButton = (props) => {
 				fontSize: "1rem",
 				textTransform: "initial",
 				minWidth: "240px",
-				justifyContent:"flex-start"
+				justifyContent:"flex-start",
+				'&:hover':{
+					backgroundColor: theme.palette.socials[`${platform}_dark`]
+				}
 			}}
 		>{children}</Button>
 	)

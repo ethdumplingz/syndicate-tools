@@ -1,5 +1,5 @@
 import RaffleBubble from "./RaffleBubble";
-import EndDateIcon from "@mui/icons-material/HourglassBottom";
+import EndDateIcon from "@mui/icons-material/HourglassBottomSharp";
 import dayjs from "dayjs";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
 dayjs.extend(LocalizedFormat);

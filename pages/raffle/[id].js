@@ -178,7 +178,7 @@ const RaffleView = (props) => {
 													justifyContent:"center"
 												}}
 											>
-												{platform === "twitter" ? <TwitterIcon/> : <DiscordIcon viewBox="0 0 71 55" sx={{color:"#FFFFFF", width:"22px", height:"auto"}}/>}
+												{platform === "twitter" ? <TwitterIcon sx={{fontSize: "20px"}}/> : <DiscordIcon viewBox="0 0 71 55" sx={{color:"#FFFFFF", width:"18px", height:"auto"}}/>}
 											</Box>
 											
 										</Grid>
@@ -225,7 +225,7 @@ const RaffleView = (props) => {
 							<Typography
 								variant={"h2"}
 								sx={{
-									fontSize: "1.5rem",
+									fontSize: "1.4rem",
 									lineHeight: "1.9rem",
 									color: theme.palette.primary['500']
 								}}

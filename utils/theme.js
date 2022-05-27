@@ -28,7 +28,9 @@ const theme = createTheme({
 		},
 		socials: {
 			twitter: `#1D9BF0`,
-			discord: `#5865F2`
+			twitter_dark: `#1884cd`,
+			discord: `#5865F2`,
+			discord_dark: `#4853c9`
 		}
 	},
 	typography:{

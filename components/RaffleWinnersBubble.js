@@ -1,5 +1,5 @@
 import RaffleBubble from "./RaffleBubble";
-import WinnerIcon from "@mui/icons-material/WorkspacePremium";
+import WinnerIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 
 const RaffleWinnersBubble = (props) => {
 	const {num = 0} = props;
