@@ -205,7 +205,7 @@ const RaffleView = (props) => {
 					<Grid
 						item
 						container
-						rowSpacing={1}
+						rowSpacing={3}
 					>
 						<Grid
 							item

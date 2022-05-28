@@ -6,7 +6,9 @@ const createView = (props) => {
 			container
 		>
 			<Grid item>
-				<Typography>
+				<Typography
+				
+				>
 				
 				</Typography>
 			</Grid>
