@@ -10,8 +10,6 @@ import PlausibleProvider from "next-plausible";
 
 import * as React from "react";
 
-import Favicon from "../images/favicon.png";
-
 const App = ({ Component, pageProps}) => {
 	return (
 		<MoralisProvider
@@ -23,7 +21,7 @@ const App = ({ Component, pageProps}) => {
 					<ThemeProvider theme={theme}>
 						<Head>
 							<title>Syndicate 893</title>
-							<link rel={"shortcut icon"} href={Favicon}/>
+							<link rel={"shortcut icon"} href={'/favicon.png'}/>
 							<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
 						</Head>
 						<Layout>

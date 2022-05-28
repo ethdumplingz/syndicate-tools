@@ -27,7 +27,6 @@ import ReportIssueBtn from "../components/ReportIssueBtn";
 import SyndicateIndicator from "../components/SyndicateIndicator";
 
 import Link from "next/link";
-import ProjectCommentBtn from "../components/project-actions/ProjectCommentBtn";
 
 const { stages } = project;
 const baseLoggingTag = `[tableRender]`;
