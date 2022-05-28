@@ -4,7 +4,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import DiscordIcon from "./icons/DiscordIcon";
 // import DiscordIcon from "../images/discord.svg";
 const RaffleRequirementSocialButton = (props) => {
-	const {children, platform, icon} = props;
+	const {children, platform, icon, onClick = () => {}} = props;
 	const theme = useTheme();
 	return(
 		<Button
@@ -26,6 +26,7 @@ const RaffleRequirementSocialButton = (props) => {
 					backgroundColor: theme.palette.socials[`${platform}_dark`]
 				}
 			}}
+			onClick={onClick}
 		>{children}</Button>
 	)
 }
@@ -34,6 +35,20 @@ const RaffleRequirements = (props) => {
 	const componentLoggingTag = `[RaffleRequirements]`;
 	const {title, requirements} = props;
 	const theme = useTheme();
+	
+	const openTwitterProfile = ({e:event, handle=''} = {}) => {
+		const loggingTag = `${componentLoggingTag}[openTwitterProfile]`;
+		
+		// console.info(`${loggingTag} here!`, handle);
+		open(`https://twitter.com/${handle}`);
+	}
+	
+	const openDiscordServer = ({e:event, id=''} = {}) => {
+		const loggingTag = `${componentLoggingTag}[openDiscordServer]`;
+		
+		// console.info(`${loggingTag} here!`, handle);
+		open(`https://discord.gg/${id}`);
+	}
 	
 	return(
 		<Grid
@@ -60,16 +75,18 @@ const RaffleRequirements = (props) => {
 								>
 									Have {ethers.utils.formatEther(ethers.BigNumber.from(requirement.amount.toString()))} ETH in your wallet </Typography>
 							) : key === "twitter" ? (
-									<RaffleRequirementSocialButton
-										icon={<TwitterIcon/>}
-										platform={key}
-									>
-										Follow @{requirement.handle}
-									</RaffleRequirementSocialButton>
+								<RaffleRequirementSocialButton
+									icon={<TwitterIcon/>}
+									platform={key}
+									onClick={(e)=>{openTwitterProfile({e, handle:requirement.handle})}}
+								>
+									Follow @{requirement.handle}
+								</RaffleRequirementSocialButton>
 							) : (
 								<RaffleRequirementSocialButton
 									icon={<DiscordIcon viewBox="0 0 71 55" sx={{color:"#FFFFFF", width:"20px", height:"auto"}}/>}
 									platform={key}
+									onClick={(e)=>{openDiscordServer({e, id: requirement.id})}}
 									>
 									Join Their Server
 								</RaffleRequirementSocialButton>
