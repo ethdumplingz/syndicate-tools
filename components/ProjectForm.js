@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import NavigateBackBtn from "./NavigateBackBtn";
 dayjs.extend(utc);
+import FormActionBtn from "./FormActionBtn";
 
 const delay = (time = 5000) => {
 	return new Promise((resolve, reject) => {
@@ -17,49 +18,6 @@ const delay = (time = 5000) => {
 			resolve();
 		}, time);
 	})
-}
-
-const FormActionBtn = (props) => {
-	const componentLoggingTag = `[FormActionBtn]`;
-	const {text, onClick, variant, disabled = false} = props;
-	return (
-		<Button
-			variant={variant}
-			disabled={disabled}
-			onClick={onClick}
-			sx={{
-				padding: "8px 18px",
-				fontSize: "1rem"
-			}}
-		>
-			{text}
-		</Button>
-	)
-}
-
-const FormTextField = (props) => {
-	const componentLoggingTag = `[FormTextField]`;
-	const {value="",defaultValue, maxRows = 1, onChange = ()=>{}, min, children, label="", type="text", step = 1, helperText="", error = false} = props;
-	// console.info(`${componentLoggingTag} props`, props);
-	return(
-		<TextField
-			variant={"outlined"}
-			value={value}
-			defaultValue={defaultValue}
-			onChange={onChange}
-			fullWidth={true}
-			multiline={maxRows > 1}
-			maxRows={maxRows}
-			label={label}
-			type={type}
-			step={step}
-			helperText={helperText}
-			error={error}
-			min={min}
-		>
-			{children}
-		</TextField>
-	)
 }
 
 const formatDatetimeForForm = (dbDatetime) => {

@@ -7,6 +7,8 @@ import {ethers} from "ethers";
 import RaffleRequirements from "../../components/RaffleRequirements";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import DiscordIcon from "../../components/icons/DiscordIcon";
+import RaffleViewTitle from "../../components/RaffleViewTitle";
+import RaffleSectionTitle from "../../components/RaffleSectionTitle";
 
 //start dummy info
 
@@ -63,21 +65,6 @@ const getRaffleInfo = async (url) => {
 	return dummyRaffleResp;
 }
 //end dummy info
-
-const RaffleSectionTitle = (props) => {
-	const {children} = props;
-	return(
-		<Typography
-			variant={"h3"}
-			sx={{
-				fontWeight: 500,
-				fontSize: "2rem"
-			}}
-		>
-			{children}
-		</Typography>
-	)
-}
 
 const RaffleView = (props) => {
 	const componentLoggingTag = `[RaffleView]`;
@@ -210,16 +197,7 @@ const RaffleView = (props) => {
 						<Grid
 							item
 						>
-							<Typography
-								variant={"h1"}
-								sx={{
-									fontSize: "2.25rem",
-									fontWeight: 500,
-									whiteSpace: "nowrap",
-									textOverflow: "ellipsis",
-									overflow: "hidden",
-								}}
-								>{title}</Typography>
+							<RaffleViewTitle>{title}</RaffleViewTitle>
 						</Grid>
 						<Grid item>
 							<Typography

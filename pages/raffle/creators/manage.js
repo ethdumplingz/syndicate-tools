@@ -1,9 +1,9 @@
-import {Grid, Typography} from "@mui/material";
+import {Box, Grid} from "@mui/material";
 import RaffleViewTitle from "../../../components/RaffleViewTitle";
 import RaffleCreationForm from "../../../components/RaffleCreationForm";
 
-const createView = (props) => {
-	return(
+const RaffleManagementView = (props) => {
+	return (
 		<Grid
 			container
 			spacing={6}
@@ -17,13 +17,13 @@ const createView = (props) => {
 			}}
 		>
 			<Grid item>
-				<RaffleViewTitle>Create a Raffle</RaffleViewTitle>
+				<RaffleViewTitle>Manage Raffles</RaffleViewTitle>
 			</Grid>
 			<Grid item>
-				<RaffleCreationForm/>
+				Raffle Table Will Go Here.
 			</Grid>
 		</Grid>
 	)
 }
 
-export default createView;
+export default RaffleManagementView;
