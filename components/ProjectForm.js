@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {fetchProjectInfo} from "../utils/project";
 import useSWR from "swr";
+import FormTextField from "./FormTextField";
 import {useRouter} from "next/router";
 import {useSyndicateAuthenticationContext} from "./SyndicateAuthenticationProvider";
 import {validateURL} from "../utils/urls";
